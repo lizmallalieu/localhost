@@ -2,7 +2,7 @@ var Tour = require('./models/tourModel.js');
 
 module.export = {
   // Handles user searching for tours on Search page
-  findOne: function(req, res, next){
+  findTour: function(req, res, next){
     // Checks for valid inputs and creates a new object with keys for each legitimate input
     var inputObj = req.body.data
     var newObj = {};
@@ -33,11 +33,11 @@ module.export = {
       } else {
         res.send(data);
       }
-    }
-  };
+    });
+  }
 
   // Handles user creating a new tour
-  createOne: function(req,res, next) {
+  createTour: function(req,res, next) {
     //chose a random downloaded picture to add to the tour as a background image
     // Construct address and send request to google geocode api to fetch Lat/Lng coordinates for given address
     var address = req.body.streetAddress + ", " + req.body.city + ", " + req.body.state;
@@ -63,7 +63,6 @@ module.export = {
           LatLng: LatLng,
           description: req.body.description
         };
-        
         // Create new Tour document on DB using data stored in newTour object
         Tour.create(newTour, function(err, tour) {
           if(err) {
