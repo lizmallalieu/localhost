@@ -10,6 +10,7 @@
     "express": "~4.5.1",
     "express-session": "^1.13.0",
     "jquery": "^2.2.0",
+    "material-ui": "^0.15.0-alpha.1",
     "method-override": "~2.0.2",
     "mongoose": "~3.8.0",
     "react": "^0.14.7",
@@ -17,6 +18,7 @@
     "react-dom": "^0.14.7",
     "react-google-maps": "^4.9.1",
     "react-router": "^2.0.0",
+    "react-tap-event-plugin": "^0.2.2",
     "request": "^2.69.0",
     "underbar": "^0.1.0",
     "underscore": "^1.8.3"
