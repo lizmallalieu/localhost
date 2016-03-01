@@ -9,7 +9,7 @@ var request = require('request');
 module.exports = function(app) {
 
   // Authenticates user access through the use of sessions
-  app.use(session({ 
+  app.use(session({
     secret: 'secret',
     resave: false,
     saveUninitialized: true
@@ -24,7 +24,7 @@ module.exports = function(app) {
       res.send({isAuth: false});
     }
   };
-  
+
   // Handles user searching for tours on Search page
   app.post('/search', function(req,res) {
     // Checks for valid inputs and creates a new object with keys for each legitimate input
@@ -36,7 +36,7 @@ module.exports = function(app) {
       }
     }
     /* Filters tours based on the price range. Similar idea to Yelps "$" indicator of cost. Leaving this blank returns all prices.
-    *   Guide:  $ = $0-26 , $$ = $0-51 , $$$ = $0-76 , $$$$ = $0-101. 
+    *   Guide:  $ = $0-26 , $$ = $0-51 , $$$ = $0-76 , $$$$ = $0-101.
     */
     if(newObj.price !== undefined) {
       if (newObj.price === "$") {
@@ -48,7 +48,7 @@ module.exports = function(app) {
       } else if (newObj.price === "$$$$") {
         newObj.price = {$lt: 101};
       }
-    };
+    }
 
     Tour.find(newObj, function(err, data) {
       if (err) {
@@ -220,7 +220,7 @@ module.exports = function(app) {
             req.session.userId = user._id;
             res.send(user);
           });
-        } 
+        }
         else {
           res.send('Username and/or password invalid.');
         }
@@ -268,6 +268,3 @@ module.exports = function(app) {
     })
   })
 }
-
-
-
