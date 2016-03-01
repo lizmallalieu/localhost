@@ -9,6 +9,9 @@ import SignUp from './account/SignUp'
 import Welcome from './welcome/Welcome'
 import Tour from './tour/Tour'
 
+import injectTapEventPlugin from 'react-tap-event-plugin';t
+injectTapEventPlugin();
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
