@@ -1,5 +1,5 @@
 var db = require('../config');
-var Tour = require ('../models/tour.js');
+var Tour = require ('../models/tourModel.js');
 var Tours = new db.Collection();
 
 Tours.model = Tour;
