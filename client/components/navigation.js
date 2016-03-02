@@ -22,7 +22,7 @@ export default class Navigation extends React.Component {
 
   componentWillMount() {
     // Checks to see if the user is logged in or not. Changes the signedIn property, which hides or shows different parts of the nav bar
-    $.get('/session')
+    $.get('/api/session')
     .done((data) => {
       if (data.isAuth === false) {
         this.setState({ signedIn: false })
