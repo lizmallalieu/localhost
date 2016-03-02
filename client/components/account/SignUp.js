@@ -54,7 +54,7 @@ export default class SignUp extends React.Component {
     }
 
 		$.post('/signup', {data: user})
-			.done(data => {
+			.done((data) => {
         if (data === 'Account already exists.') {
           // Shows error message for 2 seconds, then removes it
           this.setState({
@@ -81,7 +81,9 @@ export default class SignUp extends React.Component {
 
   // Hides the modal window
 	close() {
-    this.setState({show: false});
+    this.setState({
+      show: false
+    });
   };
 
   // Shows the modal window
@@ -94,8 +96,8 @@ export default class SignUp extends React.Component {
 	render() {
     var emailError = <div>Please enter valid email</div>;
 
-    var accountExistsError = <div> Username Already Exists.</div>;
-    var invalidFieldsError = <div> Please fill out all forms. </div>
+    var accountExistsError = <div>Username Already Exists.</div>;
+    var invalidFieldsError = <div>Please fill out all forms.</div>
 
 		return (
 		  <NavItem
@@ -120,7 +122,7 @@ export default class SignUp extends React.Component {
 					    <input ref="username" className="username" placeholder="username" type='text'/><br/>
 					    <input ref="password" className="password" placeholder="password" type="password"/><br/>
 					    <input ref="email" className="email" placeholder="email" type="text"/><br/>
-					    <Button bsStyle='default' onClick={() => this.handleSignUp()}> Sign Up </Button>
+					    <Button bsStyle='default' onClick={() => this.handleSignUp()}>Sign Up</Button>
               {this.state.showValidateEmailError ? emailError : null}
               {this.state.showAccountExistsError ? accountExistsError : null}
               {this.state.showInvalidFieldsError ? invalidFieldsError : null}
