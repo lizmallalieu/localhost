@@ -12,6 +12,7 @@
     "jquery": "^2.2.0",
     "method-override": "~2.0.2",
     "mongoose": "~3.8.0",
+    "q": "^1.4.1",
     "react": "^0.14.7",
     "react-bootstrap": "^0.28.3",
     "react-dom": "^0.14.7",

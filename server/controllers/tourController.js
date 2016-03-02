@@ -1,5 +1,13 @@
 var Tour = require('./models/tourModel.js');
 var User = require('./models/userModel.js');
+var Q = require('q');
+
+
+var findTour = Q.nbind(Tour.findOne, Tour);
+// var createCard = Q.nbind(Card.create, Card);
+// var updateCard = Q.nbind(Card.findOneAndUpdate, Card);
+// var removeCard = Q.nbind(Card.remove, Card);
+// var populateVenues = Q.nbind(Card.populate, Card);
 
 module.export = {
   // Handles user searching for tours on Search page
@@ -27,13 +35,15 @@ module.export = {
       }
     }
 
-    Tour.find(newObj, function(err, data) {
-      if (err) {
-        console.log('error');
-        res.send(err)
-      } else {
-        res.send(data);
+    Tour.findTour(newObj)
+    .then(function (foundTour) {
+      if (foundTour) {
+        res.status(200).json(foundTour);
       }
+    })
+    .fail(function (err) {
+      console.error('Could not find tour');
+      throw new Error('Could not find tour');
     });
   },
 
@@ -102,5 +112,5 @@ module.export = {
       });
     }
   }
-  
+
 };
