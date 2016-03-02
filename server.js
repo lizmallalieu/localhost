@@ -19,7 +19,7 @@ app.use(function(req, res, next) {
 
 app.use(express.static(__dirname + '/public'));
 
-require('./app/routes')(app);
+require('./server/config/router')(app);
 
 var port = process.env.PORT || 8080;
 

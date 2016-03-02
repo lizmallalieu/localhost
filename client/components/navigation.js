@@ -17,7 +17,7 @@ export default class Navigation extends React.Component {
 		this.signIn = this.signIn.bind(this);
 		this.endSession = this.endSession.bind(this);
 	}
-	
+
 
 		handleProfileClick() {
 			$.get('/profile')
@@ -70,12 +70,12 @@ export default class Navigation extends React.Component {
 		};
 
 		signIn() {
-			// signedIn state controls what shows up on nav bar. This method is passed down 
+			// signedIn state controls what shows up on nav bar. This method is passed down
 			// to SignUp and SignIn components.
 			this.setState({
 				signedIn: true
 			})
-		} 
+		}
 
 	render() {
 		var logout = <NavItem onClick={this.endSession}> Logout </NavItem>
