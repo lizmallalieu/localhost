@@ -1,4 +1,5 @@
 var Tour = require('./models/tourModel.js');
+var User = require('./models/userModel.js');
 
 module.export = {
   // Handles user searching for tours on Search page
@@ -34,7 +35,7 @@ module.export = {
         res.send(data);
       }
     });
-  }
+  },
 
   // Handles user creating a new tour
   createTour: function(req,res, next) {
@@ -50,7 +51,7 @@ module.export = {
         var index = Math.floor(Math.random()*pictures.length);
         var pictureUrl = pictures[index];
         // Extract Lat/Lng coordinates from response body, and pass them to newTour object
-        var parsedResults = JSON.parse(body).results[0].geometry
+        var parsedResults = JSON.parse(body).results[0].geometry;
         var LatLng = [parsedResults.location.lat, parsedResults.location.lng];
         var newTour = {
           pictureUrl: pictureUrl,
@@ -81,10 +82,11 @@ module.export = {
               tour.createdBy = user.username
               tour.save(function(err, tour){
                 res.send(user);
-              })
+              });
             });
-          })
+          });
         });
       }
     });
-});
+  }
+};

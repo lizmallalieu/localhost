@@ -31,5 +31,16 @@ module.export = {
         });
       }
     });
+  },
+
+  getProfile: function(req,res) {
+    User.findOne({_id: req.session.userId}, function(err, data){
+      if (err) {
+        console.log(err);
+        res.send(err);
+      } else {
+        res.send(data);
+      }
+    });
   }
 };
