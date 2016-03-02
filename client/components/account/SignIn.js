@@ -2,6 +2,7 @@ import React from 'react'
 import $ from 'jquery'
 import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem} from 'react-bootstrap'
 
+import {Tabs, Tab, Dialog} from 'material-ui';
 
 export default class SignIn extends React.Component {
   constructor(props) {
@@ -15,7 +16,7 @@ export default class SignIn extends React.Component {
     this.close = this.close.bind(this);
   }
 
-  handleSignIn() {
+  handleSignIn = () => {
     var user = {
       username: this.refs.username.value,
       password: this.refs.password.value,
@@ -63,14 +64,14 @@ export default class SignIn extends React.Component {
   }
 
   // Hides the modal window
-  close() {
+  close = () => {
     this.setState({
       show: false
     });
   };
 
   // Shows the modal window
-  show() {
+  show = () => {
     this.setState({
       show: true
     });
@@ -81,6 +82,20 @@ export default class SignIn extends React.Component {
     var invalidUsernameOrPassword = <div> Incorrect username or password. </div>
 
     return (
+      <div>
+      <Tab 
+        label='Log In'
+        onClick={this.show}
+      >
+      </Tab>
+      <Dialog
+        show={this.state.show}
+        onHide={this.close}
+        title='Sign In'
+        >
+      </Dialog>
+
+
       <NavItem
         bsStyle='default'
         bsSize='small'
@@ -110,6 +125,7 @@ export default class SignIn extends React.Component {
             </Modal>
           </div>
       </NavItem>
+      </div>
     )
   }
 }
