@@ -104,8 +104,8 @@ export default class Navigation extends React.Component {
             <div className='tabs'>
               <Tab label='User' onTouchTap={this.handleProfileClick}/>
               <SignIn signIn={this.signIn}/>
+              <SignUp signIn={this.signIn}/>
               <Tab label='Log Out' onTouchTap={this.endSession}/>
-              <Tab label='Sign Up'/>
               <Tab label='Search'/>
             </div>}
         />
