@@ -15,3 +15,11 @@ app.post('/createTour', Tour.createTour);
 app.get('/profile', restrict, User.getProfile);
 app.post('/signup', User.signup);
 app.post('/signin', User.signin);
+// Handles user logging out
+app.get('/logout', function (req, res) {
+  req.session.destroy(function() {
+    res.send('hey');
+  });
+});
+// Fetches information for a specific tour, given its id
+app.post('/fetchTourInfo', Tour.fetchTour);

@@ -83,7 +83,7 @@ module.export = {
   signin: function (req, res, next) {
     var name = req.body.data.username;
     var password = req.body.data.password;
-    
+
     // Find if user exists
     User.findOne({username: name}, function(err, user) {
       if(err) {
@@ -105,6 +105,24 @@ module.export = {
           res.send('Username and/or password invalid.');
         }
       });
+    });
+  },
+
+  editUserProfile: function(req, res) {
+    var aboutMe = req.body.data;
+    User.findOne({_id: req.session.userId}, function(err, user){
+      if (err) {
+        throw err;
+      } else {
+        user.aboutMe = aboutMe;
+        user.save(function(err, user) {
+          if(err) {
+            return next(err);
+          } else {
+            res.send(user);
+          }
+        });
+      }
     });
   }
 };
