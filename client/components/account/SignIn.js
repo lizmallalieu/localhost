@@ -33,7 +33,7 @@ export default class SignIn extends React.Component {
       return;
     }
 		$.post('/signin', {data: user})
-			.done(data => {
+			.done((data) => {
 				console.log('data', data);
 				// Depending on the error, the server will respond with a given message.
 				if (data === 'Username and/or password invalid.') {
@@ -63,7 +63,9 @@ export default class SignIn extends React.Component {
 
 	// Hides the modal window
 	close() {
-    this.setState({show: false});
+    this.setState({
+      show: false
+    });
   };
 
   // Shows the modal window
@@ -83,7 +85,7 @@ export default class SignIn extends React.Component {
         bsSize='small'
         onClick={this.show}
       >
-      SignIn
+        SignIn
 	      <div className='modal-container'>
 		      <Modal
 		        show={this.state.show}
