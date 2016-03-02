@@ -33,8 +33,7 @@ export default class Tour extends React.Component {
               isLoggedIn: true
             })
           }, 3000);
-        }
-        else if (data === 'You cannot join your own tour.') {
+        } else if (data === 'You cannot join your own tour.') {
         // If you join your own tour, show an error message notifying user, disappears in 2 seconds
           this.setState({
             showCannotJoinOwnTourError: true
@@ -53,8 +52,7 @@ export default class Tour extends React.Component {
               setState({ showAlreadyJoinedTourError: false })
             }, 2000);
           });
-        }
-        else {
+        } else {
           // show/hide state is controlled in profile or search. closeTourModal changes the state,
           // then it inherits the state from profile or search through props.
           console.log("Successfully joined");

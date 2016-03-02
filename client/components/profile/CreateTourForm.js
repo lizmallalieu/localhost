@@ -52,14 +52,12 @@ export default class CreateTourForm extends React.Component {
   };
 
   // Hides the modal window
-  close = (evt) => {
-    evt.preventDefault();
+  close = () => {
     this.setState({ show: false });
   };
 
   // Shows the modal window
-  show = (evt) => {
-    evt.preventDefault();
+  show = () => {
     this.setState({ show: true });
   };
 
@@ -98,7 +96,7 @@ export default class CreateTourForm extends React.Component {
           title="Create a Tour"
           actions={actions}
           modal={true}
-          open={this.state.show}
+          open={false}
         >
           <AutoComplete
             floatingLabelText="showAllItems"
@@ -108,7 +106,7 @@ export default class CreateTourForm extends React.Component {
           />
         </Dialog>
         <Modal
-          show={false}
+          show={this.state.show}
           dialogClassName="custom-modal"
           onHide={this.close.bind(this)}
           container={this}
