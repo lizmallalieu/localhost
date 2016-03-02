@@ -1,5 +1,7 @@
 var User = require('../controllers/userController');
 var Tour = require('../controllers/tourController');
+var Venue = require('../controllers/venueController');
+
 var session = require('express-session');
 var bcrypt = require('bcrypt-nodejs');
 var bluebird = require('bluebird');
@@ -44,4 +46,8 @@ module.exports = function(app, express) {
   // Handles user editing their 'About Me' in their profile
   app.post('/api/aboutMeEdit', User.editUserProfile);
 
+  app.get('/api/venues', Venue.fetchOne);
+  app.post('/api/venues', Venue.fetchAll);
+  app.put('/api/venues', Venue.updateOne);
+  app.delete('/api/venues', Venue.removeOne);
 };
