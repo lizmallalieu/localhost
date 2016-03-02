@@ -11,5 +11,7 @@ app.post('/joinTour', restrict, User.joinTour);
 app.get('/session', restrict,  function(req,res) {
   res.send({isAuth:true});
 });
-// Handles user creating a new tour
 app.post('/createTour', Tour.createTour);
+app.get('/profile', restrict, User.getProfile);
+app.post('/signup', User.signup);
+app.post('/signin', User.signin);
