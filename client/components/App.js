@@ -9,7 +9,7 @@ import SignUp from './account/SignUp'
 import Welcome from './welcome/Welcome'
 import Tour from './tour/Tour'
 
-import injectTapEventPlugin from 'react-tap-event-plugin';t
+import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 class App extends React.Component {
