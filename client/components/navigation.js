@@ -2,11 +2,11 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Router, Route, IndexRoute, Link, hashHistory } from 'react-router'
 import $ from 'jquery'
-// import {Button, ButtonGroup, Navbar, Nav, NavItem} from 'react-bootstrap'
+import {Button, ButtonGroup, Navbar, Nav, NavItem} from 'react-bootstrap'
 import SignIn from './account/SignIn'
 import SignUp from './account/SignUp'
 
-import AppBar from 'material-ui/lib/app-bar';
+import {AppBar, Tabs, Tab} from 'material-ui';
 
 export default class Navigation extends React.Component {
 	constructor(props) {
@@ -83,7 +83,21 @@ export default class Navigation extends React.Component {
 
 		return (
 			<div>
-				<AppBar label="Default" />
+				<AppBar 
+					title="local host"
+					iconElementRight={
+						<div className='tabs'>
+							<Tab label='User' onTouchTap={this.handleProfileClick}/>
+							<Tab label='Log In' onTouchTap={this.signIn}/>
+							<Tab label='Log Out' onTouchTap={this.endSession}/>
+							<Tab label='Sign Up'/>
+							<Tab label='Search'/>
+							{ this.state.signedIn ? <Tab href="#/profile"/> : null }
+		      		{ this.state.signedIn ? null : <SignUp signIn={this.signIn}/> }
+		      		{ this.state.signedIn ? null : <SignIn signIn={this.signIn}/> }
+		      		{ this.state.signedIn ? <Tab onClick={this.endSession}/> : null }
+						</div>} 
+				/>
 			</div>
 		)
 		
