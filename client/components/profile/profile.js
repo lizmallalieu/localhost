@@ -4,20 +4,21 @@ import CreatedToursList from './CreatedToursList'
 import $ from 'jquery'
 import {Link} from 'react-router'
 import CreateTourForm from './CreateTourForm'
-import Tour from '../Tour/Tour'
+import Tour from '../tour/Tour'
 
 
 export default class Profile extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      showProfile: false,
-      toggleTourList: 'createdTours',
-      user: '',
-      aboutMe: '',
-      userMadeTours: [],
-      showCreateForm: false,
-      currentTour: {name: 'default', location: 'default', price:'1', date:'1/1/1'},
+        showProfile: false,
+        toggleTourList: 'createdTours',
+        user: '',
+        aboutMe: '',
+        userMadeTours: [],
+        showCreateForm: false,
+        currentTour: {name: 'default', location: 'default', price:'1', date:'1/1/1'
+      },
       showTourModal: false,
       attendingTours: [],
       createdToursBackground: '#C0C0C0',
@@ -26,9 +27,9 @@ export default class Profile extends React.Component {
   }
 
   // Fetches user info from DB before rendering so profiles renders with correct information
-  componentWillMount () {
+  componentWillMount() {
     $.get('/profile')
-    .done( (data) => {
+    .done((data) => {
       // if no session, restrict function will return {isAuth: false} in data
       // if this is true, we want to redirect to signin page
       if (data.isAuth === false) {
@@ -43,8 +44,9 @@ export default class Profile extends React.Component {
         })
       }
     })
-    .fail( (err) => {
-      console.log('error getProfile', err);
+    .fail((err) => {
+      console.log('Could not get profile data from server', err)
+      throw new Error('Could not get profile data from server', err)
     })
   }
 
@@ -56,8 +58,9 @@ export default class Profile extends React.Component {
         userMadeTours: data.createdTours
       })
     })
-    .fail( (err) => {
-      console.log('err', err);
+    .fail((err) => {
+      console.log('Could not save tour to database', err)
+      throw new Error('Could not save tour to database', err)
     })
   }
 
@@ -71,12 +74,11 @@ export default class Profile extends React.Component {
 
   // Hides the Tour modal window
   closeTourModal() {
-    this.setState({showTourModal:false});
-  };
-
+    this.setState({ showTourModal:false });
+  }
 
   render() {
-    //depending on whether toggleTourList is createdTours or attendingTours, 
+    //depending on whether toggleTourList is createdTours or attendingTours,
     //change the value of tourIds passed into createDTourListProps
     var tourList;
     if (this.state.toggleTourList === 'createdTours') {
@@ -93,10 +95,10 @@ export default class Profile extends React.Component {
         <AboutMe user={this.state.user} aboutMe={this.state.aboutMe}/>
         <CreateTourForm submitNewTour={this.submitNewTour.bind(this)}/>
         <div className='tourTitles'>
-          <div style={{backgroundColor: this.state.createdToursBackground}} 
+          <div style={{backgroundColor: this.state.createdToursBackground}}
                 onClick={() => { this.setState({toggleTourList: 'createdTours', createdToursBackground:'#C0C0C0', attendingToursBackground:'#D8D8D8'}) }}>
                 Hosting</div>
-          <div style={{backgroundColor: this.state.attendingToursBackground}} 
+          <div style={{backgroundColor: this.state.attendingToursBackground}}
                 onClick={() => { this.setState({toggleTourList: 'attendingTours', createdToursBackground:'#D8D8D8', attendingToursBackground:'#C0C0C0'}) }}>
                 Attending</div>
         </div>
