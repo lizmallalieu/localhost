@@ -1,11 +1,11 @@
-var User = require('./models/userModel.js');
+var userModel = require('../models/userModel.js');
 var Q = require('q');
 
-module.export = {
+module.exports = {
   // Handles user joining a tour
   joinTour: function(req, res) {
     // Find the currently logged in user
-    User.findOne({_id: req.session.userId}, function(err, user){
+    userModel.findOne({_id: req.session.userId}, function(err, user){
       if (err) {
         res.send(err);
       } else {
@@ -35,7 +35,7 @@ module.export = {
   },
 
   getProfile: function(req,res) {
-    User.findOne({_id: req.session.userId}, function(err, data){
+    userModel.findOne({_id: req.session.userId}, function(err, data){
       if (err) {
         console.log(err);
         res.send(err);
@@ -50,7 +50,7 @@ module.export = {
     var password = req.body.data.password;
     var email = req.body.data.email;
     // Check to see if a user exists already:
-    User.findOne({username: username})
+    userModel.findOne({username: username})
       .exec(function(err, user) {
         if (user) {
           console.log('Account already exists.');
@@ -86,7 +86,7 @@ module.export = {
     var password = req.body.data.password;
 
     // Find if user exists
-    User.findOne({username: name}, function(err, user) {
+    userModel.findOne({username: name}, function(err, user) {
       if(err) {
         return next(err);
       }
@@ -94,7 +94,7 @@ module.export = {
         return res.send('Username and/or password invalid.');
       }
       // Checks entered PW with the saved hashed/salted PW (defined in user.js)
-      User.comparePassword(password, user.password, function(err, isMatch) {
+      userModel.comparePassword(password, user.password, function(err, isMatch) {
         if (err) { return next(err); }
         else if (isMatch) {
           req.session.regenerate(function () {
@@ -111,7 +111,7 @@ module.export = {
 
   editUserProfile: function(req, res) {
     var aboutMe = req.body.data;
-    User.findOne({_id: req.session.userId}, function(err, user){
+    userModel.findOne({_id: req.session.userId}, function(err, user){
       if (err) {
         throw err;
       } else {

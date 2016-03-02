@@ -1,23 +1,23 @@
-var Tour = require('./models/tourModel.js');
-var User = require('./models/userModel.js');
+var tourModel = require('../models/tourModel.js');
+var userModel = require('../models/userModel.js');
 var Q = require('q');
 
 
-var findTour = Q.nbind(Tour.findOne, Tour);
+var getTour = Q.nbind(tourModel.findOne, tourModel);
 // var createCard = Q.nbind(Card.create, Card);
 // var updateCard = Q.nbind(Card.findOneAndUpdate, Card);
 // var removeCard = Q.nbind(Card.remove, Card);
 // var populateVenues = Q.nbind(Card.populate, Card);
 
-module.export = {
+module.exports = {
   // Handles user searching for tours on Search page
   findTour: function(req, res, next){
     // Checks for valid inputs and creates a new object with keys for each legitimate input
-    var inputObj = req.body.data
+    var inputObj = req.body.data;
     var newObj = {};
     for (var key in inputObj) {
       if (inputObj[key] !== "") {
-        newObj[key] = inputObj[key]
+        newObj[key] = inputObj[key];
       }
     }
     /* Filters tours based on the price range. Similar idea to Yelps "$" indicator of cost. Leaving this blank returns all prices.
@@ -35,7 +35,7 @@ module.export = {
       }
     }
 
-    Tour.findTour(newObj)
+    tourModel.getTour(newObj)
     .then(function (foundTour) {
       if (foundTour) {
         res.status(200).json(foundTour);
@@ -75,12 +75,12 @@ module.export = {
           description: req.body.description
         };
         // Create new Tour document on DB using data stored in newTour object
-        Tour.create(newTour, function(err, tour) {
+        tourModel.create(newTour, function(err, tour) {
           if(err) {
             throw err;
           }
           // Fetch currently signed in user from DB, and add newly created Tour ID to their createdTour's array
-          User.findOne({_id : req.session.userId}, function(err, user) {
+          userModel.findOne({_id : req.session.userId}, function(err, user) {
             if(err) {
               throw err;
             }
@@ -89,7 +89,7 @@ module.export = {
               if(err) {
                throw err;
               }
-              tour.createdBy = user.username
+              tour.createdBy = user.username;
               tour.save(function(err, tour){
                 res.send(user);
               });
@@ -103,7 +103,7 @@ module.export = {
   fetchTour: function(req, res) {
     var id = req.body.data;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      Tour.findOne({_id: id}, function(err, data) {
+      tourModel.findOne({_id: id}, function(err, data) {
         if (err) {
           throw err;
         } else {
