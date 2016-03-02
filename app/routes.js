@@ -128,20 +128,13 @@ module.exports = function(app, express) {
           res.send('You cannot join your own tour.');
           return;
         }
+        // add case where you've already joined the tour
         user.attendingTours.push(req.body.data);
         user.save(function(err, user) {
           if(err) {
             return next(err);
           } else {
-            // Stores the tour document's ID to the user's attendingTours array as a reference
-            user.attendingTours.push(req.body.data);
-            user.save(function(err, user) {
-              if(err) {
-                return next(err);
-              } else {
-                res.send(user);
-              }
-            });
+            res.send(user);
           }
         });
       }
