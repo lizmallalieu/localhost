@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Modal } from 'react-bootstrap'
+import {Button, Modal} from 'react-bootstrap'
 
 export default class CreateTourForm extends React.Component {
   constructor(props) {
@@ -36,7 +36,7 @@ export default class CreateTourForm extends React.Component {
     });
   };
 
-  // Closes the modal, and also submits the tour 
+  // Closes the modal, and also submits the tour
   handleTourSubmission() {
     this.close.bind(this)();
     this.props.submitNewTour.bind(null, this.state)();
@@ -83,4 +83,3 @@ export default class CreateTourForm extends React.Component {
     )
   }
 }
-
