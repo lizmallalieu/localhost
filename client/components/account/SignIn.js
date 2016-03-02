@@ -2,7 +2,7 @@ import React from 'react'
 import $ from 'jquery'
 import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem} from 'react-bootstrap'
 
-import {Tabs, Tab, Dialog} from 'material-ui';
+import {Tabs, Tab, Dialog, FlatButton} from 'material-ui';
 
 export default class SignIn extends React.Component {
   constructor(props) {
@@ -81,50 +81,36 @@ export default class SignIn extends React.Component {
     var invalidFieldsError = <div> Please fill out all forms. </div>
     var invalidUsernameOrPassword = <div> Incorrect username or password. </div>
 
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        secondary={true}
+        onTouchTap={this.close}
+      />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        onTouchTap={this.close}
+      />
+    ];
+
     return (
       <div>
       <Tab 
         label='Log In'
-        onClick={this.show}
+        onTouchTap={this.show}
       >
       </Tab>
       <Dialog
-        show={this.state.show}
-        onHide={this.close}
         title='Sign In'
+        ref= "dialog"
+        actions={actions}
+        modal={true}
+        open={this.state.show}
         >
       </Dialog>
 
-
-      <NavItem
-        bsStyle='default'
-        bsSize='small'
-        onClick={this.show}
-      >
-        SignIn
-        <div className='modal-container'>
-          <Modal
-            show={this.state.show}
-            dialogClassName="custom-modal"
-            onHide={this.close.bind(this)}
-            container={this}
-            aria-labelledby='contained-modal-title'
-          >
-              <Modal.Header className='grey' closeButton>
-                <Modal.Title >Sign In Here</Modal.Title>
-              </Modal.Header>
-              <Modal.Body className='grey'>
-                <form className="sign-">
-                  <input ref="username" className="username" placeholder="username" type='text'/><br/>
-                  <input ref="password" className="password" placeholder="password" type="password"/><br/>
-                  <Button onClick={() => this.handleSignIn()} bsStyle='default'> Sign In </Button>
-                  {this.state.showInvalidFieldsError ? invalidFieldsError : null}
-                  {this.state.showInvalidUsernameOrPassword ? invalidUsernameOrPassword : null}
-                </form>
-              </Modal.Body>
-            </Modal>
-          </div>
-      </NavItem>
+    
       </div>
     )
   }
