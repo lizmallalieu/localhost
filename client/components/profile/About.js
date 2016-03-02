@@ -12,8 +12,7 @@ export default class About extends React.Component {
   }
 
   // If about me is being edited, will send post request to server to update user's aboutMe information
-  handleAboutMeEdit = (evt) => {
-    evt.preventDefault()
+  handleAboutMeEdit = () => {
     if (this.state.aboutMeEdit === true) {
       var aboutMe = this.refs.aboutMe.value;
       $.post('/api/aboutMeEdit', {data: aboutMe})

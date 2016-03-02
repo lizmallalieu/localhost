@@ -46,7 +46,7 @@ export default class SignUp extends React.Component {
       return;
     }
     // Check to see if the form has a valid email address
-    if (!this.validateEmail(this.refs.email.value)) {
+    if (!this.validateEmail(this.state.email)) {
 
       // Shows error message for 2 seconds, then removes it
       this.setState({showValidateEmailError: true}, function() {
