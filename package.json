@@ -24,6 +24,7 @@
     "react-router": "^2.0.0",
     "react-tap-event-plugin": "^0.2.2",
     "request": "^2.69.0",
+    "request-promise": "^2.0.1",
     "underbar": "^0.1.0",
     "underscore": "^1.8.3"
   },
