@@ -13,9 +13,7 @@ export default class SignIn extends React.Component {
     }
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
-
 	}
-
 
 	handleSignIn() {
 		var user = {
@@ -50,7 +48,6 @@ export default class SignIn extends React.Component {
 		      return;
 				} else {
 					this.props.signIn();
-					
 					// Changing the window.location allows the React-router to render the correct component
 					window.location = '/#/profile';
 				}
@@ -66,16 +63,15 @@ export default class SignIn extends React.Component {
 
 	// Hides the modal window
 	close() {
-    this.setState({show:false});
+    this.setState({show: false});
   };
 
   // Shows the modal window
   show() {
     this.setState({
-      show:true
+      show: true
     });
   };
-
 
 	render() {
 		var invalidFieldsError = <div> Please fill out all forms. </div>
@@ -88,7 +84,6 @@ export default class SignIn extends React.Component {
         onClick={this.show}
       >
       SignIn
-
 	      <div className='modal-container'>
 		      <Modal
 		        show={this.state.show}
@@ -102,8 +97,8 @@ export default class SignIn extends React.Component {
 		          </Modal.Header>
 		          <Modal.Body className='grey'>
 		            <form className="sign-">
-							    <input ref="username" class="username" placeholder="username" type='text'/><br/>
-							    <input ref="password" class="password" placeholder="password" type="password"/><br/>
+							    <input ref="username" className="username" placeholder="username" type='text'/><br/>
+							    <input ref="password" className="password" placeholder="password" type="password"/><br/>
 							    <Button onClick={() => this.handleSignIn()} bsStyle='default'> Sign In </Button>
 							    {this.state.showInvalidFieldsError ? invalidFieldsError : null}
 							    {this.state.showInvalidUsernameOrPassword ? invalidUsernameOrPassword : null}
@@ -112,25 +107,6 @@ export default class SignIn extends React.Component {
 		        </Modal>
 	      	</div>
 	    </NavItem>
-
 		)
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
