@@ -44,19 +44,18 @@ export default class SignUp extends React.Component {
     if (!this.validateEmail(this.refs.email.value)) {
 
       // Shows error message for 2 seconds, then removes it
-      this.setState({showValidateEmailError:true}, function() {
+      this.setState({showValidateEmailError: true}, function() {
         var setState = this.setState.bind(this);
         setTimeout(function() {
-          setState({showValidateEmailError:false});
+          setState({showValidateEmailError: false});
         }, 2000);
       });
       return;
     }
 
 		$.post('/signup', {data: user})
-			.done(data => {
+			.done((data) => {
         if (data === 'Account already exists.') {
-
           // Shows error message for 2 seconds, then removes it
           this.setState({
             showAccountExistsError: true
@@ -74,7 +73,6 @@ export default class SignUp extends React.Component {
   			// Triggers the signIn function on navigation, which changes the signedIn state
   				this.props.signIn();
   			}
-          
       })
 			.fail((err) => {
 				console.log('error in signUp', err);
@@ -83,23 +81,23 @@ export default class SignUp extends React.Component {
 
   // Hides the modal window
 	close() {
-    this.setState({show:false});
+    this.setState({
+      show: false
+    });
   };
 
   // Shows the modal window
   show() {
-    console.log('foobar');
-    console.log(this);
     this.setState({
-      show:true
+      show: true
     });
   };
 
 	render() {
     var emailError = <div>Please enter valid email</div>;
 
-    var accountExistsError = <div> Username Already Exists.</div>;
-    var invalidFieldsError = <div> Please fill out all forms. </div>
+    var accountExistsError = <div>Username Already Exists.</div>;
+    var invalidFieldsError = <div>Please fill out all forms.</div>
 
 		return (
 		  <NavItem
@@ -108,7 +106,6 @@ export default class SignUp extends React.Component {
           onClick={this.show}
        >
         SignUp
-
         <div className='modal-container'>
       <Modal
         show={this.state.show}
@@ -122,10 +119,10 @@ export default class SignUp extends React.Component {
           </Modal.Header>
           <Modal.Body className='grey'>
 						<form className="sign-">
-					    <input ref="username" class="username" placeholder="username" type='text'/><br/>
-					    <input ref="password" class="password" placeholder="password" type="password"/><br/>
-					    <input ref="email" class="email" placeholder="email" type="text"/><br/>
-					    <Button bsStyle='default' onClick={() => this.handleSignUp()}> Sign Up </Button>
+					    <input ref="username" className="username" placeholder="username" type='text'/><br/>
+					    <input ref="password" className="password" placeholder="password" type="password"/><br/>
+					    <input ref="email" className="email" placeholder="email" type="text"/><br/>
+					    <Button bsStyle='default' onClick={() => this.handleSignUp()}>Sign Up</Button>
               {this.state.showValidateEmailError ? emailError : null}
               {this.state.showAccountExistsError ? accountExistsError : null}
               {this.state.showInvalidFieldsError ? invalidFieldsError : null}
@@ -134,7 +131,6 @@ export default class SignUp extends React.Component {
         </Modal>
       </div>
     </NavItem>
- 
 		)
 	}
 }

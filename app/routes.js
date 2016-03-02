@@ -61,7 +61,7 @@ module.exports = function(app, express) {
 
   // Allows front-end to check if there is a session currently active or not
   app.get('/session', restrict,  function(req,res) {
-    res.send({isAuth:true});
+    res.send({isAuth: true});
   });
 
   // Handles user creating a new tour
@@ -128,21 +128,13 @@ module.exports = function(app, express) {
           res.send('You cannot join your own tour.');
           return;
         }
+        // add case where you've already joined the tour
         user.attendingTours.push(req.body.data);
         user.save(function(err, user) {
           if(err) {
             return next(err);
           } else {
-            // Stores the tour document's ID to the user's attendingTours array as a reference
-            user.attendingTours.push(tour._id);
-            user.save(function(err, user) {
-              if(err) {
-                return next(err);
-              } else {
-                console.log(user);
-                res.send(user);
-              }
-            });
+            res.send(user);
           }
         });
       }
