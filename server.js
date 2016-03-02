@@ -46,7 +46,7 @@ new WebpackDevServer(webpack(config), {
   if (err) {
     console.log(err);
   }
-  console.log('Localhose - Webpack 🐦  is listening on 3000 and 3001 and 8080 too');
+  console.log('Localhost - Webpack 🐦  is listening on 3000 and 3001 and 8080 too');
 });
 
 exports = module.exports = app;
