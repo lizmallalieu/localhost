@@ -12,12 +12,11 @@ export default class CreatedToursListEntry extends React.Component {
       date: "",
       price: ""
     }
-
   }
 
   // Fetches tour info from DB before rendering so component renders with correct information
   componentDidMount () {
-    $.post('/fetchTourInfo', {data: this.props.tourId})
+    $.post('/api/fetchTourInfo', {data: this.props.tourId})
     .done( (data) => {
       var date = data.date.substring(0,10);
       this.setState({
@@ -36,15 +35,13 @@ export default class CreatedToursListEntry extends React.Component {
   render() {
     return (
        <div className='createTourForm'>
-            <div className='tourContainer'
-              onClick={ () => this.props.getTourInfo(this.state.data)}
-              style={{backgroundImage: 'url(' + this.state.data.pictureUrl + ')', backgroundRepeat: 'no-repeat', backgroundSize:'cover', backgroundPosition: 'center center'}} >
-              <div className='searchListEntryName'> {this.state.name} </div>
-              <div className='searchListEntryPrice'> ${this.state.price} </div>
-            </div>
+          <div className='tourContainer'
+            onClick={ () => this.props.getTourInfo(this.state.data)}
+            style={{backgroundImage: 'url(' + this.state.data.pictureUrl + ')', backgroundRepeat: 'no-repeat', backgroundSize:'cover', backgroundPosition: 'center center'}} >
+            <div className='searchListEntryName'> {this.state.name} </div>
+            <div className='searchListEntryPrice'> ${this.state.price} </div>
+          </div>
       </div>
-
     )
   }
-
 }
