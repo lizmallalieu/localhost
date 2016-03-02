@@ -3,6 +3,9 @@ var Schema = mongoose.Schema;
 var bluebird = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
 
+var ObjectId = mongoose.Schema.Types.ObjectId;
+var Tour = require('./tourModel');
+
 /* Schema for user accounts. User's have a one to many relationship with tours. Therefore, users store references to all
 *  tours they have created (createdTours) or are attending (attendingTours) within arrays.  These references are the 
 *  document ID's for each Tour document connected with that user.
@@ -11,8 +14,8 @@ var userSchema = new Schema({
  username: String,
  email: String,
  password: String,
- createdTours: Array,
- attendingTours: Array,
+ createdTours: [{type: ObjectId, ref: Tour}],
+ attendingTours: [{type: ObjectId, ref: Tour}],
  aboutMe: String
 });
 
