@@ -62,7 +62,7 @@ export default class CreateTourForm extends React.Component {
   };
 
   // Closes the modal, and also submits the tour
-  handleTourSubmission() {
+  handleTourSubmission = () => {
     this.close.bind(this)();
     this.props.submitNewTour.bind(null, this.state)();
   }
