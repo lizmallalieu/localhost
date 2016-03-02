@@ -2,7 +2,7 @@ import React from 'react'
 import $ from 'jquery'
 import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem} from 'react-bootstrap'
 
-import {Tabs, Tab, Dialog, FlatButton} from 'material-ui';
+import {Tabs, Tab, Dialog, FlatButton, TextField} from 'material-ui';
 
 export default class SignIn extends React.Component {
   constructor(props) {
@@ -10,7 +10,9 @@ export default class SignIn extends React.Component {
     this.state = {
       show: false,
       showInvalidFieldsError: false,
-      showInvalidUsernameOrPassword: false
+      showInvalidUsernameOrPassword: false,
+      username: undefined,
+      password: undefined
     }
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
@@ -18,9 +20,10 @@ export default class SignIn extends React.Component {
 
   handleSignIn = () => {
     var user = {
-      username: this.refs.username.value,
-      password: this.refs.password.value,
+      username: this.state.username,
+      password: this.state.password,
     };
+    console.log('user', user);
     // If user didn't enter username or password, displays an error message for 2 seconds
     if (!user.username || !user.password) {
       this.setState({
@@ -63,6 +66,12 @@ export default class SignIn extends React.Component {
     });
   }
 
+  handleChange = (prop, e) => {
+    var newState = this.state;
+    newState[prop] = e.target.value;
+    this.setState(newState);
+  };
+
   // Hides the modal window
   close = () => {
     this.setState({
@@ -82,15 +91,27 @@ export default class SignIn extends React.Component {
     var invalidUsernameOrPassword = <div> Incorrect username or password. </div>
 
     const actions = [
+      <TextField
+        floatingLabelText="Username"
+        ref="username"
+        onChange={this.handleChange.bind(this, 'username')}
+      />,
+      <TextField
+        floatingLabelText="Password"
+        type="password"
+        ref="password"
+        onChange={this.handleChange.bind(this, 'password')}
+      />,
       <FlatButton
         label="Cancel"
         secondary={true}
         onTouchTap={this.close}
       />,
       <FlatButton
-        label="Submit"
+        label="Sign In"
         primary={true}
-        onTouchTap={this.close}
+        onTouchTap={this.handleSignIn}
+        onRequestClose={this.close}
       />
     ];
 
@@ -109,7 +130,6 @@ export default class SignIn extends React.Component {
         open={this.state.show}
         >
       </Dialog>
-
     
       </div>
     )
