@@ -60,7 +60,7 @@ module.exports = function(app, express) {
   });
 
   // Allows front-end to check if there is a session currently active or not
-  app.get('/session', restrict,  function(req,res) {
+  app.get('/api/session', restrict,  function(req,res) {
     res.send({isAuth: true});
   });
 
