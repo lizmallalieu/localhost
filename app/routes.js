@@ -127,16 +127,19 @@ module.exports = function(app, express) {
         if (user.createdTours.indexOf(req.body.data) > -1) {
           res.send('You cannot join your own tour.');
           return;
+        } else if (user.attendingTours.indexOf(req.body.data) > -1) {
+          res.send('You have already joined this tour.');
+          return;
+        } else {
+          user.attendingTours.push(req.body.data);
+          user.save(function(err, user) {
+            if(err) {
+              return next(err);
+            } else {
+              res.send(user);
+            }
+          });
         }
-        // add case where you've already joined the tour
-        user.attendingTours.push(req.body.data);
-        user.save(function(err, user) {
-          if(err) {
-            return next(err);
-          } else {
-            res.send(user);
-          }
-        });
       }
     })
   });

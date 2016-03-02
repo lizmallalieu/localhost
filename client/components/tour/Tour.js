@@ -10,6 +10,7 @@ export default class Tour extends React.Component {
       isLoggedIn: true,
       show: false,
       showCannotJoinOwnTourError: false,
+      showAlreadyJoinedTourError: false,
       isJoined: false
     }
   }
@@ -40,9 +41,18 @@ export default class Tour extends React.Component {
           }, function() {
             setState = this.setState.bind(this);
             setTimeout(function(){
-              setState({showCannotJoinOwnTourError: false})
+              setState({ showCannotJoinOwnTourError: false })
             }, 2000); 
-          })
+          });
+        } else if (data === 'You have already joined this tour.') {
+          this.setState({
+            showAlreadyJoinedTourError: true
+          }, function() {
+            setState = this.setState.bind(this);
+            setTimeout(function() {
+              setState({ showAlreadyJoinedTourError: false })
+            }, 2000);
+          });
         }
         else {
           // show/hide state is controlled in profile or search. closeTourModal changes the state,
