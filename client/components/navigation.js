@@ -36,8 +36,7 @@ export default class Navigation extends React.Component {
     })
   }
 
-  handleProfileClick = (evt) => {
-    evt.preventDefault()
+  handleProfileClick = () => {
     $.get('/profile')
     .done((data) => {
       // If the user is not signed in, then show an error message that disappears after 2 seconds.
@@ -59,8 +58,7 @@ export default class Navigation extends React.Component {
     })
   }
 
-  endSession = (evt) => {
-    evt.preventDefault()
+  endSession = () => {
     // Clicking on logout will terminate the session and re-route to welcome page
     $.get('/logout').done(() => {
       this.setState({ signedIn: false })
