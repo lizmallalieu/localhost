@@ -6,6 +6,8 @@ import {Button, ButtonGroup, Navbar, Nav, NavItem} from 'react-bootstrap'
 import SignIn from './account/SignIn'
 import SignUp from './account/SignUp'
 
+import {AppBar, Tabs, Tab} from 'material-ui';
+
 export default class Navigation extends React.Component {
 	constructor(props) {
 		super(props);
@@ -78,27 +80,26 @@ export default class Navigation extends React.Component {
 		}
 
 	render() {
-		var logout = <NavItem onClick={this.endSession}> Logout </NavItem>
-		var profile = <NavItem href="#/profile">Profile</NavItem>
+
 		return (
 			<div>
-				<Navbar bsStyle='inverse' pullLeft={true}>
-					<Navbar.Header>
-			      <Navbar.Brand>
-			        <a href="#">Tourganic</a>
-			      </Navbar.Brand>
-			    </Navbar.Header>
-					<Nav>
-						 <NavItem href="#/search">Search</NavItem>
-
-						{/*render different components on nav-bar depending on whether user sign-in or not*/}
-	      		 { this.state.signedIn ? profile : null }
-	      		 { this.state.signedIn ? null : <SignUp signIn={this.signIn}/> }
-	      		 { this.state.signedIn ? null : <SignIn signIn={this.signIn}/> }
-	      		 { this.state.signedIn ? logout : null }
-					</Nav>
-				</Navbar>
+				<AppBar 
+					title="local host"
+					iconElementRight={
+						<div className='tabs'>
+							<Tab label='User' onTouchTap={this.handleProfileClick}/>
+							<Tab label='Log In' onTouchTap={this.signIn}/>
+							<Tab label='Log Out' onTouchTap={this.endSession}/>
+							<Tab label='Sign Up'/>
+							<Tab label='Search'/>
+							{ this.state.signedIn ? <Tab href="#/profile"/> : null }
+		      		{ this.state.signedIn ? null : <SignUp signIn={this.signIn}/> }
+		      		{ this.state.signedIn ? null : <SignIn signIn={this.signIn}/> }
+		      		{ this.state.signedIn ? <Tab onClick={this.endSession}/> : null }
+						</div>} 
+				/>
 			</div>
 		)
+		
 	}
 }
