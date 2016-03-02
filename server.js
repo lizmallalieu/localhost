@@ -21,8 +21,13 @@ app.use(function(req, res, next) {
 });
 
 app.use(express.static(__dirname + '/public'));
+//* ------------------------- */
+/*     MIDDLEWARE & ROUTES    */
+/* -------------------------- */
 
-require('./app/config/router')(app);
+var app = express();
+require('./app/config/middleware')(app, express);
+require('./app/config/router')(app, express);
 
 /* --------------- */
 /*     SERVERS     */

@@ -74,13 +74,17 @@ module.exports = {
           LatLng: LatLng,
           description: req.body.description
         };
+
         // Create new Tour document on DB using data stored in newTour object
+        //TODO: Make this into .then (Promissify it)
         tourModel.create(newTour, function(err, tour) {
           if(err) {
             throw err;
           }
-          // Fetch currently signed in user from DB, and add newly created Tour ID to their createdTour's array
-          userModel.findOne({_id : req.session.userId}, function(err, user) {
+
+        // Fetch currently signed in user from DB, and add newly created Tour ID to their createdTour's array
+        //TODO: Make this into .then (Promissify it)
+          userModel.getTour({_id : req.session.userId}, function(err, user) {
             if(err) {
               throw err;
             }
@@ -96,6 +100,8 @@ module.exports = {
             });
           });
         });
+        //END OF Promissify
+
       }
     });
   },
@@ -103,6 +109,8 @@ module.exports = {
   fetchTour: function(req, res) {
     var id = req.body.data;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
+
+      //TODO: Make this into .then (Promissify it)
       tourModel.findOne({_id: id}, function(err, data) {
         if (err) {
           throw err;
