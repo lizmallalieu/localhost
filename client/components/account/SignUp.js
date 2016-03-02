@@ -53,7 +53,7 @@ export default class SignUp extends React.Component {
       return;
     }
 
-    $.post('/signup', {data: user})
+    $.post('/api/signup', {data: user})
       .done((data) => {
         if (data === 'Account already exists.') {
           // Shows error message for 2 seconds, then removes it

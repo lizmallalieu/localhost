@@ -23,25 +23,25 @@ module.exports = function(app, express) {
     }
   };
 
-  app.get('/search', Tour.findTour);
-  app.post('/createTour', Tour.createTour);
-  app.post('/joinTour', restrict, User.joinTour);
+  app.get('/api/search', Tour.findTour);
+  app.post('/api/createTour', Tour.createTour);
+  app.post('/api/joinTour', restrict, User.joinTour);
   // Allows front-end to check if there is a session currently active or not
   app.get('/api/session',  function(req,res) {
     res.status(200).json({isAuth:true});
   });
-  app.post('/createTour', Tour.createTour);
-  app.get('/profile', restrict, User.getProfile);
-  app.post('/signup', User.signup);
-  app.post('/signin', User.signin);
+  app.post('/api/createTour', Tour.createTour);
+  app.get('/api/profile', restrict, User.getProfile);
+  app.post('/api/signup', User.signup);
+  app.post('/api/signin', User.signin);
   // Handles user logging out
-  app.get('/logout', function (req, res) {
+  app.get('/api/logout', function (req, res) {
     req.session.destroy(function() {
       res.send('hey');
     });
   });
-  app.post('/fetchTourInfo', Tour.fetchTour);
+  app.post('/api/fetchTourInfo', Tour.fetchTour);
   // Handles user editing their 'About Me' in their profile
-  app.post('/aboutMeEdit', User.editUserProfile);
+  app.post('/api/aboutMeEdit', User.editUserProfile);
 
 };

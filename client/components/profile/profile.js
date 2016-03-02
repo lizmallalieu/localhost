@@ -28,7 +28,7 @@ export default class Profile extends React.Component {
 
   // Fetches user info from DB before rendering so profiles renders with correct information
   componentWillMount() {
-    $.get('/profile')
+    $.get('/api/profile')
     .done((data) => {
       // if no session, restrict function will return {isAuth: false} in data
       // if this is true, we want to redirect to signin page
@@ -52,7 +52,7 @@ export default class Profile extends React.Component {
 
   // Adds newly created tour to DB
   submitNewTour(tourInfo) {
-    $.post('/createTour', tourInfo)
+    $.post('/api/createTour', tourInfo)
     .done( (data) => {
       this.setState({
         userMadeTours: data.createdTours

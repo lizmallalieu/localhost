@@ -16,7 +16,7 @@ export default class About extends React.Component {
     evt.preventDefault()
     if (this.state.aboutMeEdit === true) {
       var aboutMe = this.refs.aboutMe.value;
-      $.post('/aboutMeEdit', {data: aboutMe})
+      $.post('/api/aboutMeEdit', {data: aboutMe})
         .done(data => {
           console.log('About me edited successfully');
           this.setState({

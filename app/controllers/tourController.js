@@ -1,9 +1,9 @@
-var tourModel = require('../models/tourModel.js');
-var userModel = require('../models/userModel.js');
+var Tour = require('../models/tourModel.js');
+var User = require('../models/userModel.js');
 var Q = require('q');
+var request = require('request');
 
-
-var getTour = Q.nbind(tourModel.findOne, tourModel);
+// var getTour = Q.nbind(Tour.findOne, Tour);
 // var createCard = Q.nbind(Card.create, Card);
 // var updateCard = Q.nbind(Card.findOneAndUpdate, Card);
 // var removeCard = Q.nbind(Card.remove, Card);
@@ -35,7 +35,7 @@ module.exports = {
       }
     }
 
-    tourModel.getTour(newObj)
+    Tour.getTour(newObj)
     .then(function (foundTour) {
       if (foundTour) {
         res.status(200).json(foundTour);
@@ -76,15 +76,12 @@ module.exports = {
         };
 
         // Create new Tour document on DB using data stored in newTour object
-        //TODO: Make this into .then (Promissify it)
-        tourModel.create(newTour, function(err, tour) {
+        Tour.create(newTour, function(err, tour) {
           if(err) {
             throw err;
           }
-
-        // Fetch currently signed in user from DB, and add newly created Tour ID to their createdTour's array
-        //TODO: Make this into .then (Promissify it)
-          userModel.getTour({_id : req.session.userId}, function(err, user) {
+          // Fetch currently signed in user from DB, and add newly created Tour ID to their createdTour's array
+          User.findOne({_id : req.session.userId}, function(err, user) {
             if(err) {
               throw err;
             }
@@ -109,9 +106,8 @@ module.exports = {
   fetchTour: function(req, res) {
     var id = req.body.data;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
-
       //TODO: Make this into .then (Promissify it)
-      tourModel.findOne({_id: id}, function(err, data) {
+      Tour.findOne({_id: id}, function(err, data) {
         if (err) {
           throw err;
         } else {
