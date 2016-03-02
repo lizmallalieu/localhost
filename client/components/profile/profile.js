@@ -1,5 +1,5 @@
 import React from 'react'
-import AboutMe from './AboutMe'
+import AboutMe from './About'
 import CreatedToursList from './CreatedToursList'
 import $ from 'jquery'
 import {Link} from 'react-router'
