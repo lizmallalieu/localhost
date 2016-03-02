@@ -1,28 +1,33 @@
+var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
-  entry: path.resolve(__dirname, 'client/components/App.js'),
+  entry: [
+    'webpack-dev-server/client?http://localhost:3001',
+    'webpack/hot/only-dev-server',
+    path.resolve(__dirname, 'client/components/App.js')
+  ],
   output: {
     path: path.resolve(__dirname, 'public'),
-    filename: "bundle.js"
+    filename: "bundle.js",
+    publicPath: '/public'
   },
-
+  devtool: 'source-map',
   module: {
     loaders: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015','react']
-        }
+        loaders: ['react-hot-loader', 'babel-loader']
       },
       {
         test: /\.css$/, loader: "style-loader!css-loader"
       }
 
     ]
-  }
-
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
+  ]
 }
-    

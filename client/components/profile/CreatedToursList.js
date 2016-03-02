@@ -8,8 +8,13 @@ export default class CreatedToursList extends React.Component {
 
   render() {
     if (typeof this.props.tourIds !== 'undefined') {
-      var tourListEntries = this.props.tourIds.map(tourId =>
-        <CreatedToursListEntry tourId={tourId} getTourInfo={this.props.getTourInfo}/>)
+      var tourListEntries = this.props.tourIds.map((tourId, key) =>
+        <CreatedToursListEntry
+          key={key}
+          tourId={tourId}
+          getTourInfo={this.props.getTourInfo}
+        />
+      )
     }
     return (
       <div className = "createdToursListParentContainer">

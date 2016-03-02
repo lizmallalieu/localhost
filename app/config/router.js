@@ -28,8 +28,8 @@ module.exports = function(app, express) {
   app.post('/createTour', Tour.createTour);
   app.post('/joinTour', restrict, User.joinTour);
   // Allows front-end to check if there is a session currently active or not
-  app.get('/session', restrict,  function(req,res) {
-    res.send({isAuth:true});
+  app.get('/api/session',  function(req,res) {
+    res.status(200).json({isAuth:true});
   });
   app.post('/createTour', Tour.createTour);
   app.get('/profile', restrict, User.getProfile);

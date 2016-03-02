@@ -5,6 +5,9 @@ var methodOverride = require('method-override');
 var mongoose = require("mongoose");
 var db = require('./config/db.js');
 
+var webpack = require('webpack');
+var WebpackDevServer = require('webpack-dev-server');
+var config = require('./webpack.config.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -19,12 +22,26 @@ app.use(function(req, res, next) {
 
 app.use(express.static(__dirname + '/public'));
 
-require('./server/config/router')(app);
+require('./app/config/router')(app);
 
-var port = process.env.PORT || 8080;
+/* --------------- */
+/*     SERVERS     */
+/* --------------- */
 
+var port = process.env.PORT || 3000;
 app.listen(port);
 
-console.log("You are connected to the port ", port);
+new WebpackDevServer(webpack(config), {
+  hot: true,
+  historyApiFallback: true,
+  proxy: {
+    '*': 'http://localhost:8080'
+  }
+}).listen(3001, 'localhost', function (err, result) {
+  if (err) {
+    console.log(err);
+  }
+  console.log('Localhose - Webpack 🐦  is listening on 3000 and 3001 and 8080 too');
+});
 
 exports = module.exports = app;
