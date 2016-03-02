@@ -32,6 +32,6 @@ node_modules
 # Optional REPL history
 .node_repl_history
 
-# bundle.js
+# Webpack Bundle + Map
 public/bundle.js
-
+public/bundle.js.map
