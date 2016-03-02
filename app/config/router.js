@@ -5,7 +5,6 @@ var bcrypt = require('bcrypt-nodejs');
 var bluebird = require('bluebird');
 var request = require('request');
 
-
 // Authenticates user access through the use of sessions
 module.exports = function(app, express) {
   app.use(session({
