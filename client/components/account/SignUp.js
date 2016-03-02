@@ -87,7 +87,7 @@ export default class SignUp extends React.Component {
   // Shows the modal window
   show() {
     this.setState({
-      show:true
+      show: true
     });
   };
 
