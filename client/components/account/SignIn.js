@@ -32,7 +32,7 @@ export default class SignIn extends React.Component {
       });
       return;
     }
-    $.post('/signin', {data: user})
+    $.post('/api/signin', {data: user})
       .done((data) => {
         console.log('data', data);
         // Depending on the error, the server will respond with a given message.
