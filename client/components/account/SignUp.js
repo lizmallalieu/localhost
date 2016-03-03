@@ -2,6 +2,7 @@ import React from 'react'
 import $ from 'jquery'
 import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem} from 'react-bootstrap'
 
+import {Tabs, Tab, Dialog, FlatButton, TextField} from 'material-ui';
 
 export default class SignUp extends React.Component {
   constructor(props) {
@@ -10,24 +11,28 @@ export default class SignUp extends React.Component {
       show: false,
       showValidateEmailError: false,
       showAccountExistsError: false,
-      showInvalidFieldsError: false
+      showInvalidFieldsError: false,
+      username: undefined,
+      password: undefined,
+      email: undefined
     }
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
   }
 
   // Uses regex to validate email entered
-  validateEmail(email) {
+  validateEmail = (email) => {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     }
 
-  handleSignUp() {
+  handleSignUp = () => {
     var user = {
-      username: this.refs.username.value,
-      password: this.refs.password.value,
-      email: this.refs.email.value
+      username: this.state.username,
+      password: this.state.password,
+      email: this.state.email
     };
+    console.log('user', user);
     // Check to see if the form is completely filled
     if (!user.username || !user.password || !user.email) {
       this.setState({
@@ -41,7 +46,7 @@ export default class SignUp extends React.Component {
       return;
     }
     // Check to see if the form has a valid email address
-    if (!this.validateEmail(this.refs.email.value)) {
+    if (!this.validateEmail(this.state.email)) {
 
       // Shows error message for 2 seconds, then removes it
       this.setState({showValidateEmailError: true}, function() {
@@ -79,58 +84,76 @@ export default class SignUp extends React.Component {
       });
   }
 
+  handleChange = (prop, e) => {
+    var newState = this.state;
+    newState[prop] = e.target.value;
+    this.setState(newState);
+  };
+
   // Hides the modal window
-  close() {
+  close = () => {
     this.setState({
       show: false
     });
   };
 
   // Shows the modal window
-  show() {
+  show = () => {
     this.setState({
       show: true
     });
   };
 
   render() {
-    var emailError = <div>Please enter valid email</div>;
 
-    var accountExistsError = <div>Username Already Exists.</div>;
-    var invalidFieldsError = <div>Please fill out all forms.</div>
+    const actions = [
+      <TextField
+        floatingLabelText="Username"
+        ref="username"
+        onChange={this.handleChange.bind(this, 'username')}
+      />,
+      <TextField
+        floatingLabelText="Password"
+        type="password"
+        ref="password"
+        onChange={this.handleChange.bind(this, 'password')}
+      />,
+      <TextField
+        floatingLabelText="Email Address"
+        type="email"
+        ref="email"
+        onChange={this.handleChange.bind(this, 'email')}
+      />,
+      <FlatButton
+        label="Cancel"
+        secondary={true}
+        onTouchTap={this.close}
+      />,
+      <FlatButton
+        label="Sign Up"
+        primary={true}
+        onTouchTap={this.handleSignUp}
+        onRequestClose={this.close}
+      />
+    ];
 
     return (
-      <NavItem
-          bsStyle='default'
-          bsSize='small'
-          onClick={this.show}
-       >
-        SignUp
-        <div className='modal-container'>
-      <Modal
-        show={this.state.show}
-        dialogClassName="custom-modal"
-        onHide={this.close.bind(this)}
-        container={this}
-        aria-labelledby='contained-modal-title'
+      <div>
+      <Tab 
+        label='Sign Up'
+        onTouchTap={this.show}
       >
-          <Modal.Header className='grey' closeButton>
-            <Modal.Title id="contained-modal-title">Sign Up Here</Modal.Title>
-          </Modal.Header>
-          <Modal.Body className='grey'>
-            <form className="sign-">
-              <input ref="username" className="username" placeholder="username" type='text'/><br/>
-              <input ref="password" className="password" placeholder="password" type="password"/><br/>
-              <input ref="email" className="email" placeholder="email" type="text"/><br/>
-              <Button bsStyle='default' onClick={() => this.handleSignUp()}>Sign Up</Button>
-              {this.state.showValidateEmailError ? emailError : null}
-              {this.state.showAccountExistsError ? accountExistsError : null}
-              {this.state.showInvalidFieldsError ? invalidFieldsError : null}
-            </form>
-          </Modal.Body>
-        </Modal>
+      </Tab>
+      <Dialog
+        title='Sign Up'
+        ref= "dialog"
+        actions={actions}
+        modal={true}
+        open={this.state.show}
+        >
+      </Dialog>
+    
       </div>
-    </NavItem>
     )
   }
 }

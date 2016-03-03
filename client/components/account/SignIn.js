@@ -2,6 +2,7 @@ import React from 'react'
 import $ from 'jquery'
 import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem} from 'react-bootstrap'
 
+import {Tabs, Tab, Dialog, FlatButton, TextField} from 'material-ui';
 
 export default class SignIn extends React.Component {
   constructor(props) {
@@ -9,17 +10,20 @@ export default class SignIn extends React.Component {
     this.state = {
       show: false,
       showInvalidFieldsError: false,
-      showInvalidUsernameOrPassword: false
+      showInvalidUsernameOrPassword: false,
+      username: undefined,
+      password: undefined
     }
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
   }
 
-  handleSignIn() {
+  handleSignIn = () => {
     var user = {
-      username: this.refs.username.value,
-      password: this.refs.password.value,
+      username: this.state.username,
+      password: this.state.password,
     };
+    console.log('user', user);
     // If user didn't enter username or password, displays an error message for 2 seconds
     if (!user.username || !user.password) {
       this.setState({
@@ -62,15 +66,21 @@ export default class SignIn extends React.Component {
     });
   }
 
+  handleChange = (prop, e) => {
+    var newState = this.state;
+    newState[prop] = e.target.value;
+    this.setState(newState);
+  };
+
   // Hides the modal window
-  close() {
+  close = () => {
     this.setState({
       show: false
     });
   };
 
   // Shows the modal window
-  show() {
+  show = () => {
     this.setState({
       show: true
     });
@@ -80,36 +90,48 @@ export default class SignIn extends React.Component {
     var invalidFieldsError = <div> Please fill out all forms. </div>
     var invalidUsernameOrPassword = <div> Incorrect username or password. </div>
 
+    const actions = [
+      <TextField
+        floatingLabelText="Username"
+        ref="username"
+        onChange={this.handleChange.bind(this, 'username')}
+      />,
+      <TextField
+        floatingLabelText="Password"
+        type="password"
+        ref="password"
+        onChange={this.handleChange.bind(this, 'password')}
+      />,
+      <FlatButton
+        label="Cancel"
+        secondary={true}
+        onTouchTap={this.close}
+      />,
+      <FlatButton
+        label="Sign In"
+        primary={true}
+        onTouchTap={this.handleSignIn}
+        onRequestClose={this.close}
+      />
+    ];
+
     return (
-      <NavItem
-        bsStyle='default'
-        bsSize='small'
-        onClick={this.show}
+      <div>
+      <Tab 
+        label='Log In'
+        onTouchTap={this.show}
       >
-        SignIn
-        <div className='modal-container'>
-          <Modal
-            show={this.state.show}
-            dialogClassName="custom-modal"
-            onHide={this.close.bind(this)}
-            container={this}
-            aria-labelledby='contained-modal-title'
-          >
-              <Modal.Header className='grey' closeButton>
-                <Modal.Title >Sign In Here</Modal.Title>
-              </Modal.Header>
-              <Modal.Body className='grey'>
-                <form className="sign-">
-                  <input ref="username" className="username" placeholder="username" type='text'/><br/>
-                  <input ref="password" className="password" placeholder="password" type="password"/><br/>
-                  <Button onClick={() => this.handleSignIn()} bsStyle='default'> Sign In </Button>
-                  {this.state.showInvalidFieldsError ? invalidFieldsError : null}
-                  {this.state.showInvalidUsernameOrPassword ? invalidUsernameOrPassword : null}
-                </form>
-              </Modal.Body>
-            </Modal>
-          </div>
-      </NavItem>
+      </Tab>
+      <Dialog
+        title='Sign In'
+        ref= "dialog"
+        actions={actions}
+        modal={true}
+        open={this.state.show}
+        >
+      </Dialog>
+    
+      </div>
     )
   }
 }

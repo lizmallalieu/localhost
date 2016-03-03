@@ -82,14 +82,10 @@ export default class Navigation extends React.Component {
           iconElementRight={
             <div className='tabs'>
               <Tab label='User' onTouchTap={this.handleProfileClick}/>
-              <Tab label='Log In' onTouchTap={this.signIn}/>
+              <SignIn signIn={this.signIn}/>
+              <SignUp signIn={this.signIn}/>
               <Tab label='Log Out' onTouchTap={this.endSession}/>
-              <Tab label='Sign Up'/>
               <Tab label='Search'/>
-              { this.state.signedIn ? <Tab href="#/profile"/> : null }
-              { this.state.signedIn ? null : <SignUp signIn={this.signIn}/> }
-              { this.state.signedIn ? null : <SignIn signIn={this.signIn}/> }
-              { this.state.signedIn ? <Tab onClick={this.endSession}/> : null }
             </div>}
         />
       </div>
