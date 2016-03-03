@@ -16,6 +16,8 @@ var userSchema = new Schema({
  password: String,
  createdTours: [{type: ObjectId, ref: Tour}],
  attendingTours: [{type: ObjectId, ref: Tour}],
+ phoneNumber: String,
+ email: String,
  aboutMe: String
 });
 
