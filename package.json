@@ -49,7 +49,7 @@
     "webpack-hot-middleware": "^2.9.1"
   },
   "scripts": {
-    "start": "nodemon --watch app app/server.js",
+    "start": "nodemon --watch server server/server.js",
     "build": "webpack --progress --colors"
   }
 }
