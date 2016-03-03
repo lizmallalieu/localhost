@@ -2,7 +2,7 @@ import React from 'react'
 import $ from 'jquery'
 import {Button} from 'react-bootstrap'
 
-import {Paper} from 'material-ui';
+import {Card} from 'material-ui';
 
 export default class About extends React.Component {
   constructor(props) {
