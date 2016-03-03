@@ -37,7 +37,7 @@ module.exports = function(app, express) {
   // Handles user logging out
   app.get('/api/logout', function (req, res) {
     req.session.destroy(function() {
-      res.send('hey');
+      res.send('Bye Felicia');
     });
   });
   app.post('/api/fetchTourInfo', Tour.fetchTour);
