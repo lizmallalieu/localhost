@@ -1,8 +1,0 @@
-{
-  "name": "tour-allure",
-  "version": "1.0.0",
-	"dependencies": {
-  "react": "~0.14.6",
-  "jquery": "~2.2.0"
-	}
-}
