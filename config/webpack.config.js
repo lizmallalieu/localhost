@@ -3,22 +3,21 @@ var path = require('path');
 
 module.exports = {
   entry: [
-    'webpack-dev-server/client?http://localhost:3001',
-    'webpack/hot/only-dev-server',
-    path.resolve(__dirname, 'client/components/App.js')
+    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+    path.resolve(__dirname, '../client/components/App.js')
   ],
   output: {
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve(__dirname, '../public'),
+    publicPath: 'http://localhost:3000/',
     filename: "bundle.js",
-    publicPath: '/public'
   },
-  devtool: 'source-map',
+  devtool: '#source-map',
   module: {
     loaders: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loaders: ['react-hot-loader', 'babel-loader']
+        loaders: ['react-hot', 'babel']
       },
       {
         test: /\.css$/, loader: "style-loader!css-loader"
@@ -27,6 +26,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ]

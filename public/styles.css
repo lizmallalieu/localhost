@@ -1,6 +1,6 @@
 body {
-  overflow-x: scroll; 
-  overflow-y: scroll; 
+  overflow-x: scroll;
+  overflow-y: scroll;
   font-family: sans-serif;
 }
 
@@ -190,7 +190,6 @@ body {
   margin: 2.5px;
   position: relative;
   background-size: 100%;
-  font-weight: bold;
   color: white;
 }
 .searchListEntryName {
@@ -243,9 +242,3 @@ body {
   height: 35px;
   vertical-align: middle;
 }
-
-
-
-
-
-
