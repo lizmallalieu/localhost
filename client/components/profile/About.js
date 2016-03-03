@@ -36,6 +36,15 @@ export default class About extends React.Component {
   }
 
   render() {
+
+    const style = {
+      height: 100,
+      width: 100,
+      margin: 20,
+      textAlign: 'center',
+      display: 'inline-block',
+    };
+
     const aboutMeEdit = (
       <form className="aboutMeForm">
         <textarea className="aboutMe" ref="aboutMe">{this.state.aboutMe}</textarea>

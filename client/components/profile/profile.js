@@ -6,9 +6,6 @@ import {Link} from 'react-router'
 import CreateTourForm from './CreateTourForm'
 import Tour from '../tour/Tour'
 
-import {Paper} from 'material-ui';
-
-
 export default class Profile extends React.Component {
   constructor(props) {
     super(props)
@@ -83,14 +80,6 @@ export default class Profile extends React.Component {
     //depending on whether toggleTourList is createdTours or attendingTours,
     //change the value of tourIds passed into createDTourListProps
 
-    const style = {
-      height: 100,
-      width: 100,
-      margin: 20,
-      textAlign: 'center',
-      display: 'inline-block',
-    };
-    
     var tourList;
     if (this.state.toggleTourList === 'createdTours') {
       tourList = this.state.userMadeTours;
