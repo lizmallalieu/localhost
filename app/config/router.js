@@ -23,12 +23,11 @@ module.exports = function(app, express) {
     }
   };
 
-  app.get('/api/search', Tour.findTour);
+  app.post('/api/search', Tour.findTour);
   app.post('/api/createTour', Tour.createTour);
   app.post('/api/joinTour', restrict, User.joinTour);
   // Allows front-end to check if there is a session currently active or not
   app.get('/api/session',  function(req,res) {
-    console.log('============================================setting isAuth to true');
     res.send({isAuth:true});
   });
   app.post('/api/createTour', Tour.createTour);

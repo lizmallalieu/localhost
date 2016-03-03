@@ -3,7 +3,7 @@ var User = require('../models/userModel.js');
 var Q = require('q');
 var request = require('request');
 
-// var getTour = Q.nbind(Tour.findOne, Tour);
+// var findTours = Q.nbind(Tour.find, Tour);
 // var createCard = Q.nbind(Card.create, Card);
 // var updateCard = Q.nbind(Card.findOneAndUpdate, Card);
 // var removeCard = Q.nbind(Card.remove, Card);
@@ -35,16 +35,17 @@ module.exports = {
       }
     }
 
-    Tour.findTour(newObj)
-    .then(function (foundTour) {
-      if (foundTour) {
-        res.status(200).json(foundTour);
+    console.log('======================newObj', newObj);
+
+    Tour.find(newObj, function(err, data) {
+      if (err) {
+        console.log('error');
+        res.send(err)
+      } else {
+        res.send(data);
       }
-    })
-    .fail(function (err) {
-      console.error('Could not find tour');
-      throw new Error('Could not find tour');
     });
+
   },
 
   // Handles user creating a new tour
