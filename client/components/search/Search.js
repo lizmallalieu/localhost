@@ -19,6 +19,7 @@ export default class Search extends React.Component {
         price:'1',
         date:'1/1/1'
       },
+      // currentVenue: 
       showTourModal: false
     }
   }
@@ -52,8 +53,15 @@ export default class Search extends React.Component {
   });
 };
 
+changeCurrentTour (tour) {
+  this.setState({
+    currentTour: tour,
+  })
+}
+
+/* getTourInfo for John to use */
 // This is passed down to SearchList, which is passed down to SearchListEntry
-getTourInfo(tour) {
+getTourInfo (tour) {
   // Props will be passed into here, which contains all of the tour information
   this.setState({
     currentTour: tour,
@@ -61,9 +69,16 @@ getTourInfo(tour) {
   })
 }
 
+getVenueInfo (venue) {
+  this.setState({
+    currentVenue: venue,
+    showVenueModal: true
+  })
+}
+
 // This is passed down to Tour. Hides the Tour modal.
-closeTourModal() {
-  this.setState({showTourModal:false});
+closeTourModal () {
+  this.setState({showTourModal: false});
 };
 
 changeFound () {
@@ -79,8 +94,18 @@ changeFound () {
 */
 render() {
   var noResultMessage = <p> Could not find the result, please try again </p>
-  var tourProps = {page: 'search', currentTour: this.state.currentTour, closeTourModal: this.closeTourModal.bind(this), show: this.state.showTourModal}
-  var searchListProps = {tours: this.state.tours, getTourInfo: this.getTourInfo.bind(this)}
+  var tourProps = {
+    page: 'search',
+    currentTour: this.state.currentTour,
+    closeTourModal: this.closeTourModal.bind(this),
+    show: this.state.showTourModal
+  }
+  var searchListProps = {
+    tours: this.state.tours,
+    getTourInfo: this.getTourInfo.bind(this),
+    changeCurrentTour: this.changeCurrentTour.bind(this)
+  }
+
   return (
     <div className="searchContainer">
       <Tour {...tourProps} />
