@@ -21,7 +21,7 @@ export default class SearchListEntry extends React.Component {
 				} 
 				className='searchTourEntry'
 				onClick={this.props.getTourInfo.bind(null, this.props.tour)}
-				>
+			>
 				<div className='searchListEntryName'>{this.props.tour.name}</div>
 				<div className='searchListEntryPrice'>${this.props.tour.price}</div>
 			</div>
