@@ -2,6 +2,8 @@ import React from 'react'
 import $ from 'jquery'
 import {Button} from 'react-bootstrap'
 
+import {Paper} from 'material-ui';
+
 export default class About extends React.Component {
   constructor(props) {
     super(props)
@@ -42,6 +44,8 @@ export default class About extends React.Component {
         </Button>
       </form>
     )
+
+    <Paper style={style} zDepth={2}/>
 
     const aboutMe = (
       <div className="aboutMe" onClick={() => this.handleAboutMeEdit()}>

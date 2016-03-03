@@ -82,6 +82,15 @@ export default class Profile extends React.Component {
   render() {
     //depending on whether toggleTourList is createdTours or attendingTours,
     //change the value of tourIds passed into createDTourListProps
+
+    const style = {
+      height: 100,
+      width: 100,
+      margin: 20,
+      textAlign: 'center',
+      display: 'inline-block',
+    };
+    
     var tourList;
     if (this.state.toggleTourList === 'createdTours') {
       tourList = this.state.userMadeTours;
