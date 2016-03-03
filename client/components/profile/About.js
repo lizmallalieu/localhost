@@ -66,7 +66,7 @@ export default class About extends React.Component {
         hintText={this.state.aboutMe}
         floatingLabelText="About Me"
         multiLine={true}
-        rows={5}
+        rows={2}
         onChange={this.handleAboutMeEdit}
       />
       </div>
