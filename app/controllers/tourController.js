@@ -35,7 +35,7 @@ module.exports = {
       }
     }
 
-    Tour.getTour(newObj)
+    Tour.findTour(newObj)
     .then(function (foundTour) {
       if (foundTour) {
         res.status(200).json(foundTour);
