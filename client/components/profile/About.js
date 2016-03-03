@@ -2,7 +2,7 @@ import React from 'react'
 import $ from 'jquery'
 import {Button} from 'react-bootstrap'
 
-import {Card} from 'material-ui';
+import {TextField} from 'material-ui';
 
 export default class About extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class About extends React.Component {
   // If about me is being edited, will send post request to server to update user's aboutMe information
   handleAboutMeEdit = () => {
     if (this.state.aboutMeEdit === true) {
-      var aboutMe = this.refs.aboutMe.value;
+      var aboutMe = this.state.aboutMe.value;
       $.post('/api/aboutMeEdit', {data: aboutMe})
         .done(data => {
           console.log('About me edited successfully');
@@ -37,13 +37,7 @@ export default class About extends React.Component {
 
   render() {
 
-    const style = {
-      height: 100,
-      width: 100,
-      margin: 20,
-      textAlign: 'center',
-      display: 'inline-block',
-    };
+    var displayText = this.state.aboutMe;
 
     const aboutMeEdit = (
       <form className="aboutMeForm">
@@ -54,8 +48,6 @@ export default class About extends React.Component {
       </form>
     )
 
-    <Paper style={style} zDepth={2}/>
-
     const aboutMe = (
       <div className="aboutMe" onClick={() => this.handleAboutMeEdit()}>
         {this.state.aboutMe}
@@ -63,15 +55,23 @@ export default class About extends React.Component {
     )
 
     return (
-      <div className='aboutMeParentContainer'>
-        <div className='welcomeBackTitle'>
-          Welcome Back, {this.props.user}
-        </div>
-        <div className='profilePicture'></div>
-        <div className="aboutMeContainer">
-          {this.state.aboutMeEdit ? aboutMeEdit : aboutMe}
-        </div>
+
+    <div className='aboutMeParentContainer'>
+      <div className='welcomeBackTitle'>
+            Welcome, {this.props.user + '!'}
       </div>
+      <div className='profilePicture'></div>
+      <div className="aboutMeContainer">
+      <TextField
+        hintText={this.state.aboutMe}
+        floatingLabelText="About Me"
+        multiLine={true}
+        rows={5}
+        onChange={this.handleAboutMeEdit}
+      />
+      </div>
+    </div>
+
     )
   }
 }
