@@ -1,7 +1,6 @@
+var Venue = require('../controllers/venueController');
 var User = require('../controllers/userController');
 var Tour = require('../controllers/tourController');
-var Venue = require('../controllers/venueController');
-
 var session = require('express-session');
 var bcrypt = require('bcrypt-nodejs');
 var bluebird = require('bluebird');
@@ -28,14 +27,17 @@ module.exports = function(app, express) {
   app.post('/api/search', Tour.findTour);
   app.post('/api/createTour', Tour.createTour);
   app.post('/api/joinTour', restrict, User.joinTour);
+
   // Allows front-end to check if there is a session currently active or not
   app.get('/api/session',  function(req,res) {
     res.send({isAuth:true});
   });
+
   app.post('/api/createTour', Tour.createTour);
   app.get('/api/profile', restrict, User.getProfile);
   app.post('/api/signup', User.signup);
   app.post('/api/signin', User.signin);
+
   // Handles user logging out
   app.get('/api/logout', function (req, res) {
     req.session.destroy(function() {
@@ -44,10 +46,10 @@ module.exports = function(app, express) {
   });
   app.post('/api/fetchTourInfo', Tour.fetchTour);
   // Handles user editing their 'About Me' in their profile
-  app.post('/api/aboutMeEdit', User.editUserProfile);
 
   app.get('/api/venues', Venue.fetchOne);
   app.post('/api/venues', Venue.fetchAll);
   app.put('/api/venues', Venue.updateOne);
   app.delete('/api/venues', Venue.removeOne);
+  app.post('/api/aboutMeEdit', User.editUserProfile);
 };
