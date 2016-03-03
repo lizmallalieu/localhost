@@ -1,5 +1,4 @@
 import React from 'react'
-// import {Button, Modal} from 'react-bootstrap'
 
 import AutoComplete from 'material-ui/lib/auto-complete'
 import DatePicker from 'material-ui/lib/date-picker/date-picker'
@@ -20,29 +19,24 @@ export default class CreateTourForm extends React.Component {
     this.props = props
     this.state = {
       show: false,
-      // validForm: true,
-      // venues: [
-      //   {
-      //     text: 'text-value1',
-      //     value: (
-      //       <MenuItem
-      //         primaryText="Tempest"
-      //         secondaryText="1200 Market Street"
-      //       />
-      //     ),
-      //   },
-      //   {
-      //     text: 'text-value2',
-      //     value: (
-      //       <MenuItem
-      //         primaryText="text-value2"
-      //         secondaryText="&#9786;"
-      //       />
-      //     ),
-      //   },
-      // ]
+      validForm: true,
+      tourForm: {
+        title: '',
+        description: '',
+        date: {},
+        time: {},
+        price: 0,
+        addPhone: false,
+        addTwitter: false
+      }
     }
   };
+
+  updateForm = (field, update) => {
+    var form = this.state.tourForm;
+    form[field] = update;
+    this.setState({ tourForm: form });
+  }
 
   // Sets state as input is entered
   handleChange = (prop, e) => {
@@ -72,6 +66,16 @@ export default class CreateTourForm extends React.Component {
   handleTourSubmission = () => {
     this.close.bind(this)();
     this.props.submitNewTour.bind(null, this.state)();
+  }
+
+  dateFormat = (date) => {
+    var w = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
+    var m = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()];
+    var d = date.getDate();
+    var y = date.getFullYear();
+
+    return `${w} ${d} ${m} ${y}`;
   }
 
   render() {
@@ -107,13 +111,6 @@ export default class CreateTourForm extends React.Component {
         maxWidth: '250px',
         marginTop: '25px'
       },
-      half: {
-        width: '48%',
-        display: 'inline'
-      },
-      full: {
-        width: '50%'
-      },
       pad: {
         paddingLeft: '10px'
       },
@@ -125,13 +122,6 @@ export default class CreateTourForm extends React.Component {
 
     return (
       <div className="createTourContainer">
-        {/*<Button
-          bsStyle='default'
-          bsSize='small'
-          onClick={() => {this.show()}}
-        >
-        Create a Tour
-        </Button>*/}
         <RaisedButton
           label="Modal Dialog"
           onTouchTap={this.show}
@@ -158,6 +148,7 @@ export default class CreateTourForm extends React.Component {
                 hintText="i.e., Napa Wine Tour"
                 floatingLabelText="Tour Name"
                 fullWidth={true}
+                onChange={(e) => this.updateForm('title', e.target.value)}
               />
             </GridTile>
             <GridTile cols={6} rows={72}>
@@ -165,23 +156,32 @@ export default class CreateTourForm extends React.Component {
                 floatingLabelText="Description"
                 fullWidth={true}
                 multiLine={true}
+                onChange={(e) => this.updateForm('description', e.target.value)}
               />
             </GridTile>
             <GridTile cols={3} rows={72}>
               <DatePicker
                 hintText="Date"
+                formatDate={this.dateFormat}
+                onChange={(e, date) => this.updateForm('date', date)}
               />
             </GridTile>
             <GridTile cols={3} rows={72}>
               <TimePicker
-                id="timepicker"
+                ref="timepicker"
                 hintText="Time"
+                pedantic={true}
+                value={this.state.tourForm.time}
+                onChange={(e, time) => this.updateForm('time', time)}
               />
             </GridTile>
             <GridTile cols={6} rows={72}>
               <Slider
-              description="Budget"
-              style={styles.slide}
+                description={`Price${this.state.tourForm.price ?
+                  ': $' + this.state.tourForm.price :
+                  ': Free'}`}
+                style={styles.slide}
+                onChange={(e, step) => this.updateForm('price', step * 500)}
               />
             </GridTile>
             <GridTile cols={2} rows={72}>
@@ -190,6 +190,7 @@ export default class CreateTourForm extends React.Component {
                   label="Phone"
                   labelPosition="right"
                   style={styles.pad}
+                  onToggle={(e, toggle) => this.updateForm('addPhone', toggle)}
                 />
               </div>
             </GridTile>
@@ -199,6 +200,7 @@ export default class CreateTourForm extends React.Component {
                   label="Twitter"
                   labelPosition="right"
                   style={styles.pad}
+                  onToggle={(e, toggle) => this.updateForm('addTwitter', toggle)}
                 />
               </div>
             </GridTile>
@@ -210,33 +212,6 @@ export default class CreateTourForm extends React.Component {
             dataSource={this.state.venues}
           />*/}
         </Dialog>
-        {/*<Modal
-          show={false}
-          dialogClassName="custom-modal"
-          onHide={this.close.bind(this)}
-          container={this}
-          aria-labelledby='contained-modal-title'
-        >
-          <Modal.Header className='grey' closeButton>
-            <Modal.Title>Create a Tour</Modal.Title>
-          </Modal.Header>
-          <Modal.Body className='grey'>
-            <div>
-              <form className='createTourForm'>
-                <input value={this.state.name} onChange={this.handleChange.bind(this, 'name')} placeholder='name' onClick={this.reset.bind(this, 'name')}/><br/>
-                <input value={this.state.streetAddress} onChange={this.handleChange.bind(this, 'streetAddress')} placeholder='street address' onClick={this.reset.bind(this, 'streetAddress')}/><br/>
-                <input value={this.state.city} onChange={this.handleChange.bind(this, 'city')} placeholder='city' onClick={this.reset.bind(this, 'city')}/><br/>
-                <input value={this.state.state} onChange={this.handleChange.bind(this, 'state')} placeholder='state' onClick={this.reset.bind(this, 'state')}/><br/>
-                <input type='number' value={this.state.price} onChange={this.handleChange.bind(this, 'price')} placeholder='price' onClick={this.reset.bind(this, 'price')}/><br/>
-                <input value={this.state.date} onChange={this.handleChange.bind(this, 'date')} placeholder='date' onClick={this.reset.bind(this, 'date')}/><br/>
-                <textarea value={this.state.description} onChange={this.handleChange.bind(this, 'description')} placeholder='description' onClick={this.reset.bind(this, 'description')}/><br/>
-                <Button onClick={ ()=>{this.handleTourSubmission()} } bsStyle='default' bsSize='small'>
-                  Create Tour
-                </Button>
-              </form>
-            </div>
-          </Modal.Body>
-        </Modal>*/}
       </div>
     )
   }
