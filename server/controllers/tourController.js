@@ -79,6 +79,7 @@ module.exports = {
   },
 
   // Handles user creating a new tour
+  //In here we will put all of the multiple locations, so that when the map renders, it renders all of the locations in the
   createTour: function(req,res, next) {
     //chose a random downloaded picture to add to the tour as a background image
     // Construct address and send request to google geocode api to fetch Lat/Lng coordinates for given address
@@ -114,10 +115,6 @@ module.exports = {
           }
           // Fetch currently signed in user from DB, and add newly created Tour ID to their createdTour's array
           User.findOne({_id : req.session.userId}, function(err, user) {
-
-        // Fetch currently signed in user from DB, and add newly created Tour ID to their createdTour's array
-        //TODO: Make this into .then (Promissify it)
-          User.getTour({_id : req.session.userId}, function(err, user) {
             if(err) {
               throw err;
             }
@@ -134,11 +131,9 @@ module.exports = {
           });
         });
         //END OF Promissify
-
-        });
       }
-    });
-  },
+  });
+},
 
   fetchTour: function(req, res){
     var id = req.body.data;
