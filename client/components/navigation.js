@@ -1,5 +1,6 @@
 import React from 'react'
 import $ from 'jquery'
+<<<<<<< HEAD
 
 import {Router, Route, IndexRoute, Link, hashHistory} from 'react-router'
 import {Button, ButtonGroup, Navbar, Nav, NavItem} from 'react-bootstrap'
@@ -8,6 +9,26 @@ import SignIn from './account/SignIn'
 import SignUp from './account/SignUp'
 
 import {AppBar, Tabs, Tab} from 'material-ui';
+=======
+// import {Button, ButtonGroup, Navbar, Nav, NavItem} from 'react-bootstrap'
+import SignIn from './account/SignIn'
+import SignUp from './account/SignUp'
+
+import AppBar from 'material-ui/lib/app-bar';
+
+export default class Navigation extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			showLoginReminder: false,
+			signedIn: false,
+		}
+		this.signIn = this.signIn.bind(this);
+		this.endSession = this.endSession.bind(this);
+	}
+
+>>>>>>> Add Nav bar at the top of the page
 
 export default class Navigation extends React.Component {
   constructor(props) {
