@@ -25,8 +25,10 @@ export default class Search extends React.Component {
 
   // Fetches all tours matching the passed-in search criteria (options)
   getToursFromDatabase (options) {
-    $.post('/search', {data: options})
+    console.log('options', options);
+    $.post('/api/search', {data: options})
     .done(tours => {
+      console.log('in done');
       // Checks if the tours is empty array
       if (tours.length === 0) {
         this.setState ({

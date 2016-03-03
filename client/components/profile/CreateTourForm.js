@@ -13,27 +13,27 @@ export default class CreateTourForm extends React.Component {
     this.props = props
     this.state = {
       show: false,
-      validForm: true,
-      venues: [
-        {
-          text: 'text-value1',
-          value: (
-            <MenuItem
-              primaryText="Tempest"
-              secondaryText="1200 Market Street"
-            />
-          ),
-        },
-        {
-          text: 'text-value2',
-          value: (
-            <MenuItem
-              primaryText="text-value2"
-              secondaryText="&#9786;"
-            />
-          ),
-        },
-      ]
+      // validForm: true,
+      // venues: [
+      //   {
+      //     text: 'text-value1',
+      //     value: (
+      //       <MenuItem
+      //         primaryText="Tempest"
+      //         secondaryText="1200 Market Street"
+      //       />
+      //     ),
+      //   },
+      //   {
+      //     text: 'text-value2',
+      //     value: (
+      //       <MenuItem
+      //         primaryText="text-value2"
+      //         secondaryText="&#9786;"
+      //       />
+      //     ),
+      //   },
+      // ]
     }
   };
 
