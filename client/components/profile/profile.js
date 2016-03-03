@@ -6,6 +6,8 @@ import {Link} from 'react-router'
 import CreateTourForm from './CreateTourForm'
 import Tour from '../tour/Tour'
 
+import {Paper} from 'material-ui';
+
 
 export default class Profile extends React.Component {
   constructor(props) {
