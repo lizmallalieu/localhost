@@ -39,14 +39,18 @@ export default class Navigation extends React.Component {
   handleProfileClick = () => {
     $.get('/api/profile')
     .done((data) => {
+      console.log('inside handleProfileClick');
+      console.log('data', data);
       // If the user is not signed in, then show an error message that disappears after 2 seconds.
-      if (!data.isAuth) {
+      if (!this.state.signedIn) {
+        console.log('inside if');
         this.setState({ showLoginReminder: true })
         var setState = this.setState.bind(this)
         setTimeout(() => {
           setState({ showLoginReminder:false })
         }, 2000)
       } else {
+        console.log('inside else');
         // If user is signed in, redirect to profile page
         this.setState({ showLoginReminder: false })
         window.location = '/#/profile';
@@ -85,7 +89,9 @@ export default class Navigation extends React.Component {
               <SignIn signIn={this.signIn}/>
               <SignUp signIn={this.signIn}/>
               <Tab label='Log Out' onTouchTap={this.endSession}/>
+             <Link to="/search">
               <Tab label='Search'/>
+             </Link>
             </div>}
         />
       </div>
