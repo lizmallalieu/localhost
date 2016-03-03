@@ -45,10 +45,11 @@
     "redbox-react": "^1.2.2",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.12",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-middleware": "^1.5.1",
+    "webpack-hot-middleware": "^2.9.1"
   },
   "scripts": {
-    "start": "webpack & webpack-dev-server --progress --colors",
+    "start": "nodemon --watch app app/server.js",
     "build": "webpack --progress --colors"
   }
 }
