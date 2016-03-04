@@ -94,6 +94,12 @@ export default class Profile extends React.Component {
         overflowY: 'auto',
         marginBottom: 24,
       },
+      headline: {
+        fontSize: 24,
+        paddingTop: 16,
+        marginBottom: 12,
+        fontWeight: 400,
+      }
     };
 
     var tourList;
@@ -106,29 +112,44 @@ export default class Profile extends React.Component {
     var TourModalProps = {page: 'profile', currentTour: this.state.currentTour, closeTourModal: this.closeTourModal.bind(this), show: this.state.showTourModal}
 
     var profilePage = (
-      <div className="UserInfoColumn" styles={styles.root}>
+      <div className="gridlist">
+      <h1>{"Welcome, " + this.state.user + "!"}</h1>
         <GridList 
-          styles={styles.gridList}
-          cellHeight={2000}
+          cols={9}
+          cellHeight={1}
+          padding={15}
         >
           <GridTile
+            cols={2}
+            rows={2000}
           >
             <AboutMe user={this.state.user} aboutMe={this.state.aboutMe}/>
+          </GridTile>
+          <GridTile
+            cols={7}
+            rows={2000}
+          >
+            <Tabs>
+              <Tab label="Hosting">
+                <div>
+                  <CreatedToursList {...createdTourListProps}/>
+                </div>
+              </Tab>
+              <Tab label="Attending">
+                <div>
+                  <CreatedToursList {...createdTourListProps}/>
+                </div>
+              </Tab>
+              <Tab label="History">
+                <div>
+                  <CreatedToursList {...createdTourListProps}/>
+                </div>
+              </Tab>
+            </Tabs>
           </GridTile>
         </GridList>
       </div>
 
-      <div className="TourList" styles={styles.root}>
-        <GridList 
-          styles={styles.gridList}
-          cellHeight={150}
-        >
-          <GridTile
-          >
-            <AboutMe user={this.state.user} aboutMe={this.state.aboutMe}/>
-          </GridTile>
-        </GridList>
-      </div>
     );
 
     return (

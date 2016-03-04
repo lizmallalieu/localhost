@@ -16,7 +16,7 @@ export default class About extends React.Component {
   // If about me is being edited, will send post request to server to update user's aboutMe information
   handleAboutMeEdit = () => {
     if (this.state.aboutMeEdit === true) {
-      var aboutMe = this.state.aboutMe.value;
+      var aboutMe = this.state.aboutMe;
       $.post('/api/aboutMeEdit', {data: aboutMe})
         .done(data => {
           console.log('About me edited successfully');
@@ -57,8 +57,6 @@ export default class About extends React.Component {
     return (
       <div>
         <Card>
-          <CardTitle title={"Welcome, " + this.props.user + "!"}>
-          </CardTitle>
           <CardMedia>
             <img src="http://dazik.com/images/avatar.png"/>
           </CardMedia>
