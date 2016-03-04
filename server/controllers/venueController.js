@@ -34,8 +34,7 @@ module.exports = {
   // FETCH VENUE //
   /////////////////
   fetchOne: (req, res) => {
-    console.log("HERE IS MY req.query.venueId", req.query.venueId)
-    var venueId = req.query.venueId
+    var venueId = req.query.venueId;
     findVenue({_id: venueId})
     .then(venue => {
       if (venue) {
