@@ -1,11 +1,13 @@
 import React from 'react'
 import $ from 'jquery'
+import {GoogleMapLoader, GoogleMap, Marker, InfoWindow} from "react-google-maps";
 
 import SearchBar from './SearchBar'
 import SearchList from './SearchList'
 import SearchMap from './SearchMap'
 import {Link} from 'react-router'
 import Tour from '../tour/Tour'
+
 
 export default class Search extends React.Component {
   constructor(props) {
@@ -15,12 +17,20 @@ export default class Search extends React.Component {
       notFound: false,
       currentTour: {
         name: 'default',
-        location: 'default',
         price:'1',
-        date:'1/1/1'
+        date:'',
+        venues: [
+          [37.781422, -122.406322],
+          [37.787204, -122.412992],
+          [37.764044, -122.474129]
+        ] 
       },
-      // currentVenue: 
-      showTourModal: false
+      markers: [],
+      defaultCenter: {
+        lat: 37.781422,
+        lng: -122.406322
+      },
+      showTourModal: false,
     }
   }
 
@@ -53,27 +63,44 @@ export default class Search extends React.Component {
   });
 };
 
-changeCurrentTour (tour) {
-  this.setState({
-    currentTour: tour,
-  })
-}
+// Creates markers for each passed in tour, giving them the proper Lat/Lng coords for proper map placement
+showVenuesInTour = (tour) => {
+  var venues = tour.venues;
+  venues = [ [37.781422, -122.406322], [37.787204, -122.412992], [37.764044, -122.474129] ] 
+  var markers = [];
+  venues.forEach(function(venue) {
+    // Gives each marker Lat/Lng coordinates, a name, and a showInfo property set to false initially
+    var marker = {};
+    // marker.name = venue.name;
+    // marker.showInfo = false;
+    marker.position = {};
+    marker.position.lat = venue[0];
+    marker.position.lng = venue[1];
+    markers.push(marker);
+  });
+
+  return markers;
+};
+
 
 /* getTourInfo for John to use */
 // This is passed down to SearchList, which is passed down to SearchListEntry
-getTourInfo (tour) {
+getTourInfo = (tour) => {
   // Props will be passed into here, which contains all of the tour information
+  console.log('CLICKED TOUR_______', tour);
+  var markers = this.showVenuesInTour(tour);
+  console.log('THIS', this);
   this.setState({
     currentTour: tour,
-    showTourModal: true
+    markers: markers,
+    defaultCenter: {
+      lat: tour.LatLng[0],
+      lng: tour.LatLng[1]
+    },
+    showTourModal: false
   })
-}
-
-getVenueInfo (venue) {
-  this.setState({
-    currentVenue: venue,
-    showVenueModal: true
-  })
+  console.log('markers', markers);
+  console.log('this.state after setState     ', this.state);
 }
 
 // This is passed down to Tour. Hides the Tour modal.
@@ -103,7 +130,6 @@ render() {
   var searchListProps = {
     tours: this.state.tours,
     getTourInfo: this.getTourInfo.bind(this),
-    changeCurrentTour: this.changeCurrentTour.bind(this)
   }
 
   return (
@@ -114,9 +140,15 @@ render() {
           <SearchList {...searchListProps}/>
           {this.state.notFound ? noResultMessage : null}
         </div>
-    <div className='searchMapContainer'>
-    {this.state.tours.length > 0 ? <SearchMap tours={this.state.tours}/> : null}
-    </div>
+      <div className='searchMapContainer'>
+      {/*{this.state.tours.length > 0 ? <SearchMap tours={this.state.tours}/> : null}*/}
+        <SearchMap 
+          // venues={this.state.currentTour.venues}
+          // showVenuesInTour={this.showVenuesInTour.bind(this)}
+          markers={this.state.markers}
+          defaultCenter={this.state.defaultCenter}
+        />
+      </div>
     </div>
   )
 }
