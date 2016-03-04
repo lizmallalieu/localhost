@@ -38,7 +38,7 @@ module.exports = {
     Tour.find(newObj, function(err, data) {
       if (err) {
         console.log('error');
-        res.send(err)
+        res.send(err);
       } else {
         res.send(data);
       }
@@ -48,6 +48,28 @@ module.exports = {
       throw new Error('Could not find tour');
     });
 
+  },
+
+  rateTour: function(req, res){
+    var rating = req.body.rating;
+    var userId = req.body.userId;
+    var tourId = req.body.tourId;
+
+    Tour.findOne({_id: tourId}, function(err, tour){
+      if(err){
+        res.send(err);
+      } else {
+        var newRatings = tour.ratings;
+        newRatings[userId] = rating;
+        Tour.update({_id: tour._id}, {ratings: newRatings}, (err, data) => {
+          if(err){
+            res.status(404).json(err);
+          } else {
+            res.status(200).json(data);
+          }
+        });
+      }
+    });
   },
 
   // Handles user creating a new tour
