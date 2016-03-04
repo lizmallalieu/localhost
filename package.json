@@ -9,8 +9,6 @@
     "body-parser": "^1.4.3",
     "express": "~4.5.1",
     "express-session": "^1.13.0",
-    "flat": "^2.0.0",
-    "flatten": "^1.0.2",
     "jquery": "^2.2.0",
     "material-ui": "^0.15.0-alpha.1",
     "method-override": "~2.0.2",
