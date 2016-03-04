@@ -3,7 +3,7 @@ var User = require('../models/userModel.js');
 var Q = require('q');
 var request = require('request');
 
-// var findTours = Q.nbind(Tour.find, Tour);
+var getTour = Q.nbind(Tour.findOne, Tour);
 // var createCard = Q.nbind(Card.create, Card);
 // var updateCard = Q.nbind(Card.findOneAndUpdate, Card);
 // var removeCard = Q.nbind(Card.remove, Card);
@@ -134,16 +134,7 @@ module.exports = {
     });
   },
 
-  // removeRating: function(req, res){
-  //   var ratting = req.body.ratting;
-  //   var id = req.body.data;
-  //   var userId = req.session.userId;
-  //   Tour.findOneAndUpdate({_.id:id}, function(err, data){
-  //
-  //   });
-  // },
-
-  fetchTour: function(req, res) {
+  fetchTour: function(req, res){
     var id = req.body.data;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
       //TODO: Make this into .then (Promissify it)
