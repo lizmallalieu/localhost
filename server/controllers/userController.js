@@ -109,7 +109,7 @@ module.exports = {
       });
     });
   },
-  
+
   editUserProfile: function(req, res) {
     var aboutMe = req.body.data;
     User.findOne({_id: req.session.userId}, function(err, user){
