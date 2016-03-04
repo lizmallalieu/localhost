@@ -2,6 +2,17 @@ var stripe = require("stripe")(
   "sk_test_mZdHc2EKHCmqxjf94SlTaAOi"
 );
 
+// retrieve current account balance
+stripe.balance.retrieve(function(err, balance) {
+  // asynchronously called
+});
+
+
+////////////
+///CHARGES//
+////////////
+
+// create charge
 stripe.charges.create({
   amount: 400,
   currency: "usd",
@@ -19,3 +30,30 @@ stripe.charges.create({
     
   }
 });
+
+// returns list of your previous charges (most recent charges at the top)
+stripe.charges.list(
+  { limit: 3 },
+  function(err, charges) {
+    // asynchronously called
+  }
+);
+
+////////////
+//CUSTOMERS/
+////////////
+
+// create customer - autoassigns a customer id "id" as well used below in .retrieve();
+stripe.customers.create({
+  description: 'Customer for test@example.com',
+  source: "tok_17lMoGLQi5m0Mz6rPyMgtOfz" // obtained with Stripe.js
+}, function(err, customer) {
+  // asynchronously called
+});
+
+stripe.customers.retrieve(
+  "cus_81Qx1Cv8CZb3Ex",
+  function(err, customer) {
+    // asynchronously called
+  }
+);
