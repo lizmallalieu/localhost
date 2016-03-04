@@ -85,7 +85,7 @@ module.exports = {
             throw err;
           }
           // Fetch currently signed in user from DB, and add newly created Tour ID to their createdTour's array
-          User.find({_id : req.session.userId}, function(err, user) {
+          User.findOne({_id : req.session.userId}, function(err, user) {
 
         // Fetch currently signed in user from DB, and add newly created Tour ID to their createdTour's array
         //TODO: Make this into .then (Promissify it)
