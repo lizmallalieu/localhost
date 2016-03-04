@@ -1,7 +1,6 @@
 var User = require('../models/userModel.js');
 var Tour = require('../models/tourModel.js');
 var Q = require('q');
-var flatten = require('flatten');
 
 module.exports = {
   // Handles user joining a tour
