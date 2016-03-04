@@ -118,6 +118,20 @@ module.exports = {
     });
   },
 
+  ////////////////////////////
+  // SEARCH MULTIPLE VENUES //
+  ////////////////////////////
+  searchAll: (req, res) => {
+    res.send(200)
+  },
+
+  //////////////////////////////////
+  // SEARCH FOURSQUARE FOR VENUES //
+  //////////////////////////////////
+  searchNew: (req, res) => {
+    res.send(200)
+  },
+
   //////////////////
   // UPDATE VENUE //
   //////////////////
