@@ -1,15 +1,13 @@
 import React from 'react'
-
+import {GoogleMapLoader, GoogleMap, Marker, InfoWindow} from "react-google-maps";
 
 export default class SearchListEntry extends React.Component {
 	constructor(props) {
 		super(props)
 	}
 
-
 	render() {
 		return (
-			// Style is inline here so that we can make the url dynamic
 			<div 
 			  style={
 					{
