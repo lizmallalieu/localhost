@@ -42,6 +42,10 @@ module.exports = {
       } else {
         res.send(data);
       }
+    })
+    .fail(function (err) {
+      console.error('Could not find tour');
+      throw new Error('Could not find tour');
     });
 
   },

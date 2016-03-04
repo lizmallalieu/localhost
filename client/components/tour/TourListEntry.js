@@ -1,15 +1,18 @@
 import React from 'react'
 import $ from 'jquery'
 
+import {Card, CardTitle, CardText, CardMedia} from 'material-ui';
+
 export default class CreatedToursListEntry extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       data: "",
       name: "",
       city: "",
       date: "",
-      price: ""
+      price: "",
+      photo: ""
     }
   }
 
@@ -23,8 +26,10 @@ export default class CreatedToursListEntry extends React.Component {
         name : data.name,
         city : data.city,
         date : date,
-        price : data.price
+        price : data.price,
+        photo: data.photo
       })
+      console.log('this state', this.state);
     })
     .fail( (err) => {
       console.log('error getProfile', err);
@@ -32,23 +37,27 @@ export default class CreatedToursListEntry extends React.Component {
   }
   
   render() {
+
+    var styles = {
+      card: {
+        'height': '250px',
+        'backgroundImage': `url("${this.state.photo}")`,
+        'backgroundSize': 'cover',
+        'backgroundPosition': 'center 50%',
+        'backgroundRepeat': 'no-repeat'     
+      }
+    }
+
     return (
-       <div className='createTourForm'>
-          <div 
-            className='tourContainer'
-            onClick={ () => this.props.getTourInfo(this.state.data)}
-            style={
-              {
-                backgroundImage: 'url(' + this.state.data.pictureUrl + ')',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize:'cover',
-                backgroundPosition: 'center center'
-              }
-            }
+      <div>
+        <Card>
+          <CardMedia
+            overlay={<CardTitle title={this.state.name} subtitle={this.state.city + ' · $' + this.state.price} />}
           >
-            <div className='searchListEntryName'> {this.state.name} </div>
-            <div className='searchListEntryPrice'> ${this.state.price} </div>
-          </div>
+            <div style={styles.card}>
+             </div>
+          </CardMedia>
+        </Card>
       </div>
     )
   }

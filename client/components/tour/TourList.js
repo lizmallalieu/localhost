@@ -1,7 +1,7 @@
 import React from 'react'
-import CreatedToursListEntry from './CreatedToursListEntry'
+import TourListEntry from './TourListEntry'
 
-export default class CreatedToursList extends React.Component {
+export default class TourList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -12,7 +12,7 @@ export default class CreatedToursList extends React.Component {
   render() {
     if (typeof this.props.tourIds !== 'undefined') {
       var tourListEntries = this.props.tourIds.map((tourId, key) =>
-        <CreatedToursListEntry
+        <TourListEntry
           key={key}
           tourId={tourId}
           getTourInfo={this.props.getTourInfo}
@@ -20,8 +20,10 @@ export default class CreatedToursList extends React.Component {
       )
     }
     return (
-      <div className = "createdToursListParentContainer">
+      <div className="createdToursListParentContainer">
+
        {tourListEntries ? tourListEntries : null}
+       
       </div>
     )
   }
