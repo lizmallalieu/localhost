@@ -3,7 +3,7 @@ var User = require('../models/userModel.js');
 var Q = require('q');
 var request = require('request');
 
-// var findTours = Q.nbind(Tour.find, Tour);
+var getTour = Q.nbind(Tour.findOne, Tour);
 // var createCard = Q.nbind(Card.create, Card);
 // var updateCard = Q.nbind(Card.findOneAndUpdate, Card);
 // var removeCard = Q.nbind(Card.remove, Card);
@@ -38,19 +38,48 @@ module.exports = {
     Tour.find(newObj, function(err, data) {
       if (err) {
         console.log('error');
-        res.send(err)
+        res.send(err);
       } else {
         res.send(data);
+    Tour.getTour(newObj)
+    .then(function (foundTour) {
+      if (foundTour) {
+        res.status(200).json(foundTour);
       }
     })
     .fail(function (err) {
       console.error('Could not find tour');
       throw new Error('Could not find tour');
-    });
+      });
+    }
+  });
+},
 
+
+  rateTour: function(req, res){
+    var rating = req.body.rating;
+    var userId = req.body.userId;
+    var tourId = req.body.tourId;
+
+    Tour.findOne({_id: tourId}, function(err, tour){
+      if(err){
+        res.send(err);
+      } else {
+        var newRatings = tour.ratings;
+        newRatings[userId] = rating;
+        Tour.update({_id: tour._id}, {ratings: newRatings}, (err, data) => {
+          if(err){
+            res.status(404).json(err);
+          } else {
+            res.status(200).json(data);
+          }
+        });
+      }
+    });
   },
 
   // Handles user creating a new tour
+  //In here we will put all of the multiple locations, so that when the map renders, it renders all of the locations in the
   createTour: function(req,res, next) {
     //chose a random downloaded picture to add to the tour as a background image
     // Construct address and send request to google geocode api to fetch Lat/Lng coordinates for given address
@@ -79,6 +108,7 @@ module.exports = {
         };
 
         // Create new Tour document on DB using data stored in newTour object
+        //TODO: Make this into .then (Promissify it)
         Tour.create(newTour, function(err, tour) {
           if(err) {
             throw err;
@@ -101,12 +131,11 @@ module.exports = {
           });
         });
         //END OF Promissify
-
       }
-    });
-  },
+  });
+},
 
-  fetchTour: function(req, res) {
+  fetchTour: function(req, res){
     var id = req.body.data;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
       //TODO: Make this into .then (Promissify it)
@@ -119,5 +148,4 @@ module.exports = {
       });
     }
   }
-
 };

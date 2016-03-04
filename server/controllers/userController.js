@@ -1,5 +1,7 @@
 var User = require('../models/userModel.js');
+var Tour = require('../models/tourModel.js');
 var Q = require('q');
+var flatten = require('flatten');
 
 module.exports = {
   // Handles user joining a tour
@@ -19,7 +21,7 @@ module.exports = {
             return next(err);
           } else {
             // Stores the tour document's ID to the user's attendingTours array as a reference
-            user.attendingTours.push(tour._id);
+            user.attendingTours.push(Tour._id);
             user.save(function(err, user) {
               if(err) {
                 return next(err);
@@ -108,7 +110,7 @@ module.exports = {
       });
     });
   },
-
+  
   editUserProfile: function(req, res) {
     var aboutMe = req.body.data;
     User.findOne({_id: req.session.userId}, function(err, user){

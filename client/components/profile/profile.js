@@ -114,7 +114,7 @@ export default class Profile extends React.Component {
     var profilePage = (
       <div className="gridlist">
       <h1>{"Welcome, " + this.state.user + "!"}</h1>
-        <GridList 
+        <GridList
           cols={9}
           cellHeight={1}
           padding={15}
@@ -148,7 +148,6 @@ export default class Profile extends React.Component {
           </GridTile>
         </GridList>
       </div>
-
     );
 
     return (
