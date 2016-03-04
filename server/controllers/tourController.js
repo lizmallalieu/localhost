@@ -117,12 +117,92 @@ module.exports = {
         newRatings[userId] = rating;
         Tour.update({_id: tour._id}, {ratings: newRatings}, (err, data) => {
           if(err){
-            res.status(404).json(err);
+            console.log("There was an error updating the tour");
           } else {
-            res.status(200).json(data);
+            User.findOne({_id: userId}, function(err, user){
+              if(err){
+                console.log("There was an error finding the user")
+                res.send(err);
+              } else {
+                console.log("User found :", user);
+                res.send(user);
+              }
+            });
           }
         });
       }
     });
+
+  },
+
+  // Handles user creating a new tour
+  //In here we will put all of the multiple locations, so that when the map renders, it renders all of the locations in the
+  createTour: function(req,res, next) {
+    //chose a random downloaded picture to add to the tour as a background image
+    // Construct address and send request to google geocode api to fetch Lat/Lng coordinates for given address
+    var address = req.body.streetAddress + ", " + req.body.city + ", " + req.body.state;
+    var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key=' + process.env.API_MAP_CLIENT;
+    request(url, function (error, response, body) {
+      if (error) {
+        throw error;
+      } else {
+        var pictures = ['pictures/brooklynSkyline.jpg', 'pictures/goldenGateBridge.jpg', 'pictures/Park2.JPG', 'pictures/Houses.jpg', 'pictures/Berkeley.jpg', 'pictures/Marina.jpg', 'pictures/Denver.jpg', 'pictures/OutdoorCafe.jpg', 'pictures/LosAngeles.jpg', 'pictures/Tahoe.jpg', 'pictures/cableCar.jpg'];
+        var index = Math.floor(Math.random()*pictures.length);
+        var pictureUrl = pictures[index];
+        // Extract Lat/Lng coordinates from response body, and pass them to newTour object
+        var parsedResults = JSON.parse(body).results[0].geometry;
+        var LatLng = [parsedResults.location.lat, parsedResults.location.lng];
+        var newTour = {
+          pictureUrl: pictureUrl,
+          name: req.body.name,
+          streetAddress: req.body.streetAddress,
+          city: req.body.city,
+          state: req.body.state,
+          price: req.body.price,
+          date: req.body.date,
+          LatLng: LatLng,
+          description: req.body.description
+        };
+
+        // Create new Tour document on DB using data stored in newTour object
+        //TODO: Make this into .then (Promissify it)
+        Tour.create(newTour, function(err, tour) {
+          if(err) {
+            throw err;
+          }
+          // Fetch currently signed in user from DB, and add newly created Tour ID to their createdTour's array
+          User.findOne({_id : req.session.userId}, function(err, user) {
+            if(err) {
+              throw err;
+            }
+            user.createdTours.push(tour._id);
+            user.save(function(err, user) {
+              if(err) {
+               throw err;
+              }
+              tour.createdBy = user.username;
+              tour.save(function(err, tour){
+                res.send(user);
+              });
+            });
+          });
+        });
+        //END OF Promissify
+      }
+  });
+},
+
+  fetchTour: function(req, res){
+    var id = req.body.data;
+    if (id.match(/^[0-9a-fA-F]{24}$/)) {
+      //TODO: Make this into .then (Promissify it)
+      Tour.findOne({_id: id}, function(err, data) {
+        if (err) {
+          throw err;
+        } else {
+          res.send(data);
+        }
+      });
+    }
   }
 };
