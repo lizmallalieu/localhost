@@ -128,7 +128,21 @@ module.exports = {
   // SEARCH FOURSQUARE FOR VENUES //
   //////////////////////////////////
   searchNew: (req, res) => {
-    res.send(200)
+    const url = 'https://api.foursquare.com/v2/venues/search';
+    const params = {
+      client_id: process.env.API_FSQ_CLIENT,
+      client_secret: process.env.API_FSQ_SECRET,
+      v: 20130815,
+      near: this.state.location.zipcode,
+      query: query
+    }
+
+    $.get(url, params)
+    .done(function(data) {
+      callback(data)
+      }).fail(function(err) {
+      callback(err)
+    })
   },
 
   //////////////////
