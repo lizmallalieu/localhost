@@ -73,7 +73,8 @@ export default class SignIn extends React.Component {
           this.props.signIn();
 
           // Changing the window.location allows the React-router to render the correct component
-          browserHistory.push('/profile')
+          window.location = '/#/profile';
+          browserHistory.push('/#/profile')
         }
         // Hides the modal window
         this.setState({
