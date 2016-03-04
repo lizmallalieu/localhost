@@ -13,8 +13,7 @@ export default class SearchList extends React.Component {
 				{this.props.tours.map(tour =>
 					<SearchListEntry 
 					  tour={tour}
-					  getTourInfo={this.props.getTourInfo}
-					  getCurrentTour={this.props.changeCurrentTour} 
+					  getTourInfo={this.props.getTourInfo.bind(this)}
 					/>
 				)}
 			</div>
