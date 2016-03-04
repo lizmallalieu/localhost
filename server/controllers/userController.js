@@ -6,7 +6,6 @@ module.exports = {
   // Handles user joining a tour
   joinTour: function(req, res) {
     // Find the currently logged in user
-    console.log("USER ID FROM JOIN TOUR : ", req.session.userId)
     User.findOne({_id: req.session.userId}, function(err, user){
       if (err) {
         res.send(err);
@@ -21,7 +20,7 @@ module.exports = {
             return next(err);
           } else {
             // Stores the tour document's ID to the user's attendingTours array as a reference
-            user.attendingTours.push(tour._id);
+            user.attendingTours.push(Tour._id);
             user.save(function(err, user) {
               if(err) {
                 return next(err);
@@ -113,16 +112,16 @@ module.exports = {
 
   rateTour: function(req, res){
     var userRating = req.body.ratting;
-    var id = req.session.userId;
-    console.log(id)
-    // var userId = req.session.userId;
-    // Tour.findOneAndUpdate({_id:id}, Tour.raiting[id] = userRating, function(err, data){
-    //   if(err){
-    //     throw err;
-    //   } else {
-    //     res.send(data);
-    //   }
-    // })
+    var id = req.body.userId;
+    console.log("req.body.userId : ", id)
+    var userId = req.session.userId;
+    Tour.findOneAndUpdate({_id:id}, Tour.raiting[id] = userRating, function(err, data){
+      if(err){
+        throw err;
+      } else {
+        res.send(data);
+      }
+    })
   },
 
 
