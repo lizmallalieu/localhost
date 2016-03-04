@@ -41,14 +41,20 @@ module.exports = {
         res.send(err);
       } else {
         res.send(data);
+    Tour.getTour(newObj)
+    .then(function (foundTour) {
+      if (foundTour) {
+        res.status(200).json(foundTour);
       }
     })
     .fail(function (err) {
       console.error('Could not find tour');
       throw new Error('Could not find tour');
-    });
+      });
+    }
+  });
+},
 
-  },
 
   rateTour: function(req, res){
     var rating = req.body.rating;
