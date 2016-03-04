@@ -9,7 +9,6 @@ var db = require('../config/db.js');
 /*     MIDDLEWARE & ROUTES    */
 /* -------------------------- */
 
-var app = express();
 require('./config/middleware')(app, express);
 require('./config/router')(app, express);
 
