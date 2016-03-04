@@ -35,8 +35,6 @@ module.exports = {
       }
     }
 
-    console.log('======================newObj', newObj);
-
     Tour.find(newObj, function(err, data) {
       if (err) {
         console.log('error');
@@ -53,7 +51,7 @@ module.exports = {
     //chose a random downloaded picture to add to the tour as a background image
     // Construct address and send request to google geocode api to fetch Lat/Lng coordinates for given address
     var address = req.body.streetAddress + ", " + req.body.city + ", " + req.body.state;
-    var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key=AIzaSyBTKobIvbTZTl469EUXd9iM6Mx_08kJAxM';
+    var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key=' + process.env.API_MAP_CLIENT;
     request(url, function (error, response, body) {
       if (error) {
         throw error;

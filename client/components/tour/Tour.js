@@ -86,19 +86,23 @@ export default class Tour extends React.Component {
             <Modal.Title>{this.props.currentTour.name}</Modal.Title>
           </Modal.Header>
           <Modal.Body className='grey'>
-            <div>Address: {this.props.currentTour.streetAddress }</div>
-            <div>City: {this.props.currentTour.city }</div>
-            <div>State: {this.props.currentTour.state }</div>
+            <div>Address: {this.props.currentTour.streetAddress}</div>
+            <div>City: {this.props.currentTour.city}</div>
+            <div>State: {this.props.currentTour.state}</div>
             <div>Price: ${this.props.currentTour.price}</div>
-            <div>Date: {this.props.currentTour.date.substring(5,10) + '-' + this.props.currentTour.date.substring(0,4)}</div>
+            <div>Date: {this.props.currentTour.date.substring(5, 10) + '-' + this.props.currentTour.date.substring(0, 4)}</div>
             <div>Description: {this.props.currentTour.description}</div>
             <div>The Host: {this.props.currentTour.createdBy}</div>
-            
             {/* hide the 'Join Tour' button, if it's the profile page */}
-            {this.props.page === 'search' ? <Button  bsStyle='default' bsSize='small' onClick={ () => this.handleJoinTourClick() }>
-                                            Join Tour
-                                          </Button>
-                                        : null }
+            {this.props.page === 'search' ?
+            <Button
+              bsStyle='default'
+              bsSize='small'
+              onClick={ () => this.handleJoinTourClick() }
+            >
+              Join Tour
+            </Button>
+            : null }
 
             {/*Error messages are loaded here conditionally*/}
             {this.state.isLoggedIn ? null : loginReminder}
