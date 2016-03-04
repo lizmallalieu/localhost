@@ -3,9 +3,14 @@ var User = require('../models/userModel.js');
 var Q = require('q');
 var request = require('request');
 
+<<<<<<< 52b4fee0af6efe7a9e6f5fab715acf56c2ac09ed
 // var findTours = Q.nbind(Tour.find, Tour);
 var createTour = Q.nbind(Tour.create, Tour);
 var updateUser = Q.nbind(User.update, User);
+=======
+// var getTour = Q.nbind(Tour.findOne, Tour);
+// var createCard = Q.nbind(Card.create, Card);
+>>>>>>> Add ratedTour field to schema and fix bugs in controller
 // var updateCard = Q.nbind(Card.findOneAndUpdate, Card);
 // var removeCard = Q.nbind(Card.remove, Card);
 // var populateVenues = Q.nbind(Card.populate, Card);
@@ -46,6 +51,7 @@ module.exports = {
         res.send(err);
       } else {
         res.send(data);
+<<<<<<< 52b4fee0af6efe7a9e6f5fab715acf56c2ac09ed
       }
     });
   },
@@ -82,6 +88,12 @@ module.exports = {
           console.error(`Could add tour to user: ${err}`);
           throw new Error(`Could add tour to user: ${err}`);
         });
+=======
+    Tour.findOne(newObj)
+    .then(function (foundTour) {
+      if (foundTour) {
+        res.status(200).json(foundTour);
+>>>>>>> Add ratedTour field to schema and fix bugs in controller
       }
     })
     .fail((err) => {
@@ -124,8 +136,19 @@ module.exports = {
                 console.log("There was an error finding the user")
                 res.send(err);
               } else {
-                console.log("User found :", user);
-                res.send(user);
+                console.log(" ==== USER FOUND! ==== ", user);
+                var newUserRating = user.ratedTours;
+                console.log(" ==== newUserRating ==== ", newUserRating);
+                console.log(" ==== user.email ==== ", user.email);
+                newUserRating[tourId] = rating;
+                User.update({_id: userId}, {ratedTours: newUserRating}, (err, data) => {
+                  if(err){
+                    console.log("There was an error updating the user");
+                  } else {
+                    console.log("User updated!!");
+                    res.send(data);
+                  }
+                });
               }
             });
           }
