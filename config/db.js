@@ -1,13 +1,11 @@
 var mongoose = require('mongoose');
- mongoURI = process.env.MONGOLAB_URI ||
-    process.env.MONGOHQ_URL ||
-    'mongodb://localhost/localhost';
- mongoose.connect(mongoURI);
+mongoose.connect(process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/localhost');
 
- var db = mongoose.connection;
- db.on('error', console.error.bind(console, "connection error"));
- db.once("open", function () {
-  console.log('Mongodb connection open')
- });
+var db = mongoose.connection;
 
- module.exports = db;
+db.on('error', console.error.bind(console, 'Error connecting to MongoDB'));
+db.once('open', function () {
+  console.log('🍃  Connected to MongoDB')
+});
+
+module.exports = db;
