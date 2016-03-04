@@ -1,4 +1,5 @@
 import React from 'react'
+import { browserHistory } from 'react-router'
 import $ from 'jquery'
 import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem} from 'react-bootstrap'
 
@@ -16,6 +17,10 @@ export default class SignIn extends React.Component {
     }
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
+  }
+
+  contextTypes: {
+    router: React.PropTypes.object
   }
 
   handleSignIn = () => {
@@ -36,10 +41,25 @@ export default class SignIn extends React.Component {
       return;
     }
     $.post('/api/signin', {data: user})
-      .done((user) => {
-        console.log('data from john', user);
+      .done((data) => {
+        this.props.setAppState({
+          user: {
+            uid: data._id,
+            username: data.username,
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            twitter: data.twitter,
+            about: data.twitter
+          },
+          createdTours: data.createdTours,
+          attendingTours: data.attendingTours,
+          attendedTours: data.attendedTours,
+          ratedTours: data.ratedTours
+        });
+
         // Depending on the error, the server will respond with a given message.
-        if (data === 'Username and/or password invalid.') {
+        if (user === 'Username and/or password invalid.') {
           this.setState({
             showInvalidUsernameOrPassword: true
           }, function() {
@@ -53,7 +73,7 @@ export default class SignIn extends React.Component {
           this.props.signIn();
 
           // Changing the window.location allows the React-router to render the correct component
-          window.location = '/#/profile';
+          browserHistory.push('/profile')
         }
         // Hides the modal window
         this.setState({
