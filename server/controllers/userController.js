@@ -83,11 +83,11 @@ module.exports = {
   },
 
   signin: function (req, res, next) {
-    var name = req.body.data.username;
+    var username = req.body.data.username;
     var password = req.body.data.password;
 
     // Find if user exists
-    User.findOne({username: name}, function(err, user) {
+    User.findOne({username: username}, function(err, user) {
       if(err) {
         return next(err);
       }
