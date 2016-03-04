@@ -37,7 +37,7 @@ module.exports = function(app, express) {
   app.get('/api/profile', restrict, User.getProfile);
   app.post('/api/signup', User.signup);
   app.post('/api/signin', User.signin);
-  app.post('/api/rateTour', User.rateTour);
+  app.post('/api/tours/rate', Tour.rateTour);
 
   // Handles user logging out
   app.get('/api/logout', function (req, res) {
