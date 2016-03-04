@@ -136,16 +136,13 @@ module.exports = {
                 console.log("There was an error finding the user")
                 res.send(err);
               } else {
-                console.log(" ==== USER FOUND! ==== ", user);
                 var newUserRating = user.ratedTours;
-                console.log(" ==== newUserRating ==== ", newUserRating);
-                console.log(" ==== user.email ==== ", user.email);
+                var newRating = newUserRating[rating]
                 newUserRating[tourId] = rating;
-                User.update({_id: userId}, {ratedTours: newUserRating}, (err, data) => {
+                User.update({_id: userId}, {ratedTours: newRating}, (err, data) => {
                   if(err){
                     console.log("There was an error updating the user");
                   } else {
-                    console.log("User updated!!");
                     res.send(data);
                   }
                 });
