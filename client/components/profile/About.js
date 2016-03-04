@@ -2,7 +2,7 @@ import React from 'react'
 import $ from 'jquery'
 import {Button} from 'react-bootstrap'
 
-import {TextField} from 'material-ui';
+import {TextField, Card, CardTitle, CardMedia, CardText} from 'material-ui';
 
 export default class About extends React.Component {
   constructor(props) {
@@ -55,22 +55,27 @@ export default class About extends React.Component {
     )
 
     return (
-
-    <div className='aboutMeParentContainer'>
-      <div className='welcomeBackTitle'>
-            Welcome, {this.props.user + '!'}
+      <div>
+        <Card>
+          <CardTitle title={"Welcome, " + this.props.user + "!"}>
+          </CardTitle>
+          <CardMedia>
+            <img src="http://dazik.com/images/avatar.png"/>
+          </CardMedia>
+          <CardText>
+            Email:
+            Twitter:
+            etc.
+          </CardText>
+          <TextField
+            hintText={this.state.aboutMe}
+            floatingLabelText="About Me"
+            multiLine={true}
+            rows={2}
+            onChange={this.handleAboutMeEdit}
+          />
+        </Card>
       </div>
-      <div className='profilePicture'></div>
-      <div className="aboutMeContainer">
-      <TextField
-        hintText={this.state.aboutMe}
-        floatingLabelText="About Me"
-        multiLine={true}
-        rows={2}
-        onChange={this.handleAboutMeEdit}
-      />
-      </div>
-    </div>
 
     )
   }
