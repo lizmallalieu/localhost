@@ -1,6 +1,14 @@
 import React from 'react'
-import { render } from 'react-dom'
-import { Router, Route, IndexRoute, Link, hashHistory } from 'react-router'
+import ReactDOM from 'react-dom'
+
+import { Router, Route, Link, IndexRoute, browserHistory, hashHistory } from 'react-router'
+
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
+/*--------------------*/
+/*     COMPONENTS     */
+/*--------------------*/
 
 import Navigation from './Navigation'
 import Profile from './profile/Profile'
@@ -10,31 +18,105 @@ import SignUp from './account/SignUp'
 import Welcome from './welcome/Welcome'
 import Tour from './tour/Tour'
 
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
+/*-------------*/
+/*     App     */
+/*-------------*/
 
 class App extends React.Component {
+  /* Adds newly created tour to database */
+  submitNewTour(tourInfo) {
+    $.post('/api/createTour', tourInfo)
+    .done((data) => {
+      this.setState({ userMadeTours: data.createdTours })
+    })
+    .fail((err) => {
+      console.log('Could not save tour to database', err)
+      throw new Error('Could not save tour to database', err)
+    })
+  }
+
+  /* Pass this method down to children components so you can set the App state from nested dependencies. This method takes in a single state update object used to simply set properties in the state. Alternatively, you can pass in a specific key-value pair with the state passed in as null. This is useful for when you need to set a property in a deeply nested object in the state. */
+  setAppState = (state, key, value) => {
+    if (state) {
+      this.setState(state);
+    } else {
+      var newState = this.state[key];
+      newState[key] = value;
+      this.setState(newState);
+    }
+    console.log('App State:', this.state)
+  }
+
   render() {
+    var Children = React.cloneElement(this.props.children, {
+      status: this.state,
+      fx: {
+        submitNewTour: this.submitNewTour,
+        setAppState: this.setAppState
+      }
+    });
+
     return (
       <div>
-        <Navigation/>
-        {this.props.children}
+        <Navigation
+          {...this.state}
+          setAppState={this.setAppState}
+        />
+        {Children}
       </div>
     )
   }
 }
 
-render((
-  // React Router allows user to access different pages, depending how
-  // the window location is set.
-  <Router history={hashHistory}>
+/*------------------*/
+/*     HANDLERS     */
+/*------------------*/
+
+class WelcomeHandler extends React.Component {
+  render() { return (
+    <Welcome
+      {...this.props.status}
+      {...this.props.fx}
+    />
+  )}
+}
+
+class ProfileHandler extends React.Component {
+  render() { return (
+    <Profile
+      {...this.props.status}
+      {...this.props.fx}
+    />
+  )}
+}
+
+class TourHandler extends React.Component {
+  render() { return (
+    <Tour
+      {...this.props.status}
+      {...this.props.fx}
+    />
+  )}
+}
+
+class SearchHandler extends React.Component {
+  render() { return (
+    <Search
+      {...this.props.status}
+      {...this.props.fx}
+    />
+  )}
+}
+
+ReactDOM.render(
+  <Router history={browserHistory}>
     <Route path="/" component={App}>
-      <IndexRoute component={Welcome}/>
-      <Route path='/welcome' component={Welcome}/>
-      <Route path='/profile' component={Profile}/>
-      <Route path='/profile/:id' component={Tour}/>
-      {/*deleted the route for signup and signin */}
-      <Route path="/search" component={Search}/>
+      <IndexRoute component={WelcomeHandler}/>
+      <Route path='/welcome' component={WelcomeHandler}/>
+      <Route path='/profile' component={ProfileHandler}/>
+      <Route path='/profile/:id' component={TourHandler}/>
+      <Route path="/search" component={SearchHandler}/>
     </Route>
-  </Router>
-), document.getElementById('app'));
+  </Router>,
+  document.getElementById('app')
+);

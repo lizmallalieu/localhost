@@ -1,12 +1,13 @@
 import React from 'react'
-import AboutMe from './About'
-import TourList from '../tour/TourList'
+import { Link } from 'react-router'
 import $ from 'jquery'
-import {Link} from 'react-router'
-import CreateTourForm from './CreateTourForm'
-import Tour from '../tour/Tour'
 
-import {GridList, GridTile, Card, CardTitle, CardText, CardMedia, Tabs, Tab} from 'material-ui';
+import Tour from '../tour/Tour'
+import TourList from '../tour/TourList'
+import About from './About'
+import CreateTourForm from './CreateTourForm'
+
+import { GridList, GridTile, Card, CardTitle, CardText, CardMedia, Tabs, Tab } from 'material-ui';
 
 export default class Profile extends React.Component {
   constructor(props) {
@@ -113,7 +114,7 @@ export default class Profile extends React.Component {
 
     var profilePage = (
       <div className="gridlist">
-      <h1>{"Welcome, " + this.state.user + "!"}</h1>
+      <h1>{"Welcome, " + this.props.user.name + "!"}</h1>
         <GridList
           cols={9}
           cellHeight={1}
@@ -123,7 +124,7 @@ export default class Profile extends React.Component {
             cols={2}
             rows={2000}
           >
-            <AboutMe user={this.state.user} aboutMe={this.state.aboutMe}/>
+            <About user={this.props.user.username} aboutMe={this.props.user.about}/>
           </GridTile>
           <GridTile
             cols={7}
@@ -156,10 +157,5 @@ export default class Profile extends React.Component {
       // without this check, they see a ~0.5 second flash of the page because it renders before the ajax call is done )
       this.state.showProfile ? profilePage : null
     )
-  };
-
-
-
-
-
+  }
 }

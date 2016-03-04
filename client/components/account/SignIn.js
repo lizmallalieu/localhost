@@ -1,8 +1,9 @@
 import React from 'react'
+import { browserHistory } from 'react-router'
 import $ from 'jquery'
 import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem} from 'react-bootstrap'
 
-import {Tabs, Tab, Dialog, FlatButton, TextField} from 'material-ui';
+import {Tabs, Tab, Dialog, FlatButton, TextField} from 'material-ui'
 
 export default class SignIn extends React.Component {
   constructor(props) {
@@ -18,12 +19,15 @@ export default class SignIn extends React.Component {
     this.close = this.close.bind(this);
   }
 
+  contextTypes: {
+    router: React.PropTypes.object
+  }
+
   handleSignIn = () => {
     var user = {
       username: this.state.username,
       password: this.state.password,
     };
-    console.log('user', user);
     // If user didn't enter username or password, displays an error message for 2 seconds
     if (!user.username || !user.password) {
       this.setState({
@@ -38,9 +42,24 @@ export default class SignIn extends React.Component {
     }
     $.post('/api/signin', {data: user})
       .done((data) => {
-        console.log('data', data);
+        this.props.setAppState({
+          user: {
+            uid: data._id,
+            username: data.username,
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            twitter: data.twitter,
+            about: data.twitter
+          },
+          createdTours: data.createdTours,
+          attendingTours: data.attendingTours,
+          attendedTours: data.attendedTours,
+          ratedTours: data.ratedTours
+        });
+
         // Depending on the error, the server will respond with a given message.
-        if (data === 'Username and/or password invalid.') {
+        if (user === 'Username and/or password invalid.') {
           this.setState({
             showInvalidUsernameOrPassword: true
           }, function() {
@@ -54,7 +73,7 @@ export default class SignIn extends React.Component {
           this.props.signIn();
 
           // Changing the window.location allows the React-router to render the correct component
-          window.location = '/#/profile';
+          browserHistory.push('/profile')
         }
         // Hides the modal window
         this.setState({
@@ -117,7 +136,7 @@ export default class SignIn extends React.Component {
 
     return (
       <div>
-      <Tab 
+      <Tab
         label='Log In'
         onTouchTap={this.show}
       >
@@ -130,7 +149,7 @@ export default class SignIn extends React.Component {
         open={this.state.show}
         >
       </Dialog>
-    
+
       </div>
     )
   }

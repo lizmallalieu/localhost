@@ -1,40 +1,43 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bluebird = require('bluebird');
-var bcrypt = require('bcrypt-nodejs');
 
 var ObjectId = mongoose.Schema.Types.ObjectId;
 var Tour = require('./tourModel');
 
+var bluebird = require('bluebird');
+var bcrypt = require('bcrypt-nodejs');
+
 /* Schema for user accounts. User's have a one to many relationship with tours. Therefore, users store references to all
-*  tours they have created (createdTours) or are attending (attendingTours) within arrays.  These references are the 
+*  tours they have created (createdTours) or are attending (attendingTours) within arrays.  These references are the
 *  document ID's for each Tour document connected with that user.
 */
 var userSchema = new Schema({
- username: String,
- email: String,
- password: String,
- createdTours: [{type: ObjectId, ref: Tour}],
- attendingTours: [{type: ObjectId, ref: Tour}],
- phoneNumber: String,
- email: String,
- aboutMe: String
+  username: String,
+  name: String,
+  password: String,
+  email: String,
+  phone: String,
+  twitter: String,
+  about: String,
+  createdTours: [{type: ObjectId, ref: Tour}],
+  attendingTours: [{type: ObjectId, ref: Tour}],
+  attendedTours: [{type: ObjectId, ref: Tour}],
+  ratedTours: Object,
+  createdAt: Date
 });
-
 
 var User = mongoose.model('User', userSchema);
 
 // Compares the entered password with the hashed/stored password in the DB
-User.comparePassword = function(candidatePW, savedPW, cb) {
-  bcrypt.compare(candidatePW, savedPW, function(err, doesMatch) {
+User.comparePassword = function(password, hash, cb) {
+  bcrypt.compare(password, hash, function(err, match) {
     if (err) {
-      console.log('Username and/or password are invalid.');
-      cb(err);
-    } 
-      cb(null, doesMatch);
+      console.error('Username and/or password are invalid!');
+      cb(err, null);
+    }
+      cb(null, match);
   })
 }
-
 
 // Hashes the user's password before storing it
 User.hashPassword =  function(password, cb) {
@@ -44,7 +47,5 @@ User.hashPassword =  function(password, cb) {
     cb(hash);
   });
 };
-
-
 
 module.exports = User;

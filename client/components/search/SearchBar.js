@@ -5,9 +5,9 @@ export default class SearchBar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-        name: "",
-        city: "",
-        price: ""
+      name: "",
+      city: "",
+      price: ""
     }
   }
 

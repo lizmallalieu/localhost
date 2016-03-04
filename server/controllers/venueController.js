@@ -34,8 +34,7 @@ module.exports = {
   // FETCH VENUE //
   /////////////////
   fetchOne: (req, res) => {
-    console.log("HERE IS MY req.query.venueId", req.query.venueId)
-    var venueId = req.query.venueId
+    var venueId = req.query.venueId;
     findVenue({_id: venueId})
     .then(venue => {
       if (venue) {
@@ -116,6 +115,34 @@ module.exports = {
       console.error(`Failed to multiple venue data from database: ${err}`);
       throw new Error(`Failed to multiple venue data from database: ${err}`);
     });
+  },
+
+  ////////////////////////////
+  // SEARCH MULTIPLE VENUES //
+  ////////////////////////////
+  searchAll: (req, res) => {
+    res.send(200)
+  },
+
+  //////////////////////////////////
+  // SEARCH FOURSQUARE FOR VENUES //
+  //////////////////////////////////
+  searchNew: (req, res) => {
+    const url = 'https://api.foursquare.com/v2/venues/search';
+    const params = {
+      client_id: process.env.API_FSQ_CLIENT,
+      client_secret: process.env.API_FSQ_SECRET,
+      v: 20130815,
+      near: this.state.location.zipcode,
+      query: query
+    }
+
+    $.get(url, params)
+    .done(function(data) {
+      callback(data)
+      }).fail(function(err) {
+      callback(err)
+    })
   },
 
   //////////////////
