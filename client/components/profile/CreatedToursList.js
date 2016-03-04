@@ -3,7 +3,10 @@ import CreatedToursListEntry from './CreatedToursListEntry'
 
 export default class CreatedToursList extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
+    this.state = {
+      tours: []
+    }
   }
 
   render() {
