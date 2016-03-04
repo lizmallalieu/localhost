@@ -12,20 +12,34 @@ export default class SearchMap extends React.Component {
     }
   }
 
-  // Creates markers for each passed in tour, giving them the proper Lat/Lng coords for proper map placement
+  // display google maps as a blank page centered over San Francisco
   componentWillMount() {
-    var tours = this.props.tours;
+    console.log('IN COMPONENT WILL MOUNT');
+    this.setState({
+      markers: [],
+      defaultCenter: {
+        lat: 37.781422,
+        lng: -122.406322
+      }
+    })
+  }
+
+  // Creates markers for each passed in tour, giving them the proper Lat/Lng coords for proper map placement
+  showVenuesInTour() {
+    console.log('IN COMPONENT WILL RECEIVE PROPS');
+    var venues = this.props.venues;
+    console.log('VENUES________', venues);
     var markers = [];
-    tours.forEach(function(tour) {
+    venues.forEach(function (venue) {
       // Gives each marker Lat/Lng coordinates, a name, and a showInfo property set to false initially
       var marker = {};
-      marker.name = tour.name;
-      marker.showInfo = false;
+      // marker.name = venue.name;
+      // marker.showInfo = false;
       marker.position = {};
-      marker.position.lat = tour.LatLng[0];
-      marker.position.lng = tour.LatLng[1];
+      marker.position.lat = venue[0];
+      marker.position.lng = venue[1];
       markers.push(marker);
-    })
+    });
     // Set the defaultCenter of map to the coordinates for the first marker in the list
     this.setState({
       markers: markers,
@@ -34,6 +48,8 @@ export default class SearchMap extends React.Component {
         lng: markers[0].position.lng
       }
     });
+    console.log('MARKERS_________', this.state.markers);
+    console.log('DEFAULTCENTER', this.state.defaultCenter);
   }
 
   // If marker is clicked, its respective showInfo property is toggled, either showing or hiding the info
@@ -47,7 +63,7 @@ export default class SearchMap extends React.Component {
     return (
       <InfoWindow key={`${ref}_info_window`} >
         <div>
-          {marker.name}
+          {/*marker.name*/}
         </div>  
       </InfoWindow> 
     );
