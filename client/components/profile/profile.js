@@ -6,6 +6,8 @@ import {Link} from 'react-router'
 import CreateTourForm from './CreateTourForm'
 import Tour from '../tour/Tour'
 
+import {GridList, GridTile, Card, CardTitle, CardText, CardMedia, Tabs, Tab} from 'material-ui';
+
 export default class Profile extends React.Component {
   constructor(props) {
     super(props)
@@ -80,6 +82,20 @@ export default class Profile extends React.Component {
     //depending on whether toggleTourList is createdTours or attendingTours,
     //change the value of tourIds passed into createDTourListProps
 
+    const styles = {
+      root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+      },
+      gridList: {
+        width: 150,
+        height: 2000,
+        overflowY: 'auto',
+        marginBottom: 24,
+      },
+    };
+
     var tourList;
     if (this.state.toggleTourList === 'createdTours') {
       tourList = this.state.userMadeTours;
@@ -90,20 +106,29 @@ export default class Profile extends React.Component {
     var TourModalProps = {page: 'profile', currentTour: this.state.currentTour, closeTourModal: this.closeTourModal.bind(this), show: this.state.showTourModal}
 
     var profilePage = (
-      <div className='profileMotherContainer'>
-        <Tour {...TourModalProps}/>
-        <AboutMe user={this.state.user} aboutMe={this.state.aboutMe}/>
-        <CreateTourForm submitNewTour={this.submitNewTour.bind(this)}/>
-        <div className='tourTitles'>
-          <div style={{backgroundColor: this.state.createdToursBackground}}
-                onClick={() => { this.setState({toggleTourList: 'createdTours', createdToursBackground:'#C0C0C0', attendingToursBackground:'#D8D8D8'}) }}>
-                Hosting</div>
-          <div style={{backgroundColor: this.state.attendingToursBackground}}
-                onClick={() => { this.setState({toggleTourList: 'attendingTours', createdToursBackground:'#D8D8D8', attendingToursBackground:'#C0C0C0'}) }}>
-                Attending</div>
-        </div>
-        <CreatedToursList {...createdTourListProps} />
-     </div>
+      <div className="UserInfoColumn" styles={styles.root}>
+        <GridList 
+          styles={styles.gridList}
+          cellHeight={2000}
+        >
+          <GridTile
+          >
+            <AboutMe user={this.state.user} aboutMe={this.state.aboutMe}/>
+          </GridTile>
+        </GridList>
+      </div>
+
+      <div className="TourList" styles={styles.root}>
+        <GridList 
+          styles={styles.gridList}
+          cellHeight={150}
+        >
+          <GridTile
+          >
+            <AboutMe user={this.state.user} aboutMe={this.state.aboutMe}/>
+          </GridTile>
+        </GridList>
+      </div>
     );
 
     return (
