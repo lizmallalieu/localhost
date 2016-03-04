@@ -1,10 +1,12 @@
 var User = require('../models/userModel.js');
+var Tour = require('../models/tourModel.js');
 var Q = require('q');
 
 module.exports = {
   // Handles user joining a tour
   joinTour: function(req, res) {
     // Find the currently logged in user
+    console.log("USER ID FROM JOIN TOUR : ", req.session.userId)
     User.findOne({_id: req.session.userId}, function(err, user){
       if (err) {
         res.send(err);
@@ -108,6 +110,21 @@ module.exports = {
       });
     });
   },
+
+  rateTour: function(req, res){
+    var userRating = req.body.ratting;
+    var id = req.session.userId;
+    console.log(id)
+    // var userId = req.session.userId;
+    // Tour.findOneAndUpdate({_id:id}, Tour.raiting[id] = userRating, function(err, data){
+    //   if(err){
+    //     throw err;
+    //   } else {
+    //     res.send(data);
+    //   }
+    // })
+  },
+
 
   editUserProfile: function(req, res) {
     var aboutMe = req.body.data;

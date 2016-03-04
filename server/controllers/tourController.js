@@ -112,16 +112,6 @@ module.exports = {
     });
   },
 
-
-  rateTour: function(req, res){
-    var userRating = req.body.ratting;
-    var id = req.body.data;
-    var userId = req.session.userId;
-    Tour.findOneAndUpdate({_.id:id}, Tour.raiting[id] = userRating, function(err, data){
-
-    });
-  },
-
   // removeRating: function(req, res){
   //   var ratting = req.body.ratting;
   //   var id = req.body.data;
