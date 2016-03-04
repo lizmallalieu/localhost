@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router'
 import $ from 'jquery'
 import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem} from 'react-bootstrap'
 
-import {Tabs, Tab, Dialog, FlatButton, TextField} from 'material-ui';
+import {Tabs, Tab, Dialog, FlatButton, TextField} from 'material-ui'
 
 export default class SignIn extends React.Component {
   constructor(props) {
