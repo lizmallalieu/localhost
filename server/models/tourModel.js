@@ -18,7 +18,8 @@ var tourSchema = new Schema({
   description: String,
   LatLng: Array,
   venues: [{type: ObjectId, ref: Venue}],
-  tourGuide: [{type: ObjectId, ref: User}]
+  tourGuide: [{type: ObjectId, ref: User}],
+  raiting: Object
 });
 
 module.exports = mongoose.model('Tour', tourSchema);

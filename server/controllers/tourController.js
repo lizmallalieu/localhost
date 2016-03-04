@@ -114,23 +114,23 @@ module.exports = {
 
 
   rateTour: function(req, res){
-    var ratting = req.body.ratting;
+    var userRating = req.body.ratting;
     var id = req.body.data;
     var userId = req.session.userId;
-    Tour.findOneAndUpdate({_.id:id}, function(err, data){
+    Tour.findOneAndUpdate({_.id:id}, Tour.raiting[id] = userRating, function(err, data){
 
     });
   },
 
-  removeRating: function(req, res){
-    var ratting = req.body.ratting;
-    var id = req.body.data;
-    var userId = req.session.userId;
-    Tour.findOneAndUpdate({_.id:id}, function(err, data){
+  // removeRating: function(req, res){
+  //   var ratting = req.body.ratting;
+  //   var id = req.body.data;
+  //   var userId = req.session.userId;
+  //   Tour.findOneAndUpdate({_.id:id}, function(err, data){
+  //
+  //   });
+  // },
 
-    });
-  },
-  
   fetchTour: function(req, res) {
     var id = req.body.data;
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
