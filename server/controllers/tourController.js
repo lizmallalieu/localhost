@@ -3,7 +3,7 @@ var User = require('../models/userModel.js');
 var Q = require('q');
 var request = require('request');
 
-var getTour = Q.nbind(Tour.findOne, Tour);
+// var getTour = Q.nbind(Tour.findOne, Tour);
 // var createCard = Q.nbind(Card.create, Card);
 // var updateCard = Q.nbind(Card.findOneAndUpdate, Card);
 // var removeCard = Q.nbind(Card.remove, Card);
@@ -41,18 +41,8 @@ module.exports = {
         res.send(err);
       } else {
         res.send(data);
-    Tour.getTour(newObj)
-    .then(function (foundTour) {
-      if (foundTour) {
-        res.status(200).json(foundTour);
       }
     })
-    .fail(function (err) {
-      console.error('Could not find tour');
-      throw new Error('Could not find tour');
-      });
-    }
-  });
 },
 
 
@@ -80,7 +70,7 @@ module.exports = {
 
   // Handles user creating a new tour
   //In here we will put all of the multiple locations, so that when the map renders, it renders all of the locations in the
-  createTour: function(req,res, next) {
+  createOne: function(req, res) {
     //chose a random downloaded picture to add to the tour as a background image
     // Construct address and send request to google geocode api to fetch Lat/Lng coordinates for given address
     var address = req.body.streetAddress + ", " + req.body.city + ", " + req.body.state;
