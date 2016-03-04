@@ -22,7 +22,7 @@ var userSchema = new Schema({
   createdTours: [{type: ObjectId, ref: Tour}],
   attendingTours: [{type: ObjectId, ref: Tour}],
   attendedTours: [{type: ObjectId, ref: Tour}],
-  ratedTours: {},
+  ratedTours: Object,
   createdAt: Date
 });
 
