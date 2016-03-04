@@ -8,9 +8,9 @@ var app = express();
 require('./config/middleware')(app, express);
 require('./config/router')(app, express);
 
-/* --------------- */
-/*     SERVERS     */
-/* --------------- */
+/* -------------- */
+/*     SERVER     */
+/* -------------- */
 
 var port = process.env.PORT || 3000;
 app.listen(port, 'localhost', function (err, result) {
