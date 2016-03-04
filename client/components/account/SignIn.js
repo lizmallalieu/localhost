@@ -23,7 +23,6 @@ export default class SignIn extends React.Component {
       username: this.state.username,
       password: this.state.password,
     };
-    console.log('user', user);
     // If user didn't enter username or password, displays an error message for 2 seconds
     if (!user.username || !user.password) {
       this.setState({
@@ -37,8 +36,8 @@ export default class SignIn extends React.Component {
       return;
     }
     $.post('/api/signin', {data: user})
-      .done((data) => {
-        console.log('data', data);
+      .done((user) => {
+        console.log('data from john', user);
         // Depending on the error, the server will respond with a given message.
         if (data === 'Username and/or password invalid.') {
           this.setState({
@@ -117,7 +116,7 @@ export default class SignIn extends React.Component {
 
     return (
       <div>
-      <Tab 
+      <Tab
         label='Log In'
         onTouchTap={this.show}
       >
@@ -130,7 +129,7 @@ export default class SignIn extends React.Component {
         open={this.state.show}
         >
       </Dialog>
-    
+
       </div>
     )
   }
