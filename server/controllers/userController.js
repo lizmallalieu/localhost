@@ -1,6 +1,7 @@
 var User = require('../models/userModel.js');
 var Tour = require('../models/tourModel.js');
 var Q = require('q');
+var flatten = require('flatten');
 
 module.exports = {
   // Handles user joining a tour
@@ -109,22 +110,7 @@ module.exports = {
       });
     });
   },
-
-  rateTour: function(req, res){
-    var userRating = req.body.ratting;
-    var id = req.body.userId;
-    console.log("req.body.userId : ", id)
-    var userId = req.session.userId;
-    Tour.findOneAndUpdate({_id:id}, Tour.raiting[id] = userRating, function(err, data){
-      if(err){
-        throw err;
-      } else {
-        res.send(data);
-      }
-    })
-  },
-
-
+  
   editUserProfile: function(req, res) {
     var aboutMe = req.body.data;
     User.findOne({_id: req.session.userId}, function(err, user){
