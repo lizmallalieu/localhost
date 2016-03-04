@@ -29,38 +29,33 @@ export default class CreatedToursListEntry extends React.Component {
         price : data.price,
         photo: data.photo
       })
+      console.log('this state', this.state);
     })
     .fail( (err) => {
       console.log('error getProfile', err);
     })
   }
-
-        <Card>
-          <CardMedia>
-            <img src="http://dazik.com/images/avatar.png"/>
-          </CardMedia>
-          <CardText>
-            Email:
-            Twitter:
-            etc.
-          </CardText>
-          <TextField
-            hintText={this.state.aboutMe}
-            floatingLabelText="About Me"
-            multiLine={true}
-            rows={2}
-            onChange={this.handleAboutMeEdit}
-          />
-        </Card>
   
   render() {
+
+    var styles = {
+      card: {
+        'height': '250px',
+        'backgroundImage': `url("${this.state.photo}")`,
+        'backgroundSize': 'cover',
+        'backgroundPosition': 'center 50%',
+        'backgroundRepeat': 'no-repeat'     
+      }
+    }
+
     return (
       <div>
         <Card>
           <CardMedia
-            overlay={<CardTitle title={this.state.name} subtitle={this.state.city + '·' + this.state.price} />}
+            overlay={<CardTitle title={this.state.name} subtitle={this.state.city + ' · $' + this.state.price} />}
           >
-            <img src={this.state.photo} />
+            <div style={styles.card}>
+             </div>
           </CardMedia>
         </Card>
       </div>

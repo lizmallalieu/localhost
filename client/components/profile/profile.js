@@ -1,6 +1,6 @@
 import React from 'react'
 import AboutMe from './About'
-import CreatedToursList from './CreatedToursList'
+import TourList from '../tour/TourList'
 import $ from 'jquery'
 import {Link} from 'react-router'
 import CreateTourForm from './CreateTourForm'
@@ -132,17 +132,16 @@ export default class Profile extends React.Component {
             <Tabs>
               <Tab label="Hosting">
                 <div>
-                  <CreatedToursList {...createdTourListProps}/>
+                  <TourList {...createdTourListProps}/>
                 </div>
               </Tab>
               <Tab label="Attending">
                 <div>
-                  <CreatedToursList {...createdTourListProps}/>
+                  <TourList {...createdTourListProps}/>
                 </div>
               </Tab>
               <Tab label="History">
                 <div>
-                  <CreatedToursList {...createdTourListProps}/>
                 </div>
               </Tab>
             </Tabs>

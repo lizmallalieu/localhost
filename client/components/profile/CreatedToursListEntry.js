@@ -4,7 +4,6 @@ import $ from 'jquery'
 export default class CreatedToursListEntry extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       data: "",
       name: "",
