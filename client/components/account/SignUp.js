@@ -15,7 +15,9 @@ export default class SignUp extends React.Component {
       showInvalidFieldsError: false,
       username: undefined,
       password: undefined,
-      email: undefined
+      email: undefined,
+      twitter: undefined,
+      name: undefined
     }
   }
 
@@ -104,11 +106,20 @@ export default class SignUp extends React.Component {
         ref="password"
         onChange={this.handleChange.bind(this, 'password')}
       />,
+       <TextField
+        floatingLabelText="Name"
+        ref="name"
+        onChange={this.handleChange.bind(this, 'name')}
+      />,
       <TextField
         floatingLabelText="Email Address"
         type="email"
         ref="email"
         onChange={this.handleChange.bind(this, 'email')}
+      />,
+      <TextField
+        floatingLabelText="Twitter"
+        onChange={this.handleChange.bind(this, 'twitter')}
       />,
       <FlatButton
         label="Cancel"

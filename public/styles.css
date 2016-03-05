@@ -23,14 +23,14 @@ body {
   /*line-height is hard coded. refactor to make dynamic*/
   line-height: 300px;
   vertical-align: middle;
-  text-shadow: -0.5px 0 black, 0 0.5px black, 0.5px 0 black, 0 -0.5px black;
+  text-shadow: -1.0px 0 black, 0 1.0px black, 1.0px 0 black, 0 -1.0px black;
 }
 
 .welcomeText {
   font-family: 'Bitter', serif;
   font-weight: bolder;
-  font-size: 70px;
-  color: #05394A;
+  font-size: 150px;
+  color: white;
 }
 /*=========== THE NAV BAR CONTAINER =============*/
 
