@@ -84,7 +84,7 @@ export default class CreateTourForm extends React.Component {
         addTwitter: false
       },
       search: [{
-        text: '[Search Foursquare]',
+        text: '',
         value: (
           <MenuItem
             secondaryText="Powered by Foursquare"
@@ -124,17 +124,6 @@ export default class CreateTourForm extends React.Component {
     newState[prop] = '';
     this.setState(newState);
   }
-
-  // Hides the modal window
-  close = () => {
-    this.setState({ show: false });
-  }
-
-  // // Shows the modal window
-  // toggleModal = (modal) => {
-  //   var toggle = !this.props[modal];
-  //   this.props.setAppState(null, modal, toggle);
-  // }
 
   changeTab = (e) => {
     this.setState({ tab: e.props.value });
@@ -210,22 +199,14 @@ export default class CreateTourForm extends React.Component {
       $.get('/api/venues/search-new', {search: query})
       .done(venues => {
         mapSearchResults(venues);
-        console.log('FETCHED VENUES!', venues);
       })
       .fail(err => {
         console.error('Could not search Foursquare for venues', err);
         throw new Error('Could not search Foursquare for venues', err);
       });
     } else {
-      console.log('[SAVING]','query:', query,'index:',index)
     }
   }
-
-  // Closes the modal, and also submits the tour
-  // handleTourSubmission = () => {
-  //   this.close.bind(this)();
-  //   this.props.createTour.bind(null, this.state)();
-  // }
 
   dateFormat = (date) => {
     var w = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
