@@ -28,8 +28,9 @@ class App extends React.Component {
     super(props);
     this.state = {
       user: {},
-      signinModal: false,
-      signupModal: false,
+      signUpModal: false,
+      signInModal: false,
+      signedIn: false,
       tourFormModal: false
     }
   };
@@ -46,35 +47,12 @@ class App extends React.Component {
     })
   }
 
-  /* Adds newly created tour to database */
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: {},
-      signUpModal: false,
-      signInModal: false,
-      signedIn: false
-    }
-  }
-
   signIn = () => {
     // signedIn state controls what shows up on nav bar. This method is passed down
     // to SignUp and SignIn components.
     // this.setState({
     //   signedIn: true
     // })
-  }
-
-  submitNewTour(tourInfo) {
-    $.post('/api/createTour', tourInfo)
-    .done((data) => {
-      this.setState({ userMadeTours: data.createdTours })
-    })
-    .fail((err) => {
-      console.log('Could not save tour to database', err)
-      throw new Error('Could not save tour to database', err)
-    })
   }
 
   /* Pass this method down to children components so you can set the App state from nested dependencies. This method takes in a single state update object used to simply set properties in the state. Alternatively, you can pass in a specific key-value pair with the state passed in as null. This is useful for when you need to set a property in a deeply nested object in the state. */
@@ -86,11 +64,6 @@ class App extends React.Component {
       newState[key] = value;
       this.setState(newState);
     }
-  }
-
-  toggleModal = (modal) => {
-    var toggle = !this.state[modal];
-    this.setAppState(null, modal, toggle);
   }
 
   toggleModal = (modal) => {
