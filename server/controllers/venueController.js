@@ -117,32 +117,31 @@ module.exports = {
     });
   },
 
-  ////////////////////////////
-  // SEARCH MULTIPLE VENUES //
-  ////////////////////////////
-  searchAll: (req, res) => {
-    res.send(200)
-  },
-
   //////////////////////////////////
   // SEARCH FOURSQUARE FOR VENUES //
   //////////////////////////////////
   searchNew: (req, res) => {
-    const url = 'https://api.foursquare.com/v2/venues/search';
-    const params = {
-      client_id: process.env.API_FSQ_CLIENT,
-      client_secret: process.env.API_FSQ_SECRET,
-      v: 20130815,
-      near: this.state.location.zipcode,
-      query: query
-    }
-
-    $.get(url, params)
-    .done(function(data) {
-      callback(data)
-      }).fail(function(err) {
-      callback(err)
+    var qs = foursquare.query;
+    qs.near = 94102;
+    qs.query = req.params.query;
+    qs.v = 20130815;
+    httpRequest({
+      uri: `${foursquare.uri}/search`,
+      qs: qs,
+      json: true
     })
+    .then((result) => {
+      if(result) {
+        res.status(200).json(result.response.venues);
+      } else {
+        console.error('Could not find any results for ' + query);
+        res.status(404).json('Could not find any results for ' + query);
+      }
+    })
+    .catch(function(err) {
+      console.error('Could not query Foursquare with bad request: ' + err);
+      res.status(400).json('Could not query Foursquare with bad request: ' + err);
+    });
   },
 
   //////////////////
