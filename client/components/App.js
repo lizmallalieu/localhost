@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import $ from 'jquery'
 
 import { Router, Route, Link, IndexRoute, browserHistory, hashHistory } from 'react-router'
 
@@ -74,13 +75,28 @@ class App extends React.Component {
     this.setAppState(null, modal, toggle);
   }
 
+  createTour = (tourInfo) => {
+    console.log("ABOUT TO MAKE tourInfo", tourInfo);
+    $.post('/api/tours', tourInfo)
+    .done((data) => {
+      this.setState({
+        userMadeTours: data.createdTours
+      })
+    })
+    .fail((err) => {
+      console.log('Could not save tour to database', err)
+      throw new Error('Could not save tour to database', err)
+    })
+  }
+
   render() {
     var Children = React.cloneElement(this.props.children, {
       status: this.state,
       fx: {
         submitNewTour: this.submitNewTour,
         setAppState: this.setAppState,
-        toggleModal: this.toggleModal
+        toggleModal: this.toggleModal,
+        createTour: this.createTour
       }
     });
 
@@ -97,6 +113,7 @@ class App extends React.Component {
          {...this.state}
          setAppState={this.setAppState}
          toggleModal={this.toggleModal}
+         createTour={this.createTour}
         />
         <SignIn
           {...this.state}
