@@ -9,6 +9,10 @@ export default class TourList extends React.Component {
     }
   }
 
+  setTours () => {
+    this.setState({tours: this.props.tours});
+  }
+
   render() {
     if (typeof this.props.tourIds !== 'undefined') {
       var tourListEntries = this.props.tourIds.map((tourId, key) =>
