@@ -6,6 +6,7 @@ var session = require('express-session');
 var bcrypt = require('bcrypt-nodejs');
 var bluebird = require('bluebird');
 var request = require('request');
+var path = require('path');
 
 // Authenticates user access through the use of sessions
 module.exports = function(app, express) {
@@ -20,7 +21,7 @@ module.exports = function(app, express) {
     if (req.session.userId !== undefined) {
       next();
     } else {
-      console.log("Access denied!");
+      console.error("Access denied!");
       res.send({isAuth: false});
     }
   };
@@ -52,8 +53,8 @@ module.exports = function(app, express) {
   app.post('/api/venues', Venue.fetchAll);
   app.put('/api/venues', Venue.updateOne);
   app.delete('/api/venues', Venue.removeOne);
-  app.post('/api/venues/search', Venue.searchAll);
-  app.post('/api/venues/fetch', Venue.searchNew);
+  app.get('/api/venues/search-all', Venue.searchAll);
+  app.get('/api/venues/search-new', Venue.searchNew);
 
   app.get('*', function(req, res, next) {
     res.status(200).sendfile(path.resolve(__dirname, '../../public/index.html'));

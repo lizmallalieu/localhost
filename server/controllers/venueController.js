@@ -103,7 +103,7 @@ module.exports = {
   // FETCH MULTIPLE VENUES //
   ///////////////////////////
   fetchAll: (req, res) => {
-    findVenue({_id: { $in: req.body.venues}})
+    findVenue({_id: {$in: req.body.venues}})
     .then((venues) => {
       if (venues.length) {
         res.status(200).json(venues);
@@ -112,37 +112,56 @@ module.exports = {
       }
     })
     .fail((err) => {
-      console.error(`Failed to multiple venue data from database: ${err}`);
-      throw new Error(`Failed to multiple venue data from database: ${err}`);
+      console.error(`Failed to fetch multiple venue data from database: ${err}`);
+      throw new Error(`Failed to fetch multiple venue data from database: ${err}`);
     });
   },
 
-  ////////////////////////////
-  // SEARCH MULTIPLE VENUES //
-  ////////////////////////////
+  ///////////////////
+  // SEARCH VENUES //
+  ///////////////////
   searchAll: (req, res) => {
-    res.send(200)
+    var re = new RegExp(req.query.search, 'i');
+    findVenues({name: re})
+    .then((venues) => {
+      if (venues.length) {
+        res.status(200).json(venues);
+      } else {
+        res.status(204).send('No venues found');
+      }
+    })
+    .fail((err) => {
+      console.error(`Failed to search multiple venue data from database: ${err}`);
+      throw new Error(`Failed to search multiple venue data from database: ${err}`);
+    });
   },
 
   //////////////////////////////////
   // SEARCH FOURSQUARE FOR VENUES //
   //////////////////////////////////
   searchNew: (req, res) => {
-    const url = 'https://api.foursquare.com/v2/venues/search';
-    const params = {
-      client_id: process.env.API_FSQ_CLIENT,
-      client_secret: process.env.API_FSQ_SECRET,
-      v: 20130815,
-      near: this.state.location.zipcode,
-      query: query
-    }
-
-    $.get(url, params)
-    .done(function(data) {
-      callback(data)
-      }).fail(function(err) {
-      callback(err)
+    var search = req.query.search.split(' ').join('+')
+    var qs = foursquare.query;
+    qs.v = 20130815;
+    qs.near = 94102;
+    qs.query = search;
+    httpRequest({
+      uri: `${foursquare.uri}/search`,
+      qs: qs,
+      json: true
     })
+    .then((result) => {
+      if(result) {
+        res.status(200).json(result.response.venues);
+      } else {
+        console.error('Could not find any results for ' + query);
+        res.status(404).json('Could not find any results for ' + query);
+      }
+    })
+    .catch(function(err) {
+      console.error('Could not query Foursquare with bad request: ' + err);
+      res.status(400).json('Could not query Foursquare with bad request: ' + err);
+    });
   },
 
   //////////////////

@@ -17,33 +17,25 @@ import SignIn from './account/SignIn'
 import SignUp from './account/SignUp'
 import Welcome from './welcome/Welcome'
 import Tour from './tour/Tour'
-import CreateTourForm from './profile/CreateTourForm'
+import TourForm from './profile/CreateTourForm'
 
 /*-------------*/
 /*     App     */
 /*-------------*/
 
 class App extends React.Component {
-  /* Adds newly created tour to database */
-
   constructor(props) {
     super(props);
     this.state = {
       user: {},
       signUpModal: false,
       signInModal: false,
-      signedIn: false
+      signedIn: false,
+      tourFormModal: false
     }
-  }
+  };
 
-  signIn = () => {
-    // signedIn state controls what shows up on nav bar. This method is passed down
-    // to SignUp and SignIn components.
-    // this.setState({
-    //   signedIn: true
-    // })
-  }
-
+  /* Adds newly created tour to database */
   submitNewTour(tourInfo) {
     $.post('/api/createTour', tourInfo)
     .done((data) => {
@@ -55,6 +47,14 @@ class App extends React.Component {
     })
   }
 
+  signIn = () => {
+    // signedIn state controls what shows up on nav bar. This method is passed down
+    // to SignUp and SignIn components.
+    // this.setState({
+    //   signedIn: true
+    // })
+  }
+
   /* Pass this method down to children components so you can set the App state from nested dependencies. This method takes in a single state update object used to simply set properties in the state. Alternatively, you can pass in a specific key-value pair with the state passed in as null. This is useful for when you need to set a property in a deeply nested object in the state. */
   setAppState = (state, key, value) => {
     if (state) {
@@ -64,7 +64,6 @@ class App extends React.Component {
       newState[key] = value;
       this.setState(newState);
     }
-    console.log('App State:', this.state)
   }
 
   toggleModal = (modal) => {
@@ -77,7 +76,8 @@ class App extends React.Component {
       status: this.state,
       fx: {
         submitNewTour: this.submitNewTour,
-        setAppState: this.setAppState
+        setAppState: this.setAppState,
+        toggleModal: this.toggleModal
       }
     });
 
@@ -89,7 +89,7 @@ class App extends React.Component {
           toggleModal={this.toggleModal}
           signIn={this.signIn}
         />
-        <CreateTourForm
+        <TourForm
          {...this.state}
          setAppState={this.setAppState}
          toggleModal={this.toggleModal}
