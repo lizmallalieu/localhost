@@ -24,6 +24,16 @@ import Tour from './tour/Tour'
 
 class App extends React.Component {
   /* Adds newly created tour to database */
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {},
+      signUpModal: false,
+      signInModal: false
+    }
+  }
+
   submitNewTour(tourInfo) {
     $.post('/api/createTour', tourInfo)
     .done((data) => {
