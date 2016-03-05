@@ -19,6 +19,7 @@ import SignUp from './account/SignUp'
 import Welcome from './welcome/Welcome'
 import Tour from './tour/Tour'
 import TourForm from './profile/CreateTourForm'
+import PaymentForm from './payment/PaymentForm'
 
 /*-------------*/
 /*     App     */
@@ -32,7 +33,8 @@ class App extends React.Component {
       signUpModal: false,
       signInModal: false,
       signedIn: false,
-      tourFormModal: false
+      tourFormModal: false,
+      paymentFormModal: false
     }
   };
 
@@ -114,6 +116,11 @@ class App extends React.Component {
          setAppState={this.setAppState}
          toggleModal={this.toggleModal}
          createTour={this.createTour}
+        />
+        <PaymentForm
+         {...this.state}
+         setAppState={this.setAppState}
+         toggleModal={this.toggleModal}
         />
         <SignIn
           {...this.state}
