@@ -1,7 +1,7 @@
 import React from 'react'
 import $ from 'jquery'
 
-import {Card, CardTitle, CardText, CardMedia} from 'material-ui';
+import {Card, CardTitle, CardText, CardMedia, RadioButtonGroup, RadioButton, CardActions} from 'material-ui';
 
 export default class CreatedToursListEntry extends React.Component {
   constructor(props) {
@@ -12,8 +12,9 @@ export default class CreatedToursListEntry extends React.Component {
       city: "",
       date: "",
       price: "",
-      photo: ""
-    }
+      photo: "",
+      rating: null
+    };
   }
 
   // Fetches tour info from DB before rendering so component renders with correct information
@@ -27,15 +28,15 @@ export default class CreatedToursListEntry extends React.Component {
         city : data.city,
         date : date,
         price : data.price,
-        photo: data.photo
-      })
+        photo: data.photo,
+      });
       console.log('this state', this.state);
     })
     .fail( (err) => {
       console.log('error getProfile', err);
-    })
+    });
   }
-  
+
   render() {
 
     var styles = {
@@ -44,7 +45,7 @@ export default class CreatedToursListEntry extends React.Component {
         'backgroundImage': `url("${this.state.photo}")`,
         'backgroundSize': 'cover',
         'backgroundPosition': 'center 50%',
-        'backgroundRepeat': 'no-repeat'     
+        'backgroundRepeat': 'no-repeat'
       }
     }
 
@@ -52,11 +53,39 @@ export default class CreatedToursListEntry extends React.Component {
       <div>
         <Card>
           <CardMedia
-            overlay={<CardTitle title={this.state.name} subtitle={this.state.city + ' · $' + this.state.price} />}
-          >
+            overlay={<CardTitle title={this.state.name} subtitle={this.state.city + ' · $' + this.state.price} />}>
             <div style={styles.card}>
              </div>
           </CardMedia>
+
+          <CardActions>
+            <RadioButtonGroup name="shipSpeed">
+               <RadioButton
+                 value="1"
+                 style={styles.radioButton}
+               />
+            </RadioButtonGroup>
+            <RadioButtonGroup name="shipSpeed">
+               <RadioButton
+                 value="1"
+                 style={styles.radioButton}
+               />
+            </RadioButtonGroup>
+
+            <RadioButtonGroup name="shipSpeed">
+               <RadioButton
+                 value="1"
+                 style={styles.radioButton}
+               />
+            </RadioButtonGroup>
+            <RadioButtonGroup name="shipSpeed">
+               <RadioButton
+                 value="1"
+                 style={styles.radioButton}
+               />
+            </RadioButtonGroup>
+
+          </CardActions>
         </Card>
       </div>
     )
