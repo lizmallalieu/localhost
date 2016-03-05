@@ -107,9 +107,9 @@ export default class Navigation extends React.Component {
           iconElementLeft={
             <div className='leftside'>
               <Link to="/search">
-              <RaisedButton style={buttonStyles} label='Find a Tour'/>
+              <RaisedButton style={buttonStyles} primary={true} label='Find a Tour'/>
               </Link>
-              <RaisedButton style={buttonStyles} label='Create a Tour' onTouchTap={evt => this.props.toggleModal('tourFormModal')}/>
+              <RaisedButton style={buttonStyles} primary={true} label='Create a Tour' onTouchTap={evt => this.props.toggleModal('tourFormModal')}/>
             </div>
           }
           iconElementRight={
