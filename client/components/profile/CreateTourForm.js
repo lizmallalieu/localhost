@@ -1,5 +1,6 @@
 import React from 'react'
 import $ from 'jquery'
+import _ from 'underscore'
 
 import ActionAndroid from 'material-ui/lib/svg-icons/action/android'
 import AutoComplete from 'material-ui/lib/auto-complete'
@@ -23,25 +24,9 @@ import Toggle from 'material-ui/lib/toggle'
 /* -------------- */
 
 const styles = {
-  modal: {
-    width: '50%',
-    minWidth: '300px',
-    maxWidth: '500px',
-    position: 'absolute',
-    transform: 'translate3d(-50%, -50%, 0)',
-    top: '50%',
-    left: '50%'
-  },
   block: {
     maxWidth: '250px',
     marginTop: '25px'
-  },
-  pad: {
-    paddingLeft: '10px'
-  },
-  slide: {
-    paddingLeft: '15px',
-    paddingRight: '15px'
   },
   grid: {
     marginTop: '15px',
@@ -51,6 +36,30 @@ const styles = {
     paddingTop: 16,
     marginBottom: 12,
     fontWeight: 400
+  },
+  list: {
+    fontSize: '0.7em'
+  },
+  menu: {
+    maxHeight: '40vh',
+    overflow: 'hidden',
+    overflowY: 'scroll'
+  },
+  modal: {
+    width: '60%',
+    minWidth: '300px',
+    maxWidth: '600px',
+    position: 'absolute',
+    transform: 'translate3d(-50%, -50%, 0)',
+    top: '50%',
+    left: '50%'
+  },
+  pad: {
+    paddingLeft: '10px'
+  },
+  slide: {
+    paddingLeft: '15px',
+    paddingRight: '15px'
   }
 };
 
@@ -74,9 +83,8 @@ export default class CreateTourForm extends React.Component {
         addPhone: false,
         addTwitter: false
       },
-      query: '',
       search: [{
-        text: '',
+        text: '[Search Foursquare]',
         value: (
           <MenuItem
             secondaryText="Powered by Foursquare"
@@ -140,33 +148,77 @@ export default class CreateTourForm extends React.Component {
     this.props.createTour(tour);
   }
 
-  searchPlace = (query, evt) => {
-    this.setState({ query: query });
-    var button = this.state.search[this.state.search.length - 1];
-    button.text = query;
-    console.log('SEARCH PLACE: evt', evt, 'query', query)
-
-    $.get('/api/venues/search-all', { query: query })
-    .done(venues => {
-      console.log('VENUES!', venues);
-    })
-    .fail(err => {
-      console.error('Could not search Foursquare for venues', err);
-      throw new Error('Could not search Foursquare for venues', err);
-    })
+  mapSearchResults = (venues) => {
+    var addSearchResult = this.addSearchResult;
+    _.map(venues, (venue, key) => {
+      if (key <= 15) {
+        $.get('/api/venues', {venueId: venue.id})
+        .done((venue) => {
+          if (venue) {
+            addSearchResult(venue)
+          } else {
+            console.error('Did not get venue back from database')
+          }
+        }).fail((err) => {
+          console.error('Could not get venue data from database', err)
+          throw new Error('Could not get venue data from database', err)
+        });
+      }
+    });
   }
 
-  fetchPlace = (query, evt) => {
-    console.log('FETCH PLACE: evt', evt, 'query', query)
+  addSearchResult = (venue) => {
+    var newSearch = this.state.search;
+    newSearch.splice(newSearch.length - 2, 0, venue);
+    this.setState({search: newSearch});
+  }
 
-    $.get('/api/venues/search-new', { query: query })
-    .done(venues => {
-      console.log('VENUES!', venues);
-    })
-    .fail(err => {
-      console.error('Could not search Foursquare for venues', err);
-      throw new Error('Could not search Foursquare for venues', err);
-    })
+  searchPlace = (query) => {
+    if (query.length > 3) {
+      var button = this.state.search[this.state.search.length - 1];
+      button.text = query;
+      $.get('/api/venues/search-all', {search: query})
+      .done(venues => {
+        var results = _.map(venues, venue => {
+          return {
+            text: venue.name,
+            value: (
+              <MenuItem
+                primaryText={venue.name}
+                secondaryText={venue.address}
+                venueId={venue.id}
+              />
+            ),
+          }
+        });
+        results.push(button);
+        this.setState({search: results});
+      })
+      .fail(err => {
+        console.error('Could not search database for venues', err);
+        throw new Error('Could not search database for venues', err);
+      });
+    }
+  }
+
+  fetchPlace = (query, index) => {
+    if (query.dispatchMarker || index === this.state.search.length - 1 || index < 0) {
+      var button = this.state.search[this.state.search.length - 1];
+      button.text = query;
+
+      var mapSearchResults = this.mapSearchResults;
+      $.get('/api/venues/search-new', {search: query})
+      .done(venues => {
+        mapSearchResults(venues);
+        console.log('FETCHED VENUES!', venues);
+      })
+      .fail(err => {
+        console.error('Could not search Foursquare for venues', err);
+        throw new Error('Could not search Foursquare for venues', err);
+      });
+    } else {
+      console.log('[SAVING]','query:', query,'index:',index)
+    }
   }
 
   // Closes the modal, and also submits the tour
@@ -304,6 +356,8 @@ export default class CreateTourForm extends React.Component {
                   filter={AutoComplete.noFilter}
                   fullWidth={true}
                   openOnFocus={true}
+                  menuStyle={styles.menu}
+                  listStyle={styles.list}
                   dataSource={this.state.search}
                   onNewRequest={this.fetchPlace}
                   onUpdateInput={this.searchPlace}
