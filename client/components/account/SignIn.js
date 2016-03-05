@@ -69,7 +69,7 @@ export default class SignIn extends React.Component {
           return;
         } else {
           this.props.signIn();
-          this.props.toggleModal('signUpModal');
+          this.props.toggleModal('signInModal');
 
           // Changing the window.location allows the React-router to render the correct component
           browserHistory.push('/profile')
