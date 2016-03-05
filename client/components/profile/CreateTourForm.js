@@ -1,5 +1,7 @@
 import React from 'react'
+import $ from 'jquery'
 
+import ActionAndroid from 'material-ui/lib/svg-icons/action/android'
 import AutoComplete from 'material-ui/lib/auto-complete'
 import DatePicker from 'material-ui/lib/date-picker/date-picker'
 import Dialog from 'material-ui/lib/dialog'
@@ -9,16 +11,56 @@ import GridTile from 'material-ui/lib/grid-list/grid-tile'
 import MenuItem from 'material-ui/lib/menus/menu-item'
 import RaisedButton from 'material-ui/lib/raised-button'
 import Slider from 'material-ui/lib/slider'
+import SvgIcon from 'material-ui/lib/svg-icon'
 import TextField from 'material-ui/lib/text-field'
 import Tab from 'material-ui/lib/tabs/tab'
 import Tabs from 'material-ui/lib/tabs/tabs'
 import TimePicker from 'material-ui/lib/time-picker/time-picker'
 import Toggle from 'material-ui/lib/toggle'
 
+/* -------------- */
+/*     STYLES     */
+/* -------------- */
+
+const styles = {
+  modal: {
+    width: '50%',
+    minWidth: '300px',
+    maxWidth: '500px',
+    position: 'absolute',
+    transform: 'translate3d(-50%, -50%, 0)',
+    top: '50%',
+    left: '50%'
+  },
+  block: {
+    maxWidth: '250px',
+    marginTop: '25px'
+  },
+  pad: {
+    paddingLeft: '10px'
+  },
+  slide: {
+    paddingLeft: '15px',
+    paddingRight: '15px'
+  },
+  grid: {
+    marginTop: '15px',
+  },
+  head: {
+    fontSize: 24,
+    paddingTop: 16,
+    marginBottom: 12,
+    fontWeight: 400
+  }
+};
+
+/* ---------------------- */
+/*     CreateTourForm     */
+/* ---------------------- */
+
 export default class CreateTourForm extends React.Component {
   constructor(props) {
-    super(props)
-    this.props = props
+    super(props);
     this.state = {
       show: false,
       tab: 'tour',
@@ -32,26 +74,26 @@ export default class CreateTourForm extends React.Component {
         addPhone: false,
         addTwitter: false
       },
-      search: [
-        {
-          text: 'text-value1',
-          value: (
-            <MenuItem
-              primaryText="text-value1"
-              secondaryText="&#9786;"
+      query: '',
+      search: [{
+        text: '',
+        value: (
+          <MenuItem
+            secondaryText="Powered by Foursquare"
+            onClick={this.fetchPlace}
+          >
+            <FlatButton
+              label="Find more Places..."
+              labelPosition="after"
+              primary={true}
+              style={styles.button}
+              hoverColor={'transparent'}
+              icon={<SvgIcon><path d="M14.9 3.6L14.4 6.5C14.3 6.8 13.9 7.2 13.5 7.2L8.3 7.2C7.8 7.2 7.3 7.6 7.3 8.2L7.3 8.8C7.3 9.4 7.8 9.8 8.3 9.8L12.8 9.8C13.2 9.8 13.6 10.2 13.5 10.7 13.4 11.1 13 13.3 12.9 13.6 12.9 13.8 12.6 14.2 12.1 14.2L8.5 14.2C7.9 14.2 7.7 14.3 7.2 14.8 6.8 15.4 2.8 20.1 2.8 20.1 2.8 20.2 2.8 20.1 2.8 20.1L2.8 3.6C2.8 3.2 3.1 2.8 3.6 2.8L14.3 2.8C14.7 2.8 15 3.1 14.9 3.6L14.9 3.6ZM15.4 15C15.5 14.4 17.2 5.9 17.8 3.2L15.4 15ZM15.7 0L2.4 0C0.5 0 0 1.4 0 2.3L0 23.4C0 24.4 0.5 24.8 0.8 24.9 1.1 25 1.9 25.1 2.4 24.6 2.4 24.6 8.7 17.3 8.8 17.1 9 17 9 17 9.2 17L13.2 17C14.9 17 15.2 15.8 15.4 15 15.5 14.4 17.2 5.9 17.8 3.2 18.2 1.1 17.7 0 15.7 0L15.7 0Z" fill="#F94877"/></SvgIcon>}
+              onClick={this.fetchPlace}
             />
-          ),
-        },
-        {
-          text: 'text-value2',
-          value: (
-            <MenuItem
-              primaryText="text-value2"
-              secondaryText="&#9786;"
-            />
-          ),
-        },
-      ]
+          </MenuItem>
+        ),
+      }]
     }
   };
 
@@ -66,24 +108,25 @@ export default class CreateTourForm extends React.Component {
     var newState = {};
     newState[prop] = e.target.value;
     this.setState(newState);
-  };
+  }
 
   // Clears input when box is clicked
   reset = (prop, e) => {
     var newState = {};
     newState[prop] = '';
     this.setState(newState);
-  };
+  }
 
   // Hides the modal window
   close = () => {
     this.setState({ show: false });
   }
 
-  // Shows the modal window
-  show = () => {
-    this.setState({ show: true });
-  }
+  // // Shows the modal window
+  // toggleModal = (modal) => {
+  //   var toggle = !this.props[modal];
+  //   this.props.setAppState(null, modal, toggle);
+  // }
 
   changeTab = (e) => {
     this.setState({ tab: e.props.value });
@@ -95,6 +138,35 @@ export default class CreateTourForm extends React.Component {
     tour.userId = this.props.user.uid;
     console.log('look at me i am tour:', tour)
     this.props.createTour(tour);
+  }
+
+  searchPlace = (query, evt) => {
+    this.setState({ query: query });
+    var button = this.state.search[this.state.search.length - 1];
+    button.text = query;
+    console.log('SEARCH PLACE: evt', evt, 'query', query)
+
+    $.get('/api/venues/search-all', { query: query })
+    .done(venues => {
+      console.log('VENUES!', venues);
+    })
+    .fail(err => {
+      console.error('Could not search Foursquare for venues', err);
+      throw new Error('Could not search Foursquare for venues', err);
+    })
+  }
+
+  fetchPlace = (query, evt) => {
+    console.log('FETCH PLACE: evt', evt, 'query', query)
+
+    $.get('/api/venues/search-new', { query: query })
+    .done(venues => {
+      console.log('VENUES!', venues);
+    })
+    .fail(err => {
+      console.error('Could not search Foursquare for venues', err);
+      throw new Error('Could not search Foursquare for venues', err);
+    })
   }
 
   // Closes the modal, and also submits the tour
@@ -119,72 +191,40 @@ export default class CreateTourForm extends React.Component {
       <FlatButton
         label="Cancel"
         secondary={true}
-        onTouchTap={this.close}
+        onTouchTap={evt => this.props.toggleModal('tourFormModal')}
       />,
       <FlatButton
         label="Submit"
         primary={true}
         onClick={this.handleSubmit}
         disabled={!this.state.validForm}
-        onTouchTap={this.close}
+        onTouchTap={evt => this.props.toggleModal('tourFormModal')}
       /> ],
       datetime: [
       <FlatButton
         label="Ok"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.close}
+        onTouchTap={evt => this.props.toggleModal('tourFormModal')}
       /> ]
-    };
-
-    const styles = {
-      modal: {
-        width: '50%',
-        minWidth: '300px',
-        maxWidth: '500px',
-        position: 'absolute',
-        transform: 'translate3d(-50%, -50%, 0)',
-        top: '50%',
-        left: '50%'
-      },
-      block: {
-        maxWidth: '250px',
-        marginTop: '25px'
-      },
-      pad: {
-        paddingLeft: '10px'
-      },
-      slide: {
-        paddingLeft: '15px',
-        paddingRight: '15px'
-      },
-      grid: {
-        marginTop: '15px',
-      },
-      head: {
-        fontSize: 24,
-        paddingTop: 16,
-        marginBottom: 12,
-        fontWeight: 400
-      }
     };
 
     return (
       <div className="createTourContainer">
         <RaisedButton
           label="Modal Dialog"
-          onTouchTap={this.show}
+          onTouchTap={evt => this.props.toggleModal('tourFormModal')}
         />
 
         <Dialog
           title={`Create a ${this.state.tab}`}
           actions={actions.form}
           modal={true}
-          open={this.state.show}
+          open={this.props.tourFormModal}
           contentStyle={styles.modal}
         >
           <Tabs>
-            <Tab label="Tour" value="tour" onActive={this.changeTab}  >
+            <Tab label="Tour" value="tour" onActive={this.changeTab}>
               <GridList
                 cols={6}
                 padding={5}
@@ -262,15 +302,11 @@ export default class CreateTourForm extends React.Component {
                 <AutoComplete
                   floatingLabelText="Find a location"
                   filter={AutoComplete.noFilter}
-                  openOnFocus={false}
                   fullWidth={true}
+                  openOnFocus={true}
                   dataSource={this.state.search}
-                />
-                <TextField
-                  hintText="i.e., Napa Wine Tour"
-                  floatingLabelText="Tour Name"
-                  fullWidth={true}
-                  onChange={(e) => this.updateForm('title', e.target.value)}
+                  onNewRequest={this.fetchPlace}
+                  onUpdateInput={this.searchPlace}
                 />
               </div>
             </Tab>

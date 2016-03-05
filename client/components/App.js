@@ -17,13 +17,35 @@ import SignIn from './account/SignIn'
 import SignUp from './account/SignUp'
 import Welcome from './welcome/Welcome'
 import Tour from './tour/Tour'
-import CreateTourForm from './profile/CreateTourForm'
+import TourForm from './profile/CreateTourForm'
 
 /*-------------*/
 /*     App     */
 /*-------------*/
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {},
+      signinModal: false,
+      signupModal: false,
+      tourFormModal: false
+    }
+  };
+
+  /* Adds newly created tour to database */
+  submitNewTour(tourInfo) {
+    $.post('/api/createTour', tourInfo)
+    .done((data) => {
+      this.setState({ userMadeTours: data.createdTours })
+    })
+    .fail((err) => {
+      console.log('Could not save tour to database', err)
+      throw new Error('Could not save tour to database', err)
+    })
+  }
+
   /* Adds newly created tour to database */
 
   constructor(props) {
@@ -64,7 +86,11 @@ class App extends React.Component {
       newState[key] = value;
       this.setState(newState);
     }
-    console.log('App State:', this.state)
+  }
+
+  toggleModal = (modal) => {
+    var toggle = !this.state[modal];
+    this.setAppState(null, modal, toggle);
   }
 
   toggleModal = (modal) => {
@@ -77,7 +103,8 @@ class App extends React.Component {
       status: this.state,
       fx: {
         submitNewTour: this.submitNewTour,
-        setAppState: this.setAppState
+        setAppState: this.setAppState,
+        toggleModal: this.toggleModal
       }
     });
 
@@ -89,7 +116,7 @@ class App extends React.Component {
           toggleModal={this.toggleModal}
           signIn={this.signIn}
         />
-        <CreateTourForm
+        <TourForm
          {...this.state}
          setAppState={this.setAppState}
          toggleModal={this.toggleModal}
