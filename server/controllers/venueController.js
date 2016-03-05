@@ -103,7 +103,7 @@ module.exports = {
   // FETCH MULTIPLE VENUES //
   ///////////////////////////
   fetchAll: (req, res) => {
-    findVenue({_id: { $in: req.body.venues}})
+    findVenue({_id: {$in: req.body.venues}})
     .then((venues) => {
       if (venues.length) {
         res.status(200).json(venues);
@@ -112,8 +112,27 @@ module.exports = {
       }
     })
     .fail((err) => {
-      console.error(`Failed to multiple venue data from database: ${err}`);
-      throw new Error(`Failed to multiple venue data from database: ${err}`);
+      console.error(`Failed to fetch multiple venue data from database: ${err}`);
+      throw new Error(`Failed to fetch multiple venue data from database: ${err}`);
+    });
+  },
+
+  ///////////////////
+  // SEARCH VENUES //
+  ///////////////////
+  searchAll: (req, res) => {
+    var re = new RegExp(req.query.search, 'i');
+    findVenues({name: re})
+    .then((venues) => {
+      if (venues.length) {
+        res.status(200).json(venues);
+      } else {
+        res.status(204).send('No venues found');
+      }
+    })
+    .fail((err) => {
+      console.error(`Failed to search multiple venue data from database: ${err}`);
+      throw new Error(`Failed to search multiple venue data from database: ${err}`);
     });
   },
 
@@ -121,10 +140,11 @@ module.exports = {
   // SEARCH FOURSQUARE FOR VENUES //
   //////////////////////////////////
   searchNew: (req, res) => {
+    var search = req.query.search.split(' ').join('+')
     var qs = foursquare.query;
-    qs.near = 94102;
-    qs.query = req.params.query;
     qs.v = 20130815;
+    qs.near = 94102;
+    qs.query = search;
     httpRequest({
       uri: `${foursquare.uri}/search`,
       qs: qs,
