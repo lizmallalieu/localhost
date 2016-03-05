@@ -67,7 +67,7 @@ export default class Navigation extends React.Component {
   endSession = () => {
     // Clicking on logout will terminate the session and re-route to welcome page
     $.get('/api/logout').done(() => {
-      // this.props.setAppState({signedIn: false})
+      this.props.setAppState({signedIn: false})
       browserHistory.push('/');
     })
   }

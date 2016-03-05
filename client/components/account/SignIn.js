@@ -107,6 +107,7 @@ export default class SignIn extends React.Component {
       <FlatButton
         label="Cancel"
         secondary={true}
+        
       />,
       <FlatButton
         label="Sign In"
