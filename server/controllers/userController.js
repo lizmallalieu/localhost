@@ -47,6 +47,7 @@ module.exports = {
   },
 
   signup: function (req, res, next) {
+    console.log("REQUEST BODY :", req.body)
     var username = req.body.data.username;
     var password = req.body.data.password;
     var email = req.body.data.email;
@@ -64,7 +65,8 @@ module.exports = {
               email: email,
               password: password,
               createdTours: [],
-              attendingTours: []
+              attendingTours: [],
+              ratedTours: {"holder" : "values"}
           });
           User.hashPassword(password, function(hash) {
             if(err) {
@@ -109,7 +111,7 @@ module.exports = {
       });
     });
   },
-  
+
   editUserProfile: function(req, res) {
     var aboutMe = req.body.data;
     User.findOne({_id: req.session.userId}, function(err, user){

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 import $ from 'jquery'
 
 import Tour from '../tour/Tour'
@@ -35,7 +35,7 @@ export default class Profile extends React.Component {
       // if no session, restrict function will return {isAuth: false} in data
       // if this is true, we want to redirect to signin page
       if (data.isAuth === false) {
-        window.location = '/#/welcome'
+        browserHistory.push('/');
       } else {
         this.setState({
           showProfile: true,
