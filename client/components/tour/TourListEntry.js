@@ -66,7 +66,10 @@ export default class CreatedToursListEntry extends React.Component {
   render() {
     var styles = {
       card: {
+        'margin': '0px',
+        'padding': '0px',
         'height': '250px',
+        // 'width': '',
         'backgroundImage': `url("${this.state.photo}")`,
         'backgroundSize': 'cover',
         'backgroundPosition': 'center 50%',
@@ -83,7 +86,6 @@ export default class CreatedToursListEntry extends React.Component {
     }
 
     return (
-      <div>
         <Card>
           <CardMedia
             overlay={<CardTitle title={this.state.name} subtitle={this.state.city + ' · $' + this.state.price} />}>
@@ -136,7 +138,6 @@ export default class CreatedToursListEntry extends React.Component {
 
           </CardActions>
         </Card>
-      </div>
     )
   }
 }

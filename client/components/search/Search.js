@@ -7,6 +7,7 @@ import SearchList from './SearchList'
 import SearchMap from './SearchMap'
 import {Link} from 'react-router'
 import Tour from '../tour/Tour'
+import TourList from '../tour/TourList'
 
 
 export default class Search extends React.Component {
@@ -36,25 +37,28 @@ export default class Search extends React.Component {
 
   // Fetches all tours matching the passed-in search criteria (options)
   getToursFromDatabase (options) {
+    console.log('inside getToursFromDatabase');
     $.post('/api/search', {data: options})
     .done(tours => {
       console.log('in done');
+      console.log('tours', tours);
       // Checks if the tours is empty array
-      if (tours.length === 0) {
-        this.setState ({
-          notFound: true,
-          tours: []
-        })
-      } else {
-        // When it finds, changes back to false so it is not shown
-        this.setState ({
-          notFound: false,
-          tours: []
-        })
-      }
+      // if (tours.length === 0) {
+      //   this.setState ({
+      //     notFound: true,
+      //     tours: []
+      //   })
+      // } else {
+      //   // When it finds, changes back to false so it is not shown
+      //   this.setState ({
+      //     notFound: false,
+      //     tours: []
+      //   })
+      // }
       this.setState ({
         tours: tours
       })
+      console.log('this.state.tours', this.state.tours)
     })
     .fail(({responseJSON}) => {
       responseJSON.error.errors.forEach((err) =>
@@ -97,22 +101,11 @@ getTourInfo = (tour) => {
       lat: tour.LatLng[0],
       lng: tour.LatLng[1]
     },
-    showTourModal: false
+    showTourModal: true
   })
   console.log('markers', markers);
-  console.log('this.state after setState     ', this.state);
+  console.log('this.state after setState', this.state);
 }
-
-// This is passed down to Tour. Hides the Tour modal.
-closeTourModal () {
-  this.setState({showTourModal: false});
-};
-
-changeFound () {
-  this.setState ({
-    notFound: false
-  })
-};
 
 /* <SearchMap/> renders correctly first time, but doesn't re-render with subsequent searches unless it is demounted first. To handle this,
 * every time a search is made, the 'tours' state property is first set to an empty array (lines 31/37) so the <SearchMap/> will be demounted,
@@ -124,7 +117,7 @@ render() {
   var tourProps = {
     page: 'search',
     currentTour: this.state.currentTour,
-    closeTourModal: this.closeTourModal.bind(this),
+    // closeTourModal: this.closeTourModal.bind(this),
     show: this.state.showTourModal
   }
   var searchListProps = {

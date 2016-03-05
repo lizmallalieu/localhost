@@ -19,41 +19,47 @@ export default class Navigation extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      showLoginReminder: false,
-      signedIn: false,
-      show: false,
-      open: false
+      // showLoginReminder: false,
+      // show: false,
+      // open: false
     }
   }
 
-  componentWillMount() {
-    // Checks to see if the user is logged in or not. Changes the signedIn property, which hides or shows different parts of the nav bar
-    $.get('/api/session')
-    .done((data) => {
-      if (data.isAuth === false) {
-        // this.props.setAppState({signedIn: false})
-      } else {
-        // this.props.setAppState({signedIn: true})
-      }
-    })
-    .fail((err) => {
-      console.error('Error fetching session from server', err)
-      throw new Error('Error fetching session from server', err)
-    })
-  }
+  // componentWillMount() {
+  //   // Checks to see if the user is logged in or not. Changes the signedIn property, which hides or shows different parts of the nav bar
+  //   $.get('/api/session')
+  //   .done((data) => {
+  //     if (data.isAuth === false) {
+  //       this.props.setAppState({signedIn: false})
+  //     } else {
+  //       this.props.setAppState({signedIn: true})
+  //     }
+  //   })
+  //   .fail((err) => {
+  //     console.error('Error fetching session from server', err)
+  //     throw new Error('Error fetching session from server', err)
+  //   })
+  // }
 
   handleProfileClick = () => {
+    console.log('inside handleProfileClick');
+    console.log('this.props.state inside handleProfileClick', this.props.state)
+    console.log('this.props.signedIn inside handleProfileClick', this.props.signedIn)
     $.get('/api/profile')
     .done((data) => {
       // If the user is not signed in, then show an error message that disappears after 2 seconds.
       if (!this.state.signedIn) {
-        this.setState({ showLoginReminder: true })
-        var setState = this.setState.bind(this)
-        setTimeout(() => {
-          setState({ showLoginReminder:false })
-        }, 2000)
+        console.log('not signed in');
+        // this.setState({ showLoginReminder: true })
+        // var setState = this.setState.bind(this)
+        // setTimeout(() => {
+        //   setState({ showLoginReminder:false })
+        // }, 2000)
+        // TODO: somewhat hard coding this in here
+        browserHistory.push('/profile')
       } else {
         // If user is signed in, redirect to profile page
+        console.log('signed in');
         this.setState({ showLoginReminder: false })
         browserHistory.push('/profile')
       }
@@ -67,7 +73,7 @@ export default class Navigation extends React.Component {
   endSession = () => {
     // Clicking on logout will terminate the session and re-route to welcome page
     $.get('/api/logout').done(() => {
-      // this.props.setAppState({signedIn: false})
+      this.props.setAppState({signedIn: false})
       browserHistory.push('/');
     })
   }
@@ -90,17 +96,20 @@ export default class Navigation extends React.Component {
       }
     };
 
+    const buttonStyles = {
+      margin: 5,
+    }
+
     return (
       <div>
         <AppBar
-          title="local host"
           onTitleTouchTap={this.handleProfileClick}
           iconElementLeft={
             <div className='leftside'>
               <Link to="/search">
-              <Tab label='Find a Tour'/>
+              <RaisedButton style={buttonStyles} primary={true} label='Find a Tour'/>
               </Link>
-              <Tab label='Create a Tour' onTouchTap={evt => this.props.toggleModal('tourFormModal')}/>
+              <RaisedButton style={buttonStyles} primary={true} label='Create a Tour' onTouchTap={evt => this.props.toggleModal('tourFormModal')}/>
             </div>
           }
           iconElementRight={
