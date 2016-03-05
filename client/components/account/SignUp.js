@@ -1,6 +1,7 @@
 import React from 'react'
 import $ from 'jquery'
-import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem} from 'react-bootstrap'
+import { browserHistory } from 'react-router'
+import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem,} from 'react-bootstrap'
 
 import {Tabs, Tab, Dialog, FlatButton, TextField} from 'material-ui';
 
@@ -71,7 +72,7 @@ export default class SignUp extends React.Component {
             }, 2000);
           });
         } else {
-          window.location = '/#/profile';
+          browserHistory.push('/profile');
           this.setState({
             show: false
           })
@@ -139,7 +140,7 @@ export default class SignUp extends React.Component {
 
     return (
       <div>
-      <Tab 
+      <Tab
         label='Sign Up'
         onTouchTap={this.show}
       >
@@ -152,7 +153,7 @@ export default class SignUp extends React.Component {
         open={this.state.show}
         >
       </Dialog>
-    
+
       </div>
     )
   }

@@ -1,7 +1,6 @@
 import React from 'react'
 import $ from 'jquery'
-
-import {Router, Route, IndexRoute, Link, hashHistory} from 'react-router'
+import {Router, Route, IndexRoute, Link, hashHistory, browserHistory} from 'react-router'
 import {Button, ButtonGroup, Navbar, Nav, NavItem} from 'react-bootstrap'
 
 import SignIn from './account/SignIn'
@@ -49,7 +48,7 @@ export default class Navigation extends React.Component {
       } else {
         // If user is signed in, redirect to profile page
         this.setState({ showLoginReminder: false })
-        window.location = '/#/profile';
+        browserHistory.push('/profile')
       }
     })
     .fail((err) => {
@@ -62,7 +61,7 @@ export default class Navigation extends React.Component {
     // Clicking on logout will terminate the session and re-route to welcome page
     $.get('/api/logout').done(() => {
       this.setState({ signedIn: false })
-      window.location = '/#/welcome'
+      browserHistory.push('/');
     })
   }
 

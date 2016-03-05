@@ -48,12 +48,9 @@ module.exports = {
 
   signup: function (req, res, next) {
     console.log("REQUEST BODY :", req.body)
-    var username = req.body.username;
-    var password = req.body.password;
-    var email = req.body.email;
-    // var username = req.body.data.username;
-    // var password = req.body.data.password;
-    // var email = req.body.data.email;
+    var username = req.body.data.username;
+    var password = req.body.data.password;
+    var email = req.body.data.email;
     // Check to see if a user exists already:
     User.findOne({username: username})
       .exec(function(err, user) {
