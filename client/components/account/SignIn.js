@@ -1,9 +1,9 @@
 import React from 'react'
 import { browserHistory } from 'react-router'
 import $ from 'jquery'
-import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem} from 'react-bootstrap'
 
-import {Tabs, Tab, Dialog, FlatButton, TextField} from 'material-ui'
+import {Tabs, Tab, Dialog, FlatButton, TextField, MenuItem} from 'material-ui';
+
 
 export default class SignIn extends React.Component {
   constructor(props) {
@@ -15,8 +15,6 @@ export default class SignIn extends React.Component {
       username: undefined,
       password: undefined
     }
-    this.show = this.show.bind(this);
-    this.close = this.close.bind(this);
   }
 
   contextTypes: {
@@ -71,14 +69,13 @@ export default class SignIn extends React.Component {
           return;
         } else {
           this.props.signIn();
+          this.props.toggleModal('signInModal');
 
           // Changing the window.location allows the React-router to render the correct component
           browserHistory.push('/profile')
         }
         // Hides the modal window
-        this.setState({
-          show: false
-        })
+        // this.props.setAppState({signedIn: false})
       })
     .fail((err) => {
       console.error('cannot signin');
@@ -89,20 +86,6 @@ export default class SignIn extends React.Component {
     var newState = this.state;
     newState[prop] = e.target.value;
     this.setState(newState);
-  };
-
-  // Hides the modal window
-  close = () => {
-    this.setState({
-      show: false
-    });
-  };
-
-  // Shows the modal window
-  show = () => {
-    this.setState({
-      show: true
-    });
   };
 
   render() {
@@ -124,33 +107,22 @@ export default class SignIn extends React.Component {
       <FlatButton
         label="Cancel"
         secondary={true}
-        onTouchTap={this.close}
       />,
       <FlatButton
         label="Sign In"
         primary={true}
         onTouchTap={this.handleSignIn}
-        onRequestClose={this.close}
       />
     ];
 
     return (
-      <div>
-      <Tab
-        label='Log In'
-        onTouchTap={this.show}
-      >
-      </Tab>
       <Dialog
         title='Sign In'
         ref= "dialog"
         actions={actions}
         modal={true}
-        open={this.state.show}
-        >
-      </Dialog>
-
-      </div>
+        open={this.props.signInModal}
+      />
     )
   }
 }

@@ -1,9 +1,9 @@
 import React from 'react'
 import $ from 'jquery'
-import { browserHistory } from 'react-router'
-import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem,} from 'react-bootstrap'
 
-import {Tabs, Tab, Dialog, FlatButton, TextField} from 'material-ui';
+import { browserHistory } from 'react-router'
+
+import {Tabs, Tab, Dialog, FlatButton, TextField, MenuItem} from 'material-ui';
 
 export default class SignUp extends React.Component {
   constructor(props) {
@@ -17,8 +17,6 @@ export default class SignUp extends React.Component {
       password: undefined,
       email: undefined
     }
-    this.show = this.show.bind(this);
-    this.close = this.close.bind(this);
   }
 
   // Uses regex to validate email entered
@@ -78,6 +76,7 @@ export default class SignUp extends React.Component {
           })
         // Triggers the signIn function on navigation, which changes the signedIn state
           this.props.signIn();
+          this.props.toggleModal('signUpModal')
         }
       })
       .fail((err) => {
@@ -89,20 +88,6 @@ export default class SignUp extends React.Component {
     var newState = this.state;
     newState[prop] = e.target.value;
     this.setState(newState);
-  };
-
-  // Hides the modal window
-  close = () => {
-    this.setState({
-      show: false
-    });
-  };
-
-  // Shows the modal window
-  show = () => {
-    this.setState({
-      show: true
-    });
   };
 
   render() {
@@ -128,33 +113,23 @@ export default class SignUp extends React.Component {
       <FlatButton
         label="Cancel"
         secondary={true}
-        onTouchTap={this.close}
+        onTouchTap={evt => this.props.toggleModal('signUpModal')}
       />,
       <FlatButton
         label="Sign Up"
         primary={true}
         onTouchTap={this.handleSignUp}
-        onRequestClose={this.close}
       />
     ];
 
     return (
-      <div>
-      <Tab
-        label='Sign Up'
-        onTouchTap={this.show}
-      >
-      </Tab>
       <Dialog
         title='Sign Up'
         ref= "dialog"
         actions={actions}
         modal={true}
-        open={this.state.show}
-        >
-      </Dialog>
-
-      </div>
+        open={this.props.signUpModal}
+      />
     )
   }
 }
