@@ -1,7 +1,9 @@
 import React from 'react'
 import $ from 'jquery'
 
-import {Card, CardTitle, CardText, CardMedia, RadioButtonGroup, RadioButton, CardActions} from 'material-ui';
+import {Card, CardTitle, CardText, CardMedia, Checkbox, RadioButton, CardActions} from 'material-ui';
+import ActionFavorite from 'material-ui/lib/svg-icons/action/favorite';
+import ActionFavoriteBorder from 'material-ui/lib/svg-icons/action/favorite-border';
 
 export default class CreatedToursListEntry extends React.Component {
   constructor(props) {
@@ -15,6 +17,10 @@ export default class CreatedToursListEntry extends React.Component {
       photo: "",
       rating: null
     };
+  }
+
+  handleRatingClick(){
+    console.log("Clicked!")
   }
 
   // Fetches tour info from DB before rendering so component renders with correct information
@@ -37,8 +43,9 @@ export default class CreatedToursListEntry extends React.Component {
     });
   }
 
-  render() {
+  
 
+  render() {
     var styles = {
       card: {
         'height': '250px',
@@ -46,6 +53,14 @@ export default class CreatedToursListEntry extends React.Component {
         'backgroundSize': 'cover',
         'backgroundPosition': 'center 50%',
         'backgroundRepeat': 'no-repeat'
+      },
+      checkbox: {
+        display: 'flex',
+        width: '35px'
+      },
+      inline: {
+        display: 'flex',
+        flexDirection:'row'
       }
     }
 
@@ -57,33 +72,39 @@ export default class CreatedToursListEntry extends React.Component {
             <div style={styles.card}>
              </div>
           </CardMedia>
-
           <CardActions>
-            <RadioButtonGroup name="shipSpeed">
-               <RadioButton
-                 value="1"
-                 style={styles.radioButton}
+            <div style={styles.inline}>
+               <Checkbox
+                 checkedIcon={<ActionFavorite />}
+                 uncheckedIcon={<ActionFavoriteBorder />}
+                 style={styles.checkbox}
+                 onCheck={this.rateTours}
                />
-            </RadioButtonGroup>
-            <RadioButtonGroup name="shipSpeed">
-               <RadioButton
-                 value="1"
-                 style={styles.radioButton}
+               <Checkbox
+                 checkedIcon={<ActionFavorite />}
+                 uncheckedIcon={<ActionFavoriteBorder />}
+                 style={styles.checkbox}
+                  onCheck={this.rateTours}
                />
-            </RadioButtonGroup>
-
-            <RadioButtonGroup name="shipSpeed">
-               <RadioButton
-                 value="1"
-                 style={styles.radioButton}
+               <Checkbox
+                 checkedIcon={<ActionFavorite />}
+                 uncheckedIcon={<ActionFavoriteBorder />}
+                 style={styles.checkbox}
+                onCheck={this.rateTours}
                />
-            </RadioButtonGroup>
-            <RadioButtonGroup name="shipSpeed">
-               <RadioButton
-                 value="1"
-                 style={styles.radioButton}
+               <Checkbox
+                 checkedIcon={<ActionFavorite />}
+                 uncheckedIcon={<ActionFavoriteBorder />}
+                 style={styles.checkbox}
+                  onCheck={this.rateTours}
                />
-            </RadioButtonGroup>
+               <Checkbox
+                 checkedIcon={<ActionFavorite />}
+                 uncheckedIcon={<ActionFavoriteBorder />}
+                 style={styles.checkbox}
+                  onCheck={this.rateTours}
+               />
+           </div>
 
           </CardActions>
         </Card>
