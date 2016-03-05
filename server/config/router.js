@@ -53,8 +53,8 @@ module.exports = function(app, express) {
   app.post('/api/venues', Venue.fetchAll);
   app.put('/api/venues', Venue.updateOne);
   app.delete('/api/venues', Venue.removeOne);
-  app.get('/api/venues/search-all', Venue.searchAll);
-  app.get('/api/venues/search-new', Venue.searchNew);
+  app.get('/api/venues/search/all', Venue.searchAll);
+  app.get('/api/venues/search/new', Venue.searchNew);
 
   app.get('*', function(req, res, next) {
     res.status(200).sendfile(path.resolve(__dirname, '../../public/index.html'));
