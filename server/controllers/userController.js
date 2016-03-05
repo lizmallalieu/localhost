@@ -69,7 +69,7 @@ module.exports = {
               password: password,
               createdTours: [],
               attendingTours: [],
-              ratedTours: {}
+              ratedTours: {"holder" : "values"}
           });
           User.hashPassword(password, function(hash) {
             if(err) {
