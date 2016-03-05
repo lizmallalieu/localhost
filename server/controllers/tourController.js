@@ -3,6 +3,7 @@ var User = require('../models/userModel.js');
 var Q = require('q');
 var request = require('request');
 
+
 // var findTours = Q.nbind(Tour.find, Tour);
 var createTour = Q.nbind(Tour.create, Tour);
 var updateUser = Q.nbind(User.update, User);

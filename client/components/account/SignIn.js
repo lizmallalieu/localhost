@@ -1,9 +1,9 @@
 import React from 'react'
 import { browserHistory } from 'react-router'
 import $ from 'jquery'
-import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem} from 'react-bootstrap'
 
-import {Tabs, Tab, Dialog, FlatButton, TextField} from 'material-ui'
+import {Tabs, Tab, Dialog, FlatButton, TextField, MenuItem} from 'material-ui';
+
 
 export default class SignIn extends React.Component {
   constructor(props) {
@@ -136,11 +136,11 @@ export default class SignIn extends React.Component {
 
     return (
       <div>
-      <Tab
-        label='Log In'
+      <MenuItem
+        primaryText='Log In'
         onTouchTap={this.show}
       >
-      </Tab>
+      </MenuItem>
       <Dialog
         title='Sign In'
         ref= "dialog"

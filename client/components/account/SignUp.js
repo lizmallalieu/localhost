@@ -1,9 +1,10 @@
 import React from 'react'
 import $ from 'jquery'
+
 import { browserHistory } from 'react-router'
 import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem,} from 'react-bootstrap'
 
-import {Tabs, Tab, Dialog, FlatButton, TextField} from 'material-ui';
+import {Tabs, Tab, Dialog, FlatButton, TextField, MenuItem} from 'material-ui';
 
 export default class SignUp extends React.Component {
   constructor(props) {
@@ -140,11 +141,11 @@ export default class SignUp extends React.Component {
 
     return (
       <div>
-      <Tab
-        label='Sign Up'
+      <MenuItem 
+        primaryText='Sign Up'
         onTouchTap={this.show}
       >
-      </Tab>
+      </MenuItem>
       <Dialog
         title='Sign Up'
         ref= "dialog"
