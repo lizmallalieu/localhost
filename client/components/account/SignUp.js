@@ -2,7 +2,6 @@ import React from 'react'
 import $ from 'jquery'
 
 import { browserHistory } from 'react-router'
-import {Button, ButtonGroup, DropdownButton, MenuItem, Modal, NavItem,} from 'react-bootstrap'
 
 import {Tabs, Tab, Dialog, FlatButton, TextField, MenuItem} from 'material-ui';
 
