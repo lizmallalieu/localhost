@@ -24,8 +24,6 @@ export default class Navigation extends React.Component {
       show: false,
       open: false
     }
-    this.signIn = this.signIn.bind(this);
-    this.endSession = this.endSession.bind(this);
   }
 
   componentWillMount() {
@@ -33,9 +31,9 @@ export default class Navigation extends React.Component {
     $.get('/api/session')
     .done((data) => {
       if (data.isAuth === false) {
-        this.setState({ signedIn: false })
+        // this.props.setAppState({signedIn: false})
       } else {
-        this.setState({ signedIn: true })
+        // this.props.setAppState({signedIn: true})
       }
     })
     .fail((err) => {
@@ -69,16 +67,8 @@ export default class Navigation extends React.Component {
   endSession = () => {
     // Clicking on logout will terminate the session and re-route to welcome page
     $.get('/api/logout').done(() => {
-      this.setState({ signedIn: false })
+      // this.props.setAppState({signedIn: false})
       browserHistory.push('/');
-    })
-  }
-
-  signIn = () => {
-    // signedIn state controls what shows up on nav bar. This method is passed down
-    // to SignUp and SignIn components.
-    this.setState({
-      signedIn: true
     })
   }
 
@@ -110,8 +100,7 @@ export default class Navigation extends React.Component {
               <Link to="/search">
               <Tab label='Find a Tour'/>
               </Link>
-              <Tab label='Create a Tour'>
-              </Tab>
+              <Tab label='Create a Tour' onTouchTap={evt => this.props.toggleModal('tourFormModal')}/>
             </div>
           }
           iconElementRight={
@@ -124,17 +113,10 @@ export default class Navigation extends React.Component {
                 anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                 targetOrigin={{horizontal: 'right', vertical: 'top'}}
               >
-                <SignIn
-                {...this.props}
-                signIn={this.signIn}
-                setAppState={this.props.setAppState}
-              />
-                <SignUp
-                {...this.props}
-                signIn={this.signIn}
-              />
-                <MenuItem primaryText="Profile" />
-                <MenuItem primaryText="Log Out" />
+                <MenuItem primaryText="Log In" onTouchTap={evt => this.props.toggleModal('signInModal')}/>
+                <MenuItem primaryText="Sign Up" onTouchTap={evt => this.props.toggleModal('signUpModal')}/>
+                <MenuItem primaryText="Profile" onTouchTap={this.handleProfileClick}/>
+                <MenuItem primaryText="Log Out" onTouchTap={this.endSession}/>
               </IconMenu>
             </div>
           }

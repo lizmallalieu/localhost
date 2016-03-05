@@ -15,8 +15,6 @@ export default class SignIn extends React.Component {
       username: undefined,
       password: undefined
     }
-    this.show = this.show.bind(this);
-    this.close = this.close.bind(this);
   }
 
   contextTypes: {
@@ -71,14 +69,13 @@ export default class SignIn extends React.Component {
           return;
         } else {
           this.props.signIn();
+          this.props.toggleModal('signUpModal');
 
           // Changing the window.location allows the React-router to render the correct component
           browserHistory.push('/profile')
         }
         // Hides the modal window
-        this.setState({
-          show: false
-        })
+        // this.props.setAppState({signedIn: false})
       })
     .fail((err) => {
       console.error('cannot signin');
@@ -89,20 +86,6 @@ export default class SignIn extends React.Component {
     var newState = this.state;
     newState[prop] = e.target.value;
     this.setState(newState);
-  };
-
-  // Hides the modal window
-  close = () => {
-    this.setState({
-      show: false
-    });
-  };
-
-  // Shows the modal window
-  show = () => {
-    this.setState({
-      show: true
-    });
   };
 
   render() {
@@ -124,33 +107,22 @@ export default class SignIn extends React.Component {
       <FlatButton
         label="Cancel"
         secondary={true}
-        onTouchTap={this.close}
       />,
       <FlatButton
         label="Sign In"
         primary={true}
         onTouchTap={this.handleSignIn}
-        onRequestClose={this.close}
       />
     ];
 
     return (
-      <div>
-      <MenuItem
-        primaryText='Log In'
-        onTouchTap={this.show}
-      >
-      </MenuItem>
       <Dialog
         title='Sign In'
         ref= "dialog"
         actions={actions}
         modal={true}
-        open={this.state.show}
-        >
-      </Dialog>
-
-      </div>
+        open={this.props.signInModal}
+      />
     )
   }
 }

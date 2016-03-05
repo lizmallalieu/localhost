@@ -17,6 +17,7 @@ import SignIn from './account/SignIn'
 import SignUp from './account/SignUp'
 import Welcome from './welcome/Welcome'
 import Tour from './tour/Tour'
+import CreateTourForm from './profile/CreateTourForm'
 
 /*-------------*/
 /*     App     */
@@ -30,8 +31,17 @@ class App extends React.Component {
     this.state = {
       user: {},
       signUpModal: false,
-      signInModal: false
+      signInModal: false,
+      signedIn: false
     }
+  }
+
+  signIn = () => {
+    // signedIn state controls what shows up on nav bar. This method is passed down
+    // to SignUp and SignIn components.
+    // this.setState({
+    //   signedIn: true
+    // })
   }
 
   submitNewTour(tourInfo) {
@@ -50,11 +60,16 @@ class App extends React.Component {
     if (state) {
       this.setState(state);
     } else {
-      var newState = this.state[key];
+      var newState = this.state;
       newState[key] = value;
       this.setState(newState);
     }
     console.log('App State:', this.state)
+  }
+
+  toggleModal = (modal) => {
+    var toggle = !this.state[modal];
+    this.setAppState(null, modal, toggle);
   }
 
   render() {
@@ -71,6 +86,25 @@ class App extends React.Component {
         <Navigation
           {...this.state}
           setAppState={this.setAppState}
+          toggleModal={this.toggleModal}
+          signIn={this.signIn}
+        />
+        <CreateTourForm
+         {...this.state}
+         setAppState={this.setAppState}
+         toggleModal={this.toggleModal}
+        />
+        <SignIn
+          {...this.state}
+          setAppState={this.setAppState}
+          toggleModal={this.toggleModal}
+          signIn={this.signIn}
+        />
+        <SignUp
+          {...this.state}
+          setAppState={this.setAppState}
+          toggleModal={this.toggleModal}
+          signIn={this.signIn}
         />
         {Children}
       </div>
