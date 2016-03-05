@@ -15,12 +15,30 @@ export default class CreatedToursListEntry extends React.Component {
       date: "",
       price: "",
       photo: "",
-      rating: null
+      ratings: {
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false
+      }
     };
   }
 
-  handleRatingClick(){
-    console.log("Clicked!")
+  rateTours = (value, evt, rando) => {
+    console.log("Value : ", value);
+    if(this.state.ratings[value] === true){
+      console.log("UNCLICKED")
+      for(var i = 1; i <=5 ; i++){
+        this.state.ratings[i] = false;
+      }
+    } else {
+      for(var j = 1; j<value+1 ; j++){
+        this.state.ratings[j] = true;
+      }
+    }
+    this.setState(this.state.ratings)
+    console.log("Ratings: ", this.state.ratings);
   }
 
   // Fetches tour info from DB before rendering so component renders with correct information
@@ -43,7 +61,7 @@ export default class CreatedToursListEntry extends React.Component {
     });
   }
 
-  
+
 
   render() {
     var styles = {
@@ -76,33 +94,43 @@ export default class CreatedToursListEntry extends React.Component {
             <div style={styles.inline}>
                <Checkbox
                  checkedIcon={<ActionFavorite />}
+                 target="1"
                  uncheckedIcon={<ActionFavoriteBorder />}
+                 checked = {this.state.ratings[1]}
                  style={styles.checkbox}
-                 onCheck={this.rateTours}
+                 onChange={() => this.rateTours(1)}
                />
                <Checkbox
                  checkedIcon={<ActionFavorite />}
+                 target="2"
                  uncheckedIcon={<ActionFavoriteBorder />}
+                 checked = {this.state.ratings[2]}
                  style={styles.checkbox}
-                  onCheck={this.rateTours}
+                 onCheck={() => this.rateTours(2)}
                />
                <Checkbox
                  checkedIcon={<ActionFavorite />}
+                 target="3"
                  uncheckedIcon={<ActionFavoriteBorder />}
+                 checked = {this.state.ratings[3]}
                  style={styles.checkbox}
-                onCheck={this.rateTours}
+                onCheck={() => this.rateTours(3)}
                />
                <Checkbox
                  checkedIcon={<ActionFavorite />}
+                 target="4"
                  uncheckedIcon={<ActionFavoriteBorder />}
+                 checked = {this.state.ratings[4]}
                  style={styles.checkbox}
-                  onCheck={this.rateTours}
+                 onCheck={() => this.rateTours(4)}
                />
                <Checkbox
                  checkedIcon={<ActionFavorite />}
+                 target="5"
                  uncheckedIcon={<ActionFavoriteBorder />}
+                 checked = {this.state.ratings[5]}
                  style={styles.checkbox}
-                  onCheck={this.rateTours}
+                 onCheck={() => this.rateTours(5)}
                />
            </div>
 
