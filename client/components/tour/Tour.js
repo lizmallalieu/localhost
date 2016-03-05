@@ -1,6 +1,8 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import $ from 'jquery'
 import {Button, Modal} from 'react-bootstrap'
+import PaymentForm from '../payment/PaymentForm'
 
 export default class Tour extends React.Component {
   constructor(props) {
@@ -14,6 +16,7 @@ export default class Tour extends React.Component {
       isJoined: false
     }
   }
+
 
   // Add tour ID to user's attendingTours array if user is logged in
   handleJoinTourClick() {
@@ -67,7 +70,7 @@ export default class Tour extends React.Component {
   }
 
   render() {
-
+    console.log('TOUR PROPS', this.props);
     // Different error messages are defined here
     var loginReminder = <div style={{marginTop: '5px'}}> Please sign in first.</div>
     var cannotJoinOwnTourError = <div style={{marginTop: '5px'}}> You cannot join your own tour. </div>
@@ -85,7 +88,7 @@ export default class Tour extends React.Component {
           <Modal.Header className='grey' closeButton>
             <Modal.Title>{this.props.currentTour.name}</Modal.Title>
           </Modal.Header>
-          <Modal.Body className='grey'>
+          <Modal.Body className='grey' id='tourModal'>
             <div>Address: {this.props.currentTour.streetAddress}</div>
             <div>City: {this.props.currentTour.city}</div>
             <div>State: {this.props.currentTour.state}</div>
@@ -100,10 +103,9 @@ export default class Tour extends React.Component {
               bsSize='small'
               onClick={ () => this.handleJoinTourClick() }
             >
-              Join Tour
             </Button>
             : null }
-
+            <PaymentForm toggleModal={this.props.toggleModal}/>
             {/*Error messages are loaded here conditionally*/}
             {this.state.isLoggedIn ? null : loginReminder}
             {this.state.isJoined ? joinedTour : null}
