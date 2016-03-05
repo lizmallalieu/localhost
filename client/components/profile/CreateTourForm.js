@@ -243,11 +243,6 @@ export default class CreateTourForm extends React.Component {
     };
 
     return (
-      <div className="createTourContainer">
-        <RaisedButton
-          label="Modal Dialog"
-          onTouchTap={evt => this.props.toggleModal('tourFormModal')}
-        />
 
         <Dialog
           title={`Create a ${this.state.tab}`}
@@ -347,7 +342,6 @@ export default class CreateTourForm extends React.Component {
             </Tab>
           </Tabs>
         </Dialog>
-      </div>
     )
   }
 }
