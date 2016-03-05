@@ -99,7 +99,6 @@ export default class Navigation extends React.Component {
     return (
       <div>
         <AppBar
-          title="local host"
           onTitleTouchTap={this.handleProfileClick}
           iconElementLeft={
             <div className='leftside'>
