@@ -96,6 +96,10 @@ export default class Navigation extends React.Component {
       }
     };
 
+    const buttonStyles = {
+      margin: 5,
+    }
+
     return (
       <div>
         <AppBar
@@ -103,9 +107,9 @@ export default class Navigation extends React.Component {
           iconElementLeft={
             <div className='leftside'>
               <Link to="/search">
-              <Tab label='Find a Tour'/>
+              <RaisedButton style={buttonStyles} label='Find a Tour'/>
               </Link>
-              <Tab label='Create a Tour' onTouchTap={evt => this.props.toggleModal('tourFormModal')}/>
+              <RaisedButton style={buttonStyles} label='Create a Tour' onTouchTap={evt => this.props.toggleModal('tourFormModal')}/>
             </div>
           }
           iconElementRight={
