@@ -47,9 +47,13 @@ module.exports = {
   },
 
   signup: function (req, res, next) {
-    var username = req.body.data.username;
-    var password = req.body.data.password;
-    var email = req.body.data.email;
+    console.log("REQUEST BODY :", req.body)
+    var username = req.body.username;
+    var password = req.body.password;
+    var email = req.body.email;
+    // var username = req.body.data.username;
+    // var password = req.body.data.password;
+    // var email = req.body.data.email;
     // Check to see if a user exists already:
     User.findOne({username: username})
       .exec(function(err, user) {
@@ -64,7 +68,8 @@ module.exports = {
               email: email,
               password: password,
               createdTours: [],
-              attendingTours: []
+              attendingTours: [],
+              ratedTours: {}
           });
           User.hashPassword(password, function(hash) {
             if(err) {
