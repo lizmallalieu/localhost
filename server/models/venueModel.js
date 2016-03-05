@@ -6,6 +6,11 @@ var venueSchema = new Schema({
   name: String,
   photoSuffix: String,
   address: String,
+  city: String,
+  state: String,
+  zipcode: String,
+  lat: Object,
+  lng: Object,
   rating: Number,
   price: Number,
   tier: String,
@@ -22,7 +27,7 @@ var venueSchema = new Schema({
   }],
   createdAt: Date,
   updatedAt: Date
-}, 
+},
   {
     toObject: { virtuals: true },
     toJSON: { virtuals: true }

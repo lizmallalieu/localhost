@@ -53,6 +53,11 @@ module.exports = {
             photoSuffix: venue.bestPhoto ?
               venue.bestPhoto.suffix || '' : '',
             address: venue.location.address || '',
+            city: venue.location.city || '',
+            state: venue.location.state || '',
+            zipcode: venue.location.postalCode || '',
+            lat: venue.location.lat || 0,
+            lng: venue.location.lng || 0,
             phone: venue.contact ? '' :
               venue.contact.formattedPhone || '',
             rating: venue.rating || '',

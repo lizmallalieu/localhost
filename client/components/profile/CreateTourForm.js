@@ -4,6 +4,10 @@ import _ from 'underscore'
 
 import ActionAndroid from 'material-ui/lib/svg-icons/action/android'
 import AutoComplete from 'material-ui/lib/auto-complete'
+import Card from 'material-ui/lib/card/card'
+import CardActions from 'material-ui/lib/card/card-actions'
+import CardHeader from 'material-ui/lib/card/card-header'
+import CardText from 'material-ui/lib/card/card-text'
 import DatePicker from 'material-ui/lib/date-picker/date-picker'
 import Dialog from 'material-ui/lib/dialog'
 import FlatButton from 'material-ui/lib/flat-button'
@@ -38,7 +42,7 @@ const styles = {
     fontWeight: 400
   },
   list: {
-    fontSize: '0.7em'
+    fontSize: '0.9em'
   },
   menu: {
     maxHeight: '40vh',
@@ -81,12 +85,15 @@ export default class CreateTourForm extends React.Component {
         time: {},
         price: 0,
         addPhone: false,
-        addTwitter: false
+        addTwitter: false,
+        stops: []
       },
+      venues:[],
       search: [{
         text: '',
         value: (
           <MenuItem
+            id="FSQ-search-button"
             secondaryText="Powered by Foursquare"
             onClick={this.fetchPlace}
           >
@@ -103,11 +110,17 @@ export default class CreateTourForm extends React.Component {
         ),
       }]
     }
-  };
+  }
 
   updateForm = (field, update) => {
     var form = this.state.tourForm;
-    form[field] = update;
+    if (Array.isArray(form[field])) {
+      var array = form[field];
+      array.push(update);
+      form[field] = array;
+    } else {
+      form[field] = update;
+    }
     this.setState({ tourForm: form });
   }
 
@@ -133,8 +146,15 @@ export default class CreateTourForm extends React.Component {
     evt.preventDefault();
     var tour = this.state.tourForm;
     tour.userId = this.props.user.uid;
-    console.log('look at me i am tour:', tour)
     this.props.createTour(tour);
+  }
+
+  resetAutocomplete = (value) => {
+    value = value || '';
+    var setState = this.setState.bind(this);
+    setTimeout(() => {
+      setState({autocomplete: value})
+    }, 500);
   }
 
   mapSearchResults = (venues) => {
@@ -164,18 +184,32 @@ export default class CreateTourForm extends React.Component {
 
   searchPlace = (query) => {
     if (query.length > 3) {
-      var button = this.state.search[this.state.search.length - 1];
+      var button = this.state.search[this.state.search.length - 1] || {};
       button.text = query;
-      $.get('/api/venues/search-all', {search: query})
+
+      this.setState({search: []});
+
+      $.ajax({
+        type: 'GET',
+        url: '/api/venues/search/all',
+        data: {search: query},
+        contentType: 'json'
+      })
       .done(venues => {
-        var results = _.map(venues, venue => {
+        var results = _.map(venues, (venue) => {
           return {
-            text: venue.name,
+            text: `FSQ-${venue.id}`,
             value: (
               <MenuItem
+                style={styles.list}
+                venueId={venue.id}
                 primaryText={venue.name}
                 secondaryText={venue.address}
-                venueId={venue.id}
+                url={venue.url}
+                rating={venue.rating}
+                price={venue.price}
+                photo={venue.photo}
+                address={`${venue.address} ${venue.city}, ${venue.state} ${venue.zipcode}`}
               />
             ),
           }
@@ -191,12 +225,12 @@ export default class CreateTourForm extends React.Component {
   }
 
   fetchPlace = (query, index) => {
-    if (query.dispatchMarker || index === this.state.search.length - 1 || index < 0) {
+    if (query && (query.dispatchMarker || index === this.state.search.length - 1 || index < 0)) {
       var button = this.state.search[this.state.search.length - 1];
       button.text = query;
 
       var mapSearchResults = this.mapSearchResults;
-      $.get('/api/venues/search-new', {search: query})
+      $.get('/api/venues/search/new', {search: query})
       .done(venues => {
         mapSearchResults(venues);
       })
@@ -204,7 +238,26 @@ export default class CreateTourForm extends React.Component {
         console.error('Could not search Foursquare for venues', err);
         throw new Error('Could not search Foursquare for venues', err);
       });
-    } else {
+    } else if (this.state.search[index].value) {
+      var venueId = this.state.search[index].value ? this.state.search[index].value.props.venueId : '';
+      this.updateForm('stops', venueId);
+      var name = this.state.search[index].value ? this.state.search[index].value.props.primaryText : '';
+
+      var newVenue = {
+        venueId: venueId,
+        name: name,
+        address: this.state.search[index].value ? this.state.search[index].value.props.address : '',
+        rating: this.state.search[index].value ? this.state.search[index].value.props.rating : '',
+        price: this.state.search[index].value ? this.state.search[index].value.props.price : '',
+        photo: this.state.search[index].value ? this.state.search[index].value.props.photo : '',
+        url: this.state.search[index].value ? this.state.search[index].value.props.url : ''
+      };
+
+      var newVenues = this.state.venues;
+      newVenues.push(newVenue);
+      this.setState({venues: newVenues});
+
+      this.resetAutocomplete(name);
     }
   }
 
@@ -243,105 +296,125 @@ export default class CreateTourForm extends React.Component {
     };
 
     return (
-
-        <Dialog
-          title={`Create a ${this.state.tab}`}
-          actions={actions.form}
-          modal={true}
-          open={this.props.tourFormModal}
-          contentStyle={styles.modal}
-        >
-          <Tabs>
-            <Tab label="Tour" value="tour" onActive={this.changeTab}>
-              <GridList
-                cols={6}
-                padding={5}
-                cellHeight={1}
-                style={styles.grid}
-              >
-                <GridTile cols={6} rows={72}>
-                  <img src="http://www.material-ui.com/images/grid-list/vegetables-790022_640.jpg"/>
-                </GridTile>
-                <GridTile cols={6} rows={72}>
-                  <TextField
-                    hintText="i.e., Napa Wine Tour"
-                    floatingLabelText="Tour Name"
-                    fullWidth={true}
-                    onChange={(e) => this.updateForm('title', e.target.value)}
-                  />
-                </GridTile>
-                <GridTile cols={6} rows={72}>
-                  <TextField
-                    floatingLabelText="Description"
-                    fullWidth={true}
-                    multiLine={true}
-                    onChange={(e) => this.updateForm('description', e.target.value)}
-                  />
-                </GridTile>
-                <GridTile cols={3} rows={72}>
-                  <DatePicker
-                    hintText="Date"
-                    formatDate={this.dateFormat}
-                    onChange={(e, date) => this.updateForm('date', date)}
-                  />
-                </GridTile>
-                <GridTile cols={3} rows={72}>
-                  <TimePicker
-                    ref="timepicker"
-                    hintText="Time"
-                    pedantic={true}
-                    value={this.state.tourForm.time}
-                    onChange={(e, time) => this.updateForm('time', time)}
-                  />
-                </GridTile>
-                <GridTile cols={6} rows={72}>
-                  <Slider
-                    description={`Price${this.state.tourForm.price ?
-                      ': $' + this.state.tourForm.price :
-                      ': Free'}`}
-                    style={styles.slide}
-                    onChange={(e, step) => this.updateForm('price', step * 500)}
-                  />
-                </GridTile>
-                <GridTile cols={2} rows={72}>
-                  <div style={styles.block}>
-                    <Toggle
-                      label="Phone"
-                      labelPosition="right"
-                      style={styles.pad}
-                      onToggle={(e, toggle) => this.updateForm('addPhone', toggle)}
-                    />
-                  </div>
-                </GridTile>
-                <GridTile cols={2} rows={72}>
-                  <div style={styles.block}>
-                    <Toggle
-                      label="Twitter"
-                      labelPosition="right"
-                      style={styles.pad}
-                      onToggle={(e, toggle) => this.updateForm('addTwitter', toggle)}
-                    />
-                  </div>
-                </GridTile>
-              </GridList>
-            </Tab>
-            <Tab label="Stops" value="stop" onActive={this.changeTab}>
-              <div>
-                <AutoComplete
-                  floatingLabelText="Find a location"
-                  filter={AutoComplete.noFilter}
+      <Dialog
+        title={`Create a ${this.state.tab}`}
+        actions={actions.form}
+        modal={true}
+        open={this.props.tourFormModal}
+        contentStyle={styles.modal}
+      >
+        <Tabs>
+          <Tab label="Tour" value="tour" onActive={this.changeTab}>
+            <GridList
+              cols={6}
+              padding={5}
+              cellHeight={1}
+              style={styles.grid}
+            >
+              <GridTile cols={6} rows={72}>
+                <img src="http://www.material-ui.com/images/grid-list/vegetables-790022_640.jpg"/>
+              </GridTile>
+              <GridTile cols={6} rows={72}>
+                <TextField
+                  hintText="i.e., Napa Wine Tour"
+                  floatingLabelText="Tour Name"
                   fullWidth={true}
-                  openOnFocus={true}
-                  menuStyle={styles.menu}
-                  listStyle={styles.list}
-                  dataSource={this.state.search}
-                  onNewRequest={this.fetchPlace}
-                  onUpdateInput={this.searchPlace}
+                  onChange={(e) => this.updateForm('title', e.target.value)}
                 />
-              </div>
-            </Tab>
-          </Tabs>
-        </Dialog>
+              </GridTile>
+              <GridTile cols={6} rows={72}>
+                <TextField
+                  floatingLabelText="Description"
+                  fullWidth={true}
+                  multiLine={true}
+                  onChange={(e) => this.updateForm('description', e.target.value)}
+                />
+              </GridTile>
+              <GridTile cols={3} rows={72}>
+                <DatePicker
+                  hintText="Date"
+                  formatDate={this.dateFormat}
+                  onChange={(e, date) => this.updateForm('date', date)}
+                />
+              </GridTile>
+              <GridTile cols={3} rows={72}>
+                <TimePicker
+                  ref="timepicker"
+                  hintText="Time"
+                  pedantic={true}
+                  value={this.state.tourForm.time}
+                  onChange={(e, time) => this.updateForm('time', time)}
+                />
+              </GridTile>
+              <GridTile cols={6} rows={72}>
+                <Slider
+                  description={`Price${this.state.tourForm.price ?
+                    ': $' + this.state.tourForm.price :
+                    ': Free'}`}
+                  style={styles.slide}
+                  onChange={(e, step) => this.updateForm('price', step * 500)}
+                />
+              </GridTile>
+              <GridTile cols={2} rows={72}>
+                <div style={styles.block}>
+                  <Toggle
+                    label="Phone"
+                    labelPosition="right"
+                    style={styles.pad}
+                    onToggle={(e, toggle) => this.updateForm('addPhone', toggle)}
+                  />
+                </div>
+              </GridTile>
+              <GridTile cols={2} rows={72}>
+                <div style={styles.block}>
+                  <Toggle
+                    label="Twitter"
+                    labelPosition="right"
+                    style={styles.pad}
+                    onToggle={(e, toggle) => this.updateForm('addTwitter', toggle)}
+                  />
+                </div>
+              </GridTile>
+            </GridList>
+          </Tab>
+          <Tab label="Stops" value="stop" onActive={this.changeTab}>
+            <div>
+              {this.state.venues.map((venue, key) => (
+                <Card key={key}>
+                  <CardHeader
+                    title={venue.name}
+                    subtitle={venue.address}
+                    avatar={venue.photo}
+                    actAsExpander={true}
+                    showExpandableButton={true}
+                  />
+                  <CardText expandable={true}>
+                    First up is this cute event!
+                  </CardText>
+                  <CardActions expandable={true}>
+                    <FlatButton label="Remove"/>
+                  </CardActions>
+                </Card>
+              ))}
+            </div>
+            <div>
+              <AutoComplete
+                id="autocomplete"
+                searchText={this.state.autocomplete}
+                floatingLabelText="Find a location"
+                fullWidth={true}
+                openOnFocus={true}
+                menuStyle={styles.menu}
+                listStyle={styles.list}
+                dataSource={this.state.search}
+                onNewRequest={this.fetchPlace}
+                onUpdateInput={this.searchPlace}
+                filter={AutoComplete.noFilter}
+              />
+            </div>
+          </Tab>
+        </Tabs>
+      </Dialog>
     )
   }
 }

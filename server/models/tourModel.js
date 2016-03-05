@@ -18,7 +18,7 @@ var tourSchema = new Schema({
   addTwitter: Boolean,
   ratings: Object,
   history: Array,
-  venues: [{type: ObjectId, ref: Venue}],
+  stops: [{type: ObjectId, ref: Venue}],
   attendees: [{type: ObjectId, ref: User}],
   createdAt: Date
 });
