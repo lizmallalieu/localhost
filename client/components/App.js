@@ -50,9 +50,12 @@ class App extends React.Component {
   signIn = () => {
     // signedIn state controls what shows up on nav bar. This method is passed down
     // to SignUp and SignIn components.
-    // this.setState({
-    //   signedIn: true
-    // })
+    console.log('inside signIn');
+    this.setState({
+      signedIn: true
+    })
+    console.log('this.state.signedIn', this.state.signedIn);
+    this.toggleModal('signInModal');
   }
 
   /* Pass this method down to children components so you can set the App state from nested dependencies. This method takes in a single state update object used to simply set properties in the state. Alternatively, you can pass in a specific key-value pair with the state passed in as null. This is useful for when you need to set a property in a deeply nested object in the state. */
@@ -85,6 +88,7 @@ class App extends React.Component {
       <div>
         <Navigation
           {...this.state}
+          state={this.state}
           setAppState={this.setAppState}
           toggleModal={this.toggleModal}
           signIn={this.signIn}

@@ -69,13 +69,13 @@ export default class SignIn extends React.Component {
           return;
         } else {
           this.props.signIn();
-          this.props.toggleModal('signInModal');
+          // this.props.toggleModal('signInModal');
 
           // Changing the window.location allows the React-router to render the correct component
           browserHistory.push('/profile')
         }
         // Hides the modal window
-        // this.props.setAppState({signedIn: false})
+        this.props.setAppState({signedIn: false})
       })
     .fail((err) => {
       console.error('cannot signin');

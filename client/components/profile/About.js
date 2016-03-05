@@ -37,8 +37,6 @@ export default class About extends React.Component {
 
   render() {
 
-    var displayText = this.state.aboutMe;
-
     const aboutMeEdit = (
       <form className="aboutMeForm">
         <textarea className="aboutMe" ref="aboutMe">{this.state.aboutMe}</textarea>
@@ -61,17 +59,10 @@ export default class About extends React.Component {
             <img src="http://dazik.com/images/avatar.png"/>
           </CardMedia>
           <CardText>
-            Email:
-            Twitter:
-            etc.
+            Username: {this.props.user.username}
+            Email: {this.props.user.email}
+            Twitter: {this.props.user.twitter}
           </CardText>
-          <TextField
-            hintText={this.state.aboutMe}
-            floatingLabelText="About Me"
-            multiLine={true}
-            rows={2}
-            onChange={this.handleAboutMeEdit}
-          />
         </Card>
       </div>
 

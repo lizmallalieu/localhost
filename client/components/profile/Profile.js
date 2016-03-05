@@ -93,12 +93,12 @@ export default class Profile extends React.Component {
         width: 150,
         height: 2000,
         overflowY: 'auto',
-        marginBottom: 24,
+        marginBottom: 0,
       },
       headline: {
         fontSize: 24,
-        paddingTop: 16,
-        marginBottom: 12,
+        paddingTop: 0,
+        marginBottom: 0,
         fontWeight: 400,
       }
     };
@@ -118,13 +118,13 @@ export default class Profile extends React.Component {
         <GridList
           cols={9}
           cellHeight={1}
-          padding={15}
+          padding={0}
         >
           <GridTile
             cols={2}
             rows={2000}
           >
-            <About user={this.props.user.username} aboutMe={this.props.user.about}/>
+            <About user={this.props.user}/>
           </GridTile>
           <GridTile
             cols={7}
@@ -132,18 +132,10 @@ export default class Profile extends React.Component {
           >
             <Tabs>
               <Tab label="Hosting">
-                <div>
                   <TourList {...createdTourListProps}/>
-                </div>
               </Tab>
               <Tab label="Attending">
-                <div>
                   <TourList {...createdTourListProps}/>
-                </div>
-              </Tab>
-              <Tab label="History">
-                <div>
-                </div>
               </Tab>
             </Tabs>
           </GridTile>
