@@ -66,6 +66,7 @@ module.exports = {
      addPhone: req.body.addPhone || false,
      addTwitter: req.body.addTwitter || false,
      ratings: {},
+     stops: req.body.stops || [],
      createdAt: new Date()
    };
 
