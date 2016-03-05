@@ -101,22 +101,11 @@ getTourInfo = (tour) => {
       lat: tour.LatLng[0],
       lng: tour.LatLng[1]
     },
-    showTourModal: false
+    showTourModal: true
   })
   console.log('markers', markers);
-  console.log('this.state after setState     ', this.state);
+  console.log('this.state after setState', this.state);
 }
-
-// This is passed down to Tour. Hides the Tour modal.
-closeTourModal () {
-  this.setState({showTourModal: false});
-};
-
-changeFound () {
-  this.setState ({
-    notFound: false
-  })
-};
 
 /* <SearchMap/> renders correctly first time, but doesn't re-render with subsequent searches unless it is demounted first. To handle this,
 * every time a search is made, the 'tours' state property is first set to an empty array (lines 31/37) so the <SearchMap/> will be demounted,
@@ -128,7 +117,7 @@ render() {
   var tourProps = {
     page: 'search',
     currentTour: this.state.currentTour,
-    closeTourModal: this.closeTourModal.bind(this),
+    // closeTourModal: this.closeTourModal.bind(this),
     show: this.state.showTourModal
   }
   var searchListProps = {
@@ -136,14 +125,13 @@ render() {
     getTourInfo: this.getTourInfo.bind(this),
   }
 
-  console.log('rerendering. searchListProps', searchListProps)
-
   return (
     <div className="searchContainer">
       <Tour {...tourProps} />
         <div className="searchList-BarContainer">
           <SearchBar getToursFromDatabase = {this.getToursFromDatabase.bind(this)}/>
-          <TourList {...searchListProps} tours={searchListProps.tours}/>
+          <SearchList {...searchListProps}/>
+          {this.state.notFound ? noResultMessage : null}
         </div>
       <div className='searchMapContainer'>
       {/*{this.state.tours.length > 0 ? <SearchMap tours={this.state.tours}/> : null}*/}

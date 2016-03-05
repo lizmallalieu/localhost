@@ -11,7 +11,7 @@ export default class SearchListEntry extends React.Component {
 			<div 
 			  style={
 					{
-						backgroundImage: 'url(' + this.props.tour.pictureUrl + ')',
+						backgroundImage: 'url(' + this.props.tour.photo + ')',
 						backgroundRepeat: 'no-repeat',
 						backgroundSize:'cover',
 						backgroundPosition: 'center center'

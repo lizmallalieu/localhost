@@ -5,12 +5,8 @@ export default class TourList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      tours: []
+      tours: undefined
     }
-  }
-
-  setTours () => {
-    this.setState({tours: this.props.tours});
   }
 
   render() {

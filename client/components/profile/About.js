@@ -58,11 +58,6 @@ export default class About extends React.Component {
           <CardMedia>
             <img src="http://dazik.com/images/avatar.png"/>
           </CardMedia>
-          <CardText>
-            Username: {this.props.user.username}
-            Email: {this.props.user.email}
-            Twitter: {this.props.user.twitter}
-          </CardText>
         </Card>
       </div>
 
