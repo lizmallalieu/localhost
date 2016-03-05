@@ -76,7 +76,7 @@ export default class SignUp extends React.Component {
           })
         // Triggers the signIn function on navigation, which changes the signedIn state
           this.props.signIn();
-          // this.props.toggleModal('signUpModal')
+          this.props.toggleModal('signUpModal')
         }
       })
       .fail((err) => {
